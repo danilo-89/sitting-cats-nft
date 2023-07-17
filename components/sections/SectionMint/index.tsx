@@ -1,4 +1,4 @@
-import AngledContentStripe from '@/components/AngledContentStripe'
+import AngledContentStripe from '@/components/AngledContentStripe/AngledContentStripe'
 import Button from '@/components/Button/Button'
 import InputNft from '@/components/InputNft'
 import Title from '@/components/Title/Title'
@@ -6,7 +6,7 @@ import Image from 'next/image'
 
 const SectionMint = () => {
     return (
-        <>
+        <section>
             <Title title="Mint now">
                 Lorem Ipsum is simply dummy text of the printy. Minted 21 of
                 1000.
@@ -14,7 +14,7 @@ const SectionMint = () => {
             <div className="mx-auto mb-[10rem] flex max-w-[640px] bg-antiFlashWhite">
                 <div className="flex-column flex-row items-center p-10 text-center">
                     <InputNft />
-                    <p className="text-sm">
+                    <p className="mb-9 text-sm">
                         You’ve haven’t reached your minting limit.
                     </p>
                     <Button>MINT</Button>
@@ -29,8 +29,8 @@ const SectionMint = () => {
                 </div>
             </div>
             <AngledContentStripe color="blue">
-                <div className="flex px-5 py-4">
-                    <p className="text-md max-w-[70%]  shrink-0 grow">
+                <div className="mx-auto flex max-w-[820px] px-5 py-4">
+                    <p className="text-md max-w-auto basis shrink grow pt-2">
                         Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry. Lorem Ipsum has been the
                         industry&apos;s standard dummy text ever since the
@@ -38,18 +38,18 @@ const SectionMint = () => {
                         scrambled it to make a type specimen book. It has
                         survived not only ...
                     </p>
-                    <figure className="h-full w-10 min-w-[8rem] shrink-0 grow">
-                        {/* <Image
+                    <figure className="ml-4 h-full w-6 min-w-[120px] shrink-0 grow">
+                        <Image
                             className="absolute -top-24"
                             alt="cat"
-                            width="110"
+                            width="120"
                             height="100"
                             src="/hero-cat.png"
-                        /> */}
+                        />
                     </figure>
                 </div>
             </AngledContentStripe>
-        </>
+        </section>
     )
 }
 
