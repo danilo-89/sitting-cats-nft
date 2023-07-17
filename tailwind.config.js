@@ -22,11 +22,14 @@ module.exports = {
                     'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
             },
             dropShadow: {
-                title: '0 0.05em 0 #534444',
+                title: '0 0.055em 0 #534444',
             },
             boxShadow: {
                 button: '0.3rem 0.25rem rgba(83, 68, 68, 0.85)',
+                buttonLinen: '0.3rem 0.25rem rgba(220, 220, 220, 0.59)',
                 buttonActive: '-0.3rem -0.25rem rgba(83, 68, 68, 1)',
+                buttonActiveSecondary:
+                    '-0.3rem -0.25rem rgba(220, 220, 220, 0.59)',
             },
         },
     },
