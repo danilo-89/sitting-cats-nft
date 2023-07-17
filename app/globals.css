@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-	/* --foreground-rgb: 0, 0, 0;
+    /* --foreground-rgb: 0, 0, 0;
 	--background-start-rgb: 214, 219, 220;
 	--background-end-rgb: 255, 255, 255; */
 }
@@ -17,16 +17,17 @@
 } */
 
 html {
-	font-family: var(--font-poppins);
+    font-family: var(--font-poppins);
 }
 
+h1,
 h2 {
-	font-family: var(--font-yellowtail);
+    font-family: var(--font-yellowtail);
 }
 
 body {
-	font-family: var(--font-poppins);
-	/* color: rgb(var(--foreground-rgb));
+    font-family: var(--font-poppins);
+    /* color: rgb(var(--foreground-rgb));
 	background: linear-gradient(
 			to bottom,
 			transparent,
