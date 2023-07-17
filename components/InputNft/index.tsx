@@ -6,7 +6,7 @@ const InputNft = () => {
     const [value, setValue] = useState('1')
 
     return (
-        <div className="mx-auto flex max-w-[16rem] border-2 border-x-wenge bg-white p-2">
+        <div className="mx-auto mb-4 flex max-w-[16rem] border-2 border-x-wenge bg-white p-2">
             <Button
                 variation="secondary"
                 shadow={false}
