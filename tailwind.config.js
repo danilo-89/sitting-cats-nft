@@ -25,10 +25,10 @@ module.exports = {
                 title: '0 0.055em 0 #534444',
             },
             boxShadow: {
-                button: '0.3rem 0.25rem rgba(83, 68, 68, 0.85)',
-                buttonLinen: '0.3rem 0.25rem rgba(220, 220, 220, 0.59)',
-                buttonActive: '-0.3rem -0.25rem rgba(83, 68, 68, 1)',
-                buttonActiveSecondary:
+                buttonPrimary: '0.3rem 0.25rem rgba(83, 68, 68, 0.85)',
+                buttonPrimaryActive: '-0.3rem -0.25rem rgba(83, 68, 68, 1)',
+                buttonSecondary: '0.3rem 0.25rem rgba(220, 220, 220, 0.59)',
+                buttonSecondaryActive:
                     '-0.3rem -0.25rem rgba(220, 220, 220, 0.59)',
             },
         },
