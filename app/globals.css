@@ -18,6 +18,10 @@
 
 html {
     font-family: var(--font-poppins);
+
+    /* remove headless-ui modal added padding */
+    /* padding-right: 0 !important;
+    overflow: auto !important; */
 }
 
 h1,
@@ -27,6 +31,9 @@ h2 {
 
 body {
     font-family: var(--font-poppins);
+    /* scrollbar-gutter: stable; */
+    /* overscroll-behavior: contain; */
+    width: 100%;
     /* color: rgb(var(--foreground-rgb));
 	background: linear-gradient(
 			to bottom,
@@ -35,3 +42,11 @@ body {
 		)
 		rgb(var(--background-start-rgb)); */
 }
+
+/* section {
+    scrollbar-gutter: stable;
+} */
+
+/* main {
+    scrollbar-gutter: stable;
+} */
