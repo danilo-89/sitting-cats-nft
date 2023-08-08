@@ -8,15 +8,44 @@ module.exports = {
     theme: {
         colors: {
             xantous: '#EFBF5B',
+            moonstone: '#319CAB',
             robinEggBlue: '#61C1CE',
             champagne: '#F1DCC1',
             wenge: '#534444',
             linen: '#FBF3E8',
             antiFlashWhite: '#EBEBEB',
             white: '#FFFFFF',
+            silver: '#C5CBCB',
         },
         extend: {
+            fontSize: {
+                xsP: ['0.75rem', '1.15rem'],
+                smP: ['0.875rem', 'normal'],
+                baseP: ['1rem', 'normal'],
+                lgP: ['1.125rem', 'normal'],
+                xlP: ['1.25rem', 'normal'],
+                '2xlP': ['1.5rem', 'normal'],
+                '3xlP': ['1.875rem', 'normal'],
+                '4xlP': ['2.25rem', 'normal'],
+                '5xlP': ['3rem', 'normal'],
+                '6xlP': ['3.75rem', 'normal'],
+                '7xlP': ['4.5rem', 'normal'],
+                '8xlP': ['6rem', 'normal'],
+                '9xlP': ['8rem', 'normal'],
+            },
+            animation: {
+                flip: 'flip-frames 0.7s ease-in forwards',
+            },
+            keyframes: {
+                'flip-frames': {
+                    '0%': { transform: 'rotateY(0turn)' },
+                    '50%': { transform: 'rotateY(0.5turn)' },
+                    '100%': { transform: 'rotateY(0turn)' },
+                },
+            },
             backgroundImage: {
+                'gradient-placeholder':
+                    'linear-gradient(90deg, rgba(235,235,235,1) 40%, transparent 100%)',
                 'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
                 'gradient-conic':
                     'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
@@ -24,14 +53,8 @@ module.exports = {
             dropShadow: {
                 title: '0 0.055em 0 #534444',
             },
-            boxShadow: {
-                buttonPrimary: '0.3rem 0.25rem rgba(83, 68, 68, 0.85)',
-                buttonPrimaryActive: '-0.3rem -0.25rem rgba(83, 68, 68, 1)',
-                buttonSecondary: '0.3rem 0.25rem rgba(220, 220, 220, 0.59)',
-                buttonSecondaryActive:
-                    '-0.3rem -0.25rem rgba(220, 220, 220, 0.59)',
-            },
         },
     },
+    variants: {},
     plugins: [],
 }
