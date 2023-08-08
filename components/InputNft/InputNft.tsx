@@ -4,15 +4,15 @@ import { useState } from 'react'
 // Components
 import Button from '@/components/common/Button'
 
-const InputNft = () => {
-    const [value, setValue] = useState('1')
-
+const InputNft = ({ value, setValue }: any) => {
     return (
         <div className="mx-auto mb-4 flex max-w-[16rem] border-2 border-x-wenge bg-white p-2">
             <Button
                 variation="secondary"
                 type="button"
-                onClick={() => setValue((curr) => (+curr - 1).toString())}
+                onClick={() =>
+                    setValue((curr: string) => (+curr - 1).toString())
+                }
             >
                 -
             </Button>
@@ -31,7 +31,9 @@ const InputNft = () => {
             <Button
                 variation="secondary"
                 type="button"
-                onClick={() => setValue((curr) => (+curr + 1).toString())}
+                onClick={() =>
+                    setValue((curr: string) => (+curr + 1).toString())
+                }
             >
                 +
             </Button>
