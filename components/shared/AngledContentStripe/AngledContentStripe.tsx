@@ -7,7 +7,7 @@ interface IProps {
     color?: 'yellow' | 'blue'
 }
 
-// tell tailwind to include styles
+// ensure tailwind will include styles
 const includeStyles = 'fill-robinEggBlue fill-xantous'
 
 const AngledContentStripe = ({ children, color = 'yellow' }: IProps) => {
