@@ -6,6 +6,7 @@ import axios from 'axios'
 // Components
 import NftCard from '@/components/NftCard/NftCard'
 import Button from '@/components/common/Button'
+import { useAccount } from 'wagmi'
 
 const getNFTs = async () => {
     const res = await axios.get(
@@ -347,10 +348,12 @@ const data = {
 }
 
 function UserNfts({ setIsOpen }: any) {
+    const { address } = useAccount()
     const [nftData, setNftData] = useState<any | null>(null)
 
     // const { data } = useQuery({
-    //     queryKey: ['userNfts'],
+    //     queryKey: ['userNfts', address],
+    //     enabled: !!address,
     //     queryFn: getNFTs,
     //     staleTime: Infinity,
     //     refetchOnWindowFocus: false,
