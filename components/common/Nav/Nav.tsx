@@ -1,18 +1,21 @@
 import Button from '../Button/Button'
-import useScrollIndicator from '@/app/hooks/useScrollIndindicator'
+import useScrollIndicator from '@/hooks/useScrollIndindicator'
 import clsx from 'clsx'
 import ButtonConnect from '../../shared/ButtonConnect/ButtonConnect'
-import useIsMounted from '@/app/hooks/useIsMounted'
+import useIsMounted from '@/hooks/useIsMounted'
 import Modal from '../Modal'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
 import ButtonAccount from '@/components/shared/ButtonAccount/ButtonAccount'
 import { useDisconnect } from 'wagmi'
 import UserNfts from '@/components/UserNfts'
+import { useUserContext } from '@/context/UserContext'
+import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
 const includeStyles = 'bg-[url("/paws-pattern-alternative.png")]'
 
 const Nav = () => {
     const { isConnected } = useAccount()
+    const { isWrongNetwork } = useIsWrongNetwork()
 
     const [isModalOpened, setIsModalOpened] = useState(false)
     const isMounted = useIsMounted()
@@ -75,7 +78,7 @@ const Nav = () => {
                 )}
             </div>
 
-            {isModalOpened && isConnected ? (
+            {isModalOpened && isConnected && !isWrongNetwork ? (
                 <Modal
                     setIsOpen={setIsModalOpened}
                     // preventOverlayClose
