@@ -1,21 +1,25 @@
 import Button from '@/components/common/Button/Button'
 import { shortenHexString } from '@/utils'
-import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi'
+import { useAccount, useSwitchNetwork } from 'wagmi'
 import catIcon from '@/assets/cat-icon.svg'
 import Image from 'next/image'
+import { useUserContext } from '@/context/UserContext'
+import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
+import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
 
 interface IProps {
     handleClick: (arg?: any) => void
 }
 
 const ButtonAccount = ({ handleClick }: IProps) => {
+    const { userTotalNftBalance, isUserTotalNftBalanceFetching } =
+        useUserContext()
     const { address } = useAccount()
-    const { chain } = useNetwork()
+
     const { chains, error, isLoading, pendingChainId, switchNetwork } =
         useSwitchNetwork()
 
-    const isWrongNetwork =
-        address && chain?.id !== Number(process.env.NEXT_PUBLIC_CHAIN_ID)
+    const { isWrongNetwork } = useIsWrongNetwork()
 
     return (
         <Button
@@ -37,7 +41,11 @@ const ButtonAccount = ({ handleClick }: IProps) => {
                     alt="cat icon"
                 />
                 <span className="absolute inset-0 top-1 block text-sm font-semibold">
-                    3
+                    {isUserTotalNftBalanceFetching ? (
+                        <LoaderDots />
+                    ) : (
+                        userTotalNftBalance || 0
+                    )}
                 </span>
             </figure>
         </Button>
