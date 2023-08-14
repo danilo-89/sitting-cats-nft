@@ -1,10 +1,11 @@
+'use client'
+
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
     useAccount,
     useContractWrite,
     usePrepareContractWrite,
-    useContractRead,
     useWaitForTransaction,
 } from 'wagmi'
 import { fromHex, parseEther, parseUnits } from 'viem'
@@ -13,18 +14,81 @@ import debounce from 'lodash.debounce'
 // Components
 import AngledContentStripe from '@/components/shared/AngledContentStripe/AngledContentStripe'
 import Button from '@/components/common/Button/Button'
-import InputNft from '@/components/InputNft'
+import InputNft from '@/components/sections/SectionMint/InputNft'
 import Title from '@/components/common/Title/Title'
-import Faucet from '@/components/Faucet/Faucet'
+import Faucet from '@/components/sections/SectionMint/Faucet/Faucet'
 
-// ABI
-import { contractABI as ABI } from '@/abi/contractABI'
+import { useUserContext } from '@/context/UserContext'
+import { useContractContext } from '@/context/ContractContext'
+import { contractConfig } from '@/contract/config'
+import loader from '@/assets/loader.svg'
+import clsx from 'clsx'
+import axios from 'axios'
+import { useQuery } from '@tanstack/react-query'
+import StatusMessage from './StatusMessage'
+import InfoMessage from './InfoMessage'
+import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
+import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+import WrongNetworkNotice from './WrongNetworkNotice/WrongNetworkNotice'
+
+// const getIPFSData = async (stringId: string | undefined) => {
+//     const res = await axios.get(`https://ipfs.io/ipfs/${stringId}`)
+//     const prefix = 'ipfs://'
+//     const result = res?.data?.substring(prefix.length)
+//     console.log(res, result)
+//     return res
+// }
+
+const getNFTMetadata = async (tokenId?: number | undefined) => {
+    if (tokenId) {
+        const res = await axios.get(
+            `https://${'polygon-mumbai'}.g.alchemy.com/nft/v2/${
+                process.env.NEXT_PUBLIC_ALCHEMY
+            }/getNFTMetadata`,
+            {
+                params: {
+                    tokenId: tokenId,
+                    contractAddress: process.env.NEXT_PUBLIC_CONTRACT,
+                    tokenType: 'ERC721',
+                },
+            }
+        )
+        return res
+    }
+    return undefined
+}
 
 const SectionMint = () => {
-    const { address } = useAccount()
+    const { address, isConnected } = useAccount()
+    const { userBalance, isUserBalanceFetching, refetchUserBalance } =
+        useUserContext()
+
+    const { isWrongNetwork } = useIsWrongNetwork()
+
+    const {
+        limitPerWallet,
+        totalMinted,
+        isTotalMintedFetching,
+        refetchTotalMinted,
+    } = useContractContext()
+    const {
+        userPhaseNftBalance,
+        isUserPhaseNftBalanceFetching,
+        refetchUserTotalNftBalance,
+        refetchUserPhaseNftBalance,
+    } = useUserContext()
     const [inputValue, setInputValue] = useState('1')
     const [quantity, setQuantity] = useState(inputValue)
     const [hash, setHash] = useState<any>(undefined)
+    const [mintedNFTId, setMintedNFTId] = useState<number | undefined>(
+        undefined
+    )
+    const [mintedMetadata, setMintedMetadata] = useState<any>(null)
+
+    const mintableQuantity =
+        limitPerWallet && typeof userPhaseNftBalance === 'number'
+            ? limitPerWallet - userPhaseNftBalance
+            : undefined
 
     // prevent excessive request sending
     const handleSearchDebounced = useRef(
@@ -37,13 +101,15 @@ const SectionMint = () => {
 
     const {
         config,
-        error,
+        error: prepareError,
         isFetching: isPrepareFetching,
         isLoading: isPrepareLoading,
+        isFetchedAfterMount: isPrepareFetchedAfterMount,
+        refetch: refetchPrepare,
     } = usePrepareContractWrite({
-        enabled: true,
-        address: process.env.NEXT_PUBLIC_CONTRACT as `0x${string}`,
-        abi: ABI,
+        ...contractConfig,
+        enabled: false,
+        // enabled: false,
         functionName: 'claim',
         args: [
             address!,
@@ -61,12 +127,20 @@ const SectionMint = () => {
         value: parseEther('0'),
     })
 
-    const { write, data: cWData } = useContractWrite({
+    const {
+        isLoading: isWriteLoading,
+        write,
+        data: cWData,
+        error: transactionError,
+        reset,
+    } = useContractWrite({
         ...config,
         onSuccess(data) {
             setHash(data?.hash)
         },
     })
+
+    console.log({ transactionError })
 
     const {
         data: receiptData,
@@ -74,10 +148,80 @@ const SectionMint = () => {
         isLoading: isReceiptLoading,
     } = useWaitForTransaction({
         hash,
-        onSettled() {
+        onSettled(data) {
             setHash(undefined)
+            setMintedNFTId(
+                data?.logs?.[0]?.topics?.[3]
+                    ? fromHex(data?.logs?.[0]?.topics?.[3], 'number')
+                    : undefined
+            )
         },
     })
+
+    const {
+        status: claimedMetadataStatus,
+        isFetching: isClaimedMetadataFetching,
+        data: claimedMetadata,
+        refetch: fetchClaimedMetadata,
+    } = useQuery({
+        enabled: false,
+        queryKey: ['nftURILink', mintedNFTId],
+        queryFn: () => getNFTMetadata(mintedNFTId),
+        staleTime: Infinity,
+        refetchOnWindowFocus: false,
+        // cacheTime: 5000,
+    })
+
+    const mintNFT = async () => {
+        reset()
+        setMintedMetadata(null)
+        const prepareResponse = await refetchPrepare()
+        console.log({ prepareResponse })
+        if (prepareResponse.isSuccess) {
+            write?.()
+        }
+    }
+
+    console.log({ claimedMetadata })
+
+    console.log(
+        { isClaimedMetadataFetching },
+        { isPrepareFetching },
+        { isWriteLoading },
+        { isReceiptLoading }
+    )
+
+    // fetch metadata for minted NFT
+    useEffect(() => {
+        if (mintedNFTId) {
+            console.log('fetched metadata')
+
+            fetchClaimedMetadata()
+        }
+    }, [mintedNFTId, fetchClaimedMetadata])
+
+    useEffect(() => {
+        if (claimedMetadataStatus === 'success') {
+            setMintedNFTId(undefined)
+            refetchTotalMinted()
+            refetchUserTotalNftBalance()
+            refetchUserPhaseNftBalance()
+            setInputValue('1')
+            setMintedMetadata(claimedMetadata?.data?.metadata)
+        }
+    }, [
+        claimedMetadataStatus,
+        claimedMetadata,
+        refetchTotalMinted,
+        refetchUserTotalNftBalance,
+        refetchUserPhaseNftBalance,
+    ])
+
+    useEffect(() => {
+        setInputValue('1')
+        setMintedNFTId(undefined)
+        setMintedMetadata(null)
+    }, [address])
 
     console.log({ cWData })
     console.log({ receiptData })
@@ -89,55 +233,134 @@ const SectionMint = () => {
 
     //read method on blockchain tokenURI
 
+    console.log({ userBalance })
+
+    const lowUserBalance =
+        typeof userBalance?.formatted === 'string' &&
+        +userBalance.formatted < 0.001
+
     return (
         <section className="pt-[10rem]">
             <Title title="Mint now">
-                Lorem Ipsum is simply dummy text of the printy. Minted 21 of
-                1000.
+                Claiming an NFT is like putting a digital trophy on your virtual
+                shelf. Total claimed NFTs:{' '}
+                {isTotalMintedFetching ? <LoaderDots /> : totalMinted}
             </Title>
 
-            <Faucet />
+            {/* {isConnected ? '' : ''} */}
+            {lowUserBalance && !isWrongNetwork ? <Faucet /> : null}
+            {isWrongNetwork ? <WrongNetworkNotice /> : null}
 
-            <div className="mx-auto mb-[10rem] flex max-w-[640px] bg-linen">
-                <div className="flex-column flex-row items-center p-10 text-center">
-                    <InputNft
-                        value={inputValue}
-                        setValue={setInputValue}
-                    />
-                    <p className="mb-9 text-sm">
-                        You’ve haven’t reached your minting limit.
-                    </p>
-                    <Button
-                        type="button"
-                        // disabled
-                        disabled={!write}
-                        onClick={() => write?.()}
-                    >
-                        MINT
-                    </Button>
-                    {(isPrepareFetching || isPrepareLoading) && (
-                        <div>loading...</div>
-                    )}
-                    <div>{quantity}</div>
-                </div>
-                <div className="p-10 text-center">
-                    <Image
-                        width="100"
-                        height="50"
-                        src="/NFT-placeholder.png"
-                        alt="cat silhouette with question sign inside"
-                    />
+            <div
+                className={clsx(
+                    'mx-auto max-w-[640px]',
+                    (isConnected === false ||
+                        lowUserBalance ||
+                        isWrongNetwork) &&
+                        'opacity-30'
+                )}
+            >
+                {isConnected && !lowUserBalance && !isWrongNetwork ? (
+                    <div className="flex justify-center bg-antiFlashWhite p-4 text-center">
+                        {isUserPhaseNftBalanceFetching ? (
+                            <>
+                                Checking, please wait <LoaderDots />
+                            </>
+                        ) : (
+                            <InfoMessage
+                                isPrepareFetching={isPrepareFetching}
+                                prepareError={prepareError}
+                                isWriteLoading={isWriteLoading}
+                                isReceiptLoading={isReceiptLoading}
+                                isClaimedMetadataFetching={
+                                    isClaimedMetadataFetching
+                                }
+                                transactionError={transactionError}
+                                userPhaseNftBalance={userPhaseNftBalance}
+                                limitPerWallet={limitPerWallet}
+                                mintableQuantity={mintableQuantity}
+                            />
+                        )}
+                    </div>
+                ) : null}
+                <div className="mb-[10rem] flex bg-linen">
+                    <div className="flex-column flex basis-2/3 flex-col items-center justify-center p-10 text-center">
+                        <InputNft
+                            value={inputValue}
+                            setValue={setInputValue}
+                            mintableQuantity={mintableQuantity}
+                            isDisabled={
+                                !isConnected || lowUserBalance || isWrongNetwork
+                            }
+                        />
+                        <p className="mb-9 text-sm">
+                            {isConnected ? (
+                                <>
+                                    {isUserPhaseNftBalanceFetching ? (
+                                        <>-</>
+                                    ) : (
+                                        <StatusMessage
+                                            userPhaseNftBalance={
+                                                userPhaseNftBalance
+                                            }
+                                            limitPerWallet={limitPerWallet}
+                                            mintableQuantity={mintableQuantity}
+                                        />
+                                    )}
+                                </>
+                            ) : null}
+                        </p>
+                        <Button
+                            className="min-w-[8rem]"
+                            type="button"
+                            disabled={
+                                !inputValue ||
+                                isWrongNetwork ||
+                                !mintableQuantity ||
+                                lowUserBalance ||
+                                isClaimedMetadataFetching ||
+                                isPrepareFetching ||
+                                isWriteLoading ||
+                                isReceiptLoading
+                            }
+                            onClick={() => {
+                                mintNFT()
+                            }}
+                        >
+                            MINT
+                        </Button>
+                    </div>
+                    <div className="relative grow p-10 text-center">
+                        <div className="triangle absolute left-1/2 top-0 -translate-x-1/2 transform border-t-antiFlashWhite"></div>
+                        <Image
+                            width="100"
+                            height="50"
+                            src={
+                                mintedMetadata?.image || '/NFT-placeholder.png'
+                            }
+                            alt="cat silhouette with question sign inside"
+                        />
+                    </div>
                 </div>
             </div>
             <AngledContentStripe color="blue">
                 <div className="mx-auto flex max-w-[820px] px-5 py-4">
                     <p className="text-md max-w-auto basis shrink grow pt-2">
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry. Lorem Ipsum has been the
-                        industry&apos;s standard dummy text ever since the
-                        1500s, when an unknown printer took a galley of type and
-                        scrambled it to make a type specimen book. It has
-                        survived not only ...
+                        NFTs are like digital collector&apos;s items, and by
+                        claiming them, you embrace the fusion of history and
+                        innovation, where Julie de Graag&apos;s artistic
+                        ingenuity meets the blockchain&apos;s immutability.
+                        <br />
+                        <br />
+                        <span className="text-lg">
+                            The{' '}
+                            <span className="font-bold">
+                                Sitting Cats
+                                <sup>NFT</sup>
+                            </span>{' '}
+                            welcomes you to explore, own, and be a part of this
+                            artistic adventure.
+                        </span>
                     </p>
                     <figure className="ml-4 h-full w-6 min-w-[120px] shrink-0 grow">
                         <Image
