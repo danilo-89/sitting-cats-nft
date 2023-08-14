@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import AngledContentStripe from '../../shared/AngledContentStripe/AngledContentStripe'
+import arrowExternalIcon from '@/assets/arrow-external.svg'
 
 const SectionHero = () => {
     return (
@@ -25,16 +26,29 @@ const SectionHero = () => {
                         mastery.
                         <br />
                         <br />
-                        The Sitting Cats<sup>NFT</sup> collection is directly
-                        inspired by Julie de Graag&apos;s cat drawings,
-                        specifically her work{' '}
-                        <a
-                            target="_blank"
-                            href="https://commons.wikimedia.org/wiki/File:Zittende_kat,_RP-P-1935-892.jpg"
-                        >
-                            &quot;Zittende kat&quot; (Sitting Cat)
-                        </a>
-                        .
+                        <span className="text-lg">
+                            The{' '}
+                            <span className="font-bold">
+                                Sitting Cats<sup>NFT</sup>
+                            </span>{' '}
+                            collection is directly inspired by Julie de
+                            Graag&apos;s cat drawings, specifically her work{' '}
+                            <a
+                                target="_blank"
+                                href="https://commons.wikimedia.org/wiki/File:Zittende_kat,_RP-P-1935-892.jpg"
+                                className="underline-offset-2 hover:underline"
+                            >
+                                &quot;Zittende kat&quot; (Sitting Cat)
+                                <sup className="ml-[0.1rem]">
+                                    <Image
+                                        className="inline-block w-[0.8rem] p-[0.05rem] text-moonstone"
+                                        src={arrowExternalIcon}
+                                        alt="icon of arrow in box"
+                                    />
+                                </sup>
+                            </a>
+                            .
+                        </span>
                     </p>
                 </div>
             </AngledContentStripe>
