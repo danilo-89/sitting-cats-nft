@@ -17,7 +17,7 @@ const Modal = ({ children, preventOverlayClose, setIsOpen }: IProps) => {
             <Dialog.Portal>
                 <Dialog.Overlay className="fixed inset-0 z-10 flex items-center justify-center bg-[rgba(0,0,0,0.75)]">
                     <Dialog.Content
-                        className="mx-auto rounded bg-white"
+                        className="mx-auto max-w-[100%] rounded bg-white"
                         onInteractOutside={(e) => {
                             if (preventOverlayClose) e.preventDefault()
                         }}
