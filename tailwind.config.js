@@ -17,6 +17,9 @@ module.exports = {
             white: '#FFFFFF',
             silver: '#C5CBCB',
         },
+        // #0a7c8c
+        // #b7d9de
+        // #e2e6e7
         extend: {
             fontSize: {
                 xsP: ['0.75rem', '1.15rem'],
@@ -41,6 +44,21 @@ module.exports = {
                     '0%': { transform: 'rotateY(0turn)' },
                     '50%': { transform: 'rotateY(0.5turn)' },
                     '100%': { transform: 'rotateY(0turn)' },
+                },
+                'dot-1': {
+                    '0%': { opacity: '0.1' },
+                    '10%': { opacity: '0.1' },
+                    '100%': { opacity: '1' },
+                },
+                'dot-2': {
+                    '0%': { opacity: '0.05' },
+                    '30%': { opacity: '0.1' },
+                    '100%': { opacity: '1' },
+                },
+                'dot-3': {
+                    '0%': { opacity: '0' },
+                    '70%': { opacity: '0.1' },
+                    '100%': { opacity: '1' },
                 },
             },
             backgroundImage: {
