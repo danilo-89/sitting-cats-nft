@@ -1,9 +1,13 @@
 import Image from 'next/image'
-import { useUserContext } from '@/context/UserContext'
-import Button from '../../../common/Button/Button'
+
+// Assets
 import arrowExternalIcon from '@/assets/arrow-external.svg'
 
+// Contexts
+import { useUserContext } from '@/context/UserContext'
+
 // Components
+import Button from '@/components/common/Button/Button'
 import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
 
 const faucets = process.env.NEXT_PUBLIC_FAUCET?.split(',')
@@ -17,7 +21,7 @@ const Faucet = () => {
             <span className="mb-4 block">
                 <span className="font-bold">You&apos;re low on gas!</span>
                 <br />
-                Current balance is {userBalance?.formatted}{' '}
+                Your current balance is {userBalance?.formatted}{' '}
                 {userBalance?.symbol}. Having enough balance for gas ensures you
                 can cover the transaction fees required to claim your NFTs.
             </span>
@@ -26,7 +30,7 @@ const Faucet = () => {
                 1. Go get some {userBalance?.symbol} for free:
             </span>
             <div className="mb-8 text-center">
-                {faucets?.map((href: string, idx) => (
+                {faucets?.map((href: string, idx: number) => (
                     <a
                         key={href}
                         href={href}
