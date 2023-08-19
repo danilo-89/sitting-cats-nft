@@ -1,23 +1,31 @@
-import Button from '@/components/common/Button/Button'
-import { shortenHexString } from '@/utils'
-import { useAccount, useSwitchNetwork } from 'wagmi'
-import catIcon from '@/assets/cat-icon.svg'
+import { Dispatch, SetStateAction } from 'react'
 import Image from 'next/image'
+import { useAccount, useSwitchNetwork } from 'wagmi'
+
+// Assets
+import catIcon from '@/assets/cat-icon.svg'
+
+// Utilities
+import { shortenHexString } from '@/utils'
+
+// Context
 import { useUserContext } from '@/context/UserContext'
+
+// Components
 import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
 import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+import Button from '@/components/common/Button/Button'
 
 interface IProps {
-    handleClick: (arg?: any) => void
+    handleClick: Dispatch<SetStateAction<boolean>>
 }
 
 const ButtonAccount = ({ handleClick }: IProps) => {
     const { userTotalNftBalance, isUserTotalNftBalanceFetching } =
         useUserContext()
-    const { address } = useAccount()
 
-    const { chains, error, isLoading, pendingChainId, switchNetwork } =
-        useSwitchNetwork()
+    const { address } = useAccount()
+    const { switchNetwork } = useSwitchNetwork()
 
     const { isWrongNetwork } = useIsWrongNetwork()
 
@@ -39,8 +47,9 @@ const ButtonAccount = ({ handleClick }: IProps) => {
                 <Image
                     src={catIcon}
                     alt="cat icon"
+                    height={24}
                 />
-                <span className="absolute inset-0 top-1 block text-sm font-semibold">
+                <span className="absolute inset-0 top-1 block text-xs font-semibold">
                     {isUserTotalNftBalanceFetching ? (
                         <LoaderDots />
                     ) : (
