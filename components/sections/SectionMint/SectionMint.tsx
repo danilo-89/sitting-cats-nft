@@ -1,6 +1,4 @@
-'use client'
-
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Image from 'next/image'
 import {
     useAccount,
@@ -10,58 +8,49 @@ import {
 } from 'wagmi'
 import { fromHex, parseEther, parseUnits } from 'viem'
 import debounce from 'lodash.debounce'
+import clsx from 'clsx'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+
+// Contract
+import { contractConfig } from '@/contract/config'
+
+// Utilities
+import { ipfsToHttps } from '@/utils'
+
+// Requests
+import { getNFTMetadata } from '@/requests'
+
+// Contexts
+import { useContractContext } from '@/context/ContractContext'
+import { useUserContext } from '@/context/UserContext'
+
+// Hooks
+import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
 
 // Components
 import AngledContentStripe from '@/components/shared/AngledContentStripe/AngledContentStripe'
+import Modal from '@/components/common/Modal/Modal'
 import Button from '@/components/common/Button/Button'
 import InputNft from '@/components/sections/SectionMint/InputNft'
 import Title from '@/components/common/Title/Title'
 import Faucet from '@/components/sections/SectionMint/Faucet/Faucet'
-
-import { useUserContext } from '@/context/UserContext'
-import { useContractContext } from '@/context/ContractContext'
-import { contractConfig } from '@/contract/config'
-import loader from '@/assets/loader.svg'
-import clsx from 'clsx'
-import axios from 'axios'
-import { useQuery } from '@tanstack/react-query'
+import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
+import NFTGalleryModal from '@/components/NFTGallery/Modal'
 import StatusMessage from './StatusMessage'
 import InfoMessage from './InfoMessage'
-import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
-import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
 import WrongNetworkNotice from './WrongNetworkNotice/WrongNetworkNotice'
-
-// const getIPFSData = async (stringId: string | undefined) => {
-//     const res = await axios.get(`https://ipfs.io/ipfs/${stringId}`)
-//     const prefix = 'ipfs://'
-//     const result = res?.data?.substring(prefix.length)
-//     console.log(res, result)
-//     return res
-// }
-
-const getNFTMetadata = async (tokenId?: number | undefined) => {
-    if (tokenId) {
-        const res = await axios.get(
-            `https://${'polygon-mumbai'}.g.alchemy.com/nft/v2/${
-                process.env.NEXT_PUBLIC_ALCHEMY
-            }/getNFTMetadata`,
-            {
-                params: {
-                    tokenId: tokenId,
-                    contractAddress: process.env.NEXT_PUBLIC_CONTRACT,
-                    tokenType: 'ERC721',
-                },
-            }
-        )
-        return res
-    }
-    return undefined
-}
+import NotConnectedNotice from './NotConnectedNotice/NotConnectedNotice'
+import InfoMessageWrapper from './InfoMessageWrapper'
+import ClaimedNFT from './ClaimedNFT'
 
 const SectionMint = () => {
     const { address, isConnected } = useAccount()
+    const queryClient = useQueryClient()
     const { userBalance, isUserBalanceFetching, refetchUserBalance } =
         useUserContext()
+
+    const [showClaimedNFTModal, setShowClaimedNFTModal] = useState(false)
+    const [showNFTGalleryModal, setShowNFTGalleryModal] = useState(false)
 
     const { isWrongNetwork } = useIsWrongNetwork()
 
@@ -102,6 +91,7 @@ const SectionMint = () => {
     const {
         config,
         error: prepareError,
+        isError: isPrepareError,
         isFetching: isPrepareFetching,
         isLoading: isPrepareLoading,
         isFetchedAfterMount: isPrepareFetchedAfterMount,
@@ -128,9 +118,10 @@ const SectionMint = () => {
     })
 
     const {
-        isLoading: isWriteLoading,
+        isLoading: isTransactionLoading,
         write,
-        data: cWData,
+        isError: isTransactionError,
+        data: transactionData,
         error: transactionError,
         reset,
     } = useContractWrite({
@@ -144,7 +135,7 @@ const SectionMint = () => {
 
     const {
         data: receiptData,
-        isError,
+        isError: isReceiptError,
         isLoading: isReceiptLoading,
     } = useWaitForTransaction({
         hash,
@@ -161,8 +152,11 @@ const SectionMint = () => {
     const {
         status: claimedMetadataStatus,
         isFetching: isClaimedMetadataFetching,
+        isError: isClaimedMetadataError,
         data: claimedMetadata,
         refetch: fetchClaimedMetadata,
+        error: claimedMetadataError,
+        isSuccess: isClaimedMetadataSuccess,
     } = useQuery({
         enabled: false,
         queryKey: ['nftURILink', mintedNFTId],
@@ -187,8 +181,16 @@ const SectionMint = () => {
     console.log(
         { isClaimedMetadataFetching },
         { isPrepareFetching },
-        { isWriteLoading },
+        { isTransactionLoading },
         { isReceiptLoading }
+    )
+
+    const claimedNFTModalData = useMemo(
+        () => ({
+            metadata: mintedMetadata,
+            id: { tokenId: mintedMetadata?.id },
+        }),
+        [mintedMetadata]
     )
 
     // fetch metadata for minted NFT
@@ -207,7 +209,37 @@ const SectionMint = () => {
             refetchUserTotalNftBalance()
             refetchUserPhaseNftBalance()
             setInputValue('1')
-            setMintedMetadata(claimedMetadata?.data?.metadata)
+            setMintedMetadata({
+                ...claimedMetadata?.data?.metadata,
+                id: claimedMetadata?.data?.id?.tokenId,
+                quantity,
+            })
+
+            console.log('CHECK this', { claimedMetadata })
+
+            if (+quantity > 1) {
+                queryClient.invalidateQueries({
+                    queryKey: ['userNfts', address],
+                    refetchType: 'none',
+                })
+            } else if (+quantity === 1) {
+                queryClient.setQueryData(
+                    ['userNfts', address],
+                    (oldData: any) => {
+                        if (oldData?.data) {
+                            return {
+                                ...oldData,
+                                data: {
+                                    ownedNfts: [
+                                        ...oldData.data.ownedNfts,
+                                        { ...claimedMetadata?.data },
+                                    ],
+                                },
+                            }
+                        }
+                    }
+                )
+            }
         }
     }, [
         claimedMetadataStatus,
@@ -215,6 +247,9 @@ const SectionMint = () => {
         refetchTotalMinted,
         refetchUserTotalNftBalance,
         refetchUserPhaseNftBalance,
+        quantity,
+        queryClient,
+        address,
     ])
 
     useEffect(() => {
@@ -223,7 +258,7 @@ const SectionMint = () => {
         setMintedMetadata(null)
     }, [address])
 
-    console.log({ cWData })
+    console.log({ transactionData })
     console.log({ receiptData })
     console.log(
         receiptData?.logs?.[0]?.topics?.[3]
@@ -247,8 +282,11 @@ const SectionMint = () => {
                 {isTotalMintedFetching ? <LoaderDots /> : totalMinted}
             </Title>
 
-            {/* {isConnected ? '' : ''} */}
-            {lowUserBalance && !isWrongNetwork ? <Faucet /> : null}
+            {/* Notices */}
+            {!isConnected ? <NotConnectedNotice /> : null}
+            {isConnected && lowUserBalance && !isWrongNetwork ? (
+                <Faucet />
+            ) : null}
             {isWrongNetwork ? <WrongNetworkNotice /> : null}
 
             <div
@@ -261,27 +299,43 @@ const SectionMint = () => {
                 )}
             >
                 {isConnected && !lowUserBalance && !isWrongNetwork ? (
-                    <div className="flex justify-center bg-antiFlashWhite p-4 text-center">
-                        {isUserPhaseNftBalanceFetching ? (
-                            <>
-                                Checking, please wait <LoaderDots />
-                            </>
-                        ) : (
-                            <InfoMessage
-                                isPrepareFetching={isPrepareFetching}
-                                prepareError={prepareError}
-                                isWriteLoading={isWriteLoading}
-                                isReceiptLoading={isReceiptLoading}
-                                isClaimedMetadataFetching={
-                                    isClaimedMetadataFetching
-                                }
-                                transactionError={transactionError}
-                                userPhaseNftBalance={userPhaseNftBalance}
-                                limitPerWallet={limitPerWallet}
-                                mintableQuantity={mintableQuantity}
-                            />
-                        )}
-                    </div>
+                    <InfoMessageWrapper
+                        isLoading={
+                            isUserPhaseNftBalanceFetching ||
+                            isPrepareFetching ||
+                            isReceiptLoading
+                        }
+                        isMetadataLoading={isClaimedMetadataFetching}
+                        isError={
+                            isPrepareError ||
+                            isTransactionError ||
+                            isClaimedMetadataError
+                        }
+                        isActionRequired={isTransactionLoading}
+                        isSuccess={
+                            mintedMetadata && !isUserPhaseNftBalanceFetching
+                        }
+                    >
+                        <InfoMessage
+                            isUserPhaseNftBalanceFetching={
+                                isUserPhaseNftBalanceFetching
+                            }
+                            isPrepareFetching={isPrepareFetching}
+                            prepareError={prepareError}
+                            claimedMetadataError={claimedMetadataError}
+                            isWriteLoading={isTransactionLoading}
+                            isReceiptLoading={isReceiptLoading}
+                            isClaimedMetadataFetching={
+                                isClaimedMetadataFetching
+                            }
+                            transactionError={transactionError}
+                            mintableQuantity={mintableQuantity}
+                            mintedMetadata={mintedMetadata}
+                            mintedQuantity={
+                                claimedNFTModalData?.metadata?.quantity
+                            }
+                        />
+                    </InfoMessageWrapper>
                 ) : null}
                 <div className="mb-[10rem] flex bg-linen">
                     <div className="flex-column flex basis-2/3 flex-col items-center justify-center p-10 text-center">
@@ -290,7 +344,13 @@ const SectionMint = () => {
                             setValue={setInputValue}
                             mintableQuantity={mintableQuantity}
                             isDisabled={
-                                !isConnected || lowUserBalance || isWrongNetwork
+                                !isConnected ||
+                                lowUserBalance ||
+                                isWrongNetwork ||
+                                isUserPhaseNftBalanceFetching ||
+                                isPrepareFetching ||
+                                isTransactionLoading ||
+                                isReceiptLoading
                             }
                         />
                         <p className="mb-9 text-sm">
@@ -320,7 +380,7 @@ const SectionMint = () => {
                                 lowUserBalance ||
                                 isClaimedMetadataFetching ||
                                 isPrepareFetching ||
-                                isWriteLoading ||
+                                isTransactionLoading ||
                                 isReceiptLoading
                             }
                             onClick={() => {
@@ -330,16 +390,43 @@ const SectionMint = () => {
                             MINT
                         </Button>
                     </div>
+
+                    {/* cat avatar image */}
                     <div className="relative grow p-10 text-center">
                         <div className="triangle absolute left-1/2 top-0 -translate-x-1/2 transform border-t-antiFlashWhite"></div>
-                        <Image
-                            width="100"
-                            height="50"
-                            src={
-                                mintedMetadata?.image || '/NFT-placeholder.png'
-                            }
-                            alt="cat silhouette with question sign inside"
-                        />
+                        <button
+                            type="button"
+                            className={clsx(
+                                'relative',
+                                !mintedMetadata && 'cursor-default'
+                            )}
+                            disabled={!mintedMetadata}
+                            onClick={() => setShowClaimedNFTModal(true)}
+                        >
+                            {/* {!mintedMetadata ? (
+                                <span className="absolute right-[3rem] top-3/4 z-[0] flex -translate-x-[-100%] -translate-y-1/2 flex-col bg-silver text-xs text-wenge">
+                                    <span className="ml-4 whitespace-nowrap px-3 py-1">
+                                        click me
+                                    </span>
+                                </span>
+                            ) : null} */}
+                            <Image
+                                className="relative z-[1]"
+                                width="100"
+                                height="50"
+                                src={
+                                    mintedMetadata?.image
+                                        ? ipfsToHttps(mintedMetadata?.image)
+                                        : undefined || '/NFT-placeholder.png'
+                                }
+                                alt={
+                                    mintedMetadata?.name
+                                        ? `${mintedMetadata?.name} NFT cat`
+                                        : undefined ||
+                                          'cat silhouette with question sign inside'
+                                }
+                            />
+                        </button>
                     </div>
                 </div>
             </div>
@@ -373,38 +460,24 @@ const SectionMint = () => {
                     </figure>
                 </div>
             </AngledContentStripe>
+
+            {/* Modals */}
+            {showClaimedNFTModal ? (
+                <Modal setIsOpen={setShowClaimedNFTModal}>
+                    <ClaimedNFT
+                        quantity={mintedMetadata?.quantity}
+                        setShowModal={setShowClaimedNFTModal}
+                        setShowNFTGalleryModal={setShowNFTGalleryModal}
+                        data={claimedNFTModalData}
+                    />
+                </Modal>
+            ) : null}
+            <NFTGalleryModal
+                isOpen={showNFTGalleryModal}
+                setIsOpen={setShowNFTGalleryModal}
+            />
         </section>
     )
 }
 
 export default SectionMint
-
-// two tokens minted:
-
-// {address
-// :
-// "0x2b2d8aa76e03fedfd22e9b5e333f9eae10488014"
-// blockHash
-// :
-// "0x09e7926138968f21cc5425d1ed9a8a33c4a9994b5e3c8a8f4c5f4bb438a5062b"
-// blockNumber
-// :
-// 38751829n
-// data
-// :
-// "0x"
-// logIndex
-// :
-// 69
-// removed
-// :
-// false
-// topics
-// :
-// (4) ['0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef', '0x0000000000000000000000000000000000000000000000000000000000000000', '0x00000000000000000000000054c28209aa8893bb7b403d91b24ca48eef262788', '0x0000000000000000000000000000000000000000000000000000000000000012']
-// transactionHash
-// :
-// "0xbca7d998901fa49bc4d5e1a9f7508f8dc182e161dc41629b9ac70b7544db6d78"
-// transactionIndex
-// :
-// 5}
