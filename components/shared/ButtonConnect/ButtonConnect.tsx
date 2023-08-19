@@ -1,28 +1,29 @@
-'use client'
-import { useAccount, useConnect, useNetwork } from 'wagmi'
+import { useConnect } from 'wagmi'
 
+// Components
 import Button from '@/components/common/Button'
-import { useEffect } from 'react'
 
 const ButtonConnect = () => {
-    const { connector: activeConnector, isConnected } = useAccount()
-    const { connect, connectors, error, isLoading, pendingConnector } =
-        useConnect({
-            chainId: Number(process.env.NEXT_PUBLIC_CHAIN_ID),
-        })
+    const { connect, connectors, isLoading, pendingConnector } = useConnect({
+        chainId: Number(process.env.NEXT_PUBLIC_CHAIN_ID),
+    })
 
-    const { chain, chains } = useNetwork()
+    const metamaskAvaiable = typeof window?.ethereum !== 'undefined'
 
-    console.log('CHAIN CONNECTED: ', chain)
-
-    useEffect(() => {
-        if (error) alert(error.message)
-    }, [error])
+    if (!metamaskAvaiable)
+        return (
+            <a
+                className="ml-auto flex min-w-[11.5rem] items-center justify-center"
+                href="https://metamask.io/download/"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <Button type="button">Connect Wallet</Button>
+            </a>
+        )
 
     return (
         <>
-            {isConnected && <div>Connected to {activeConnector?.name}</div>}
-
             {connectors.map((connector) => (
                 <Button
                     className="ml-auto flex min-w-[11.5rem] items-center justify-center"
@@ -33,7 +34,7 @@ const ButtonConnect = () => {
                         connect({ connector })
                     }}
                 >
-                    {connector.name}
+                    Connect Wallet
                     {isLoading &&
                         pendingConnector?.id === connector.id &&
                         ' ...'}
