@@ -1,33 +1,30 @@
-import Button from '../Button/Button'
-import useScrollIndicator from '@/hooks/useScrollIndindicator'
-import clsx from 'clsx'
-import ButtonConnect from '../../shared/ButtonConnect/ButtonConnect'
-import useIsMounted from '@/hooks/useIsMounted'
-import Modal from '../Modal'
 import { useState } from 'react'
 import { useAccount } from 'wagmi'
-import ButtonAccount from '@/components/shared/ButtonAccount/ButtonAccount'
 import { useDisconnect } from 'wagmi'
-import UserNfts from '@/components/UserNfts'
-import { useUserContext } from '@/context/UserContext'
-import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+import clsx from 'clsx'
+
+// Hooks
+import useScrollIndicator from '@/hooks/useScrollIndindicator'
+import useIsMounted from '@/hooks/useIsMounted'
+
+// Components
+import NFTGalleryModal from '@/components/NFTGallery/Modal'
+import ButtonAccount from '@/components/shared/ButtonAccount/ButtonAccount'
+import ButtonConnect from '@/components/shared/ButtonConnect/ButtonConnect'
+
 const includeStyles = 'bg-[url("/paws-pattern-alternative.png")]'
 
 const Nav = () => {
+    const isMounted = useIsMounted()
     const { isConnected } = useAccount()
-    const { isWrongNetwork } = useIsWrongNetwork()
 
     const [isModalOpened, setIsModalOpened] = useState(false)
-    const isMounted = useIsMounted()
     const a = useScrollIndicator()
     const breakpointValue1 = 10
     const breakpointValue2 = 40
 
-    const { disconnect } = useDisconnect()
-    console.log({ isModalOpened }, { isConnected })
-
     const navClasses = clsx(
-        'flex w-full z-[1] fixed transition duration-450 bg-transparent',
+        'flex w-full z-[2] fixed transition duration-450 bg-transparent',
         a.scrollPosition > breakpointValue1 &&
             'bg-moonstone bg-[url("/paws-pattern-alternative.png")] bg-[size:20%] bg-repeat'
 
@@ -78,28 +75,10 @@ const Nav = () => {
                 )}
             </div>
 
-            {isModalOpened && isConnected && !isWrongNetwork ? (
-                <Modal
-                    setIsOpen={setIsModalOpened}
-                    // preventOverlayClose
-                >
-                    <UserNfts setIsOpen={setIsModalOpened} />
-                    <div className="flex justify-end bg-white p-6">
-                        <Button
-                            onClick={() => {
-                                setIsModalOpened(false)
-                                disconnect()
-                            }}
-                            size="sm"
-                            type="button"
-                            variation="transparent"
-                            // key="modalBtn"
-                        >
-                            Disconnect
-                        </Button>
-                    </div>
-                </Modal>
-            ) : null}
+            <NFTGalleryModal
+                isOpen={isModalOpened}
+                setIsOpen={setIsModalOpened}
+            />
         </nav>
     )
 }
