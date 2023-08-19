@@ -1,19 +1,52 @@
+import { BaseError } from 'viem'
+
+// Components
 import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
 
+interface IProps {
+    isUserPhaseNftBalanceFetching: boolean
+    isPrepareFetching: boolean
+    prepareError: Error | null
+    isWriteLoading: boolean
+    isReceiptLoading: boolean
+    isClaimedMetadataFetching: boolean
+    transactionError: Error | null
+    claimedMetadataError: unknown
+    mintableQuantity: number | undefined
+    mintedMetadata: boolean
+    mintedQuantity: number
+}
+
 const InfoMessage = ({
+    isUserPhaseNftBalanceFetching,
     isPrepareFetching,
     prepareError,
     isWriteLoading,
     isReceiptLoading,
     isClaimedMetadataFetching,
     transactionError,
-    userPhaseNftBalance,
-    limitPerWallet,
+    claimedMetadataError,
     mintableQuantity,
-}: any) => {
-    const { shortMessage: shortPrepareErrorMessage } = prepareError || {}
+    mintedMetadata,
+    mintedQuantity,
+}: IProps) => {
+    const { shortMessage: shortPrepareErrorMessage } =
+        (prepareError as BaseError) || {}
     const { shortMessage: shortTransactionErrorMessage } =
-        transactionError || {}
+        (transactionError as BaseError) || {}
+
+    const continueMintingMessage =
+        mintableQuantity === 0
+            ? 'Maximum NFTs per wallet minted.'
+            : 'You can continue minting.'
+
+    if (isUserPhaseNftBalanceFetching)
+        return (
+            <>
+                {mintedMetadata ? 'Succesfully claimed. ' : ''}Preparing, please
+                wait <LoaderDots />
+            </>
+        )
 
     if (isPrepareFetching)
         return (
@@ -27,6 +60,16 @@ const InfoMessage = ({
         return <>Error: {shortPrepareErrorMessage}. Try again?</>
     }
 
+    if (claimedMetadataError) {
+        return (
+            <>
+                No need to worry. While you&apos;ve successfully claimed the
+                NFT, there seems to be an error in fetching the metadata.{' '}
+                {continueMintingMessage}
+            </>
+        )
+    }
+
     if (
         transactionError &&
         shortTransactionErrorMessage === 'User rejected the request.'
@@ -38,14 +81,11 @@ const InfoMessage = ({
         return <>Error: {shortTransactionErrorMessage}. Try again?</>
     }
 
-    if (mintableQuantity === 0)
-        return <>You&apos;ve reached your limit for minting NFTs.</>
-
     if (isWriteLoading)
         return (
             <>
-                Action nedded: Confirm transaction it in your wallet to
-                continue.
+                <span className="mr-1 font-bold">Action nedded:</span> Confirm
+                transaction in your wallet to continue.
             </>
         )
 
@@ -64,6 +104,18 @@ const InfoMessage = ({
                 <LoaderDots />
             </>
         )
+
+    if (mintedMetadata)
+        return (
+            <>
+                NFT{mintedQuantity > 1 ? "'s" : ''} successfully claimed.{' '}
+                {continueMintingMessage}
+            </>
+        )
+
+    if (mintableQuantity === 0)
+        return <>You&apos;ve reached your limit for minting NFTs.</>
+
     return <>Ready for minting</>
 }
 
