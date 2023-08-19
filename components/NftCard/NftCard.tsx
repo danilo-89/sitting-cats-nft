@@ -3,6 +3,9 @@ import Image from 'next/image'
 import { fromHex } from 'viem'
 import clsx from 'clsx'
 
+// Utilities
+import { ipfsToHttps } from '@/utils'
+
 interface IProps {
     data: any
 }
@@ -39,11 +42,11 @@ const NftCard = ({ data }: IProps) => {
                 clearTimeout(to)
             }
         }
-    }, [id])
+    }, [data, id])
 
     return (
         <>
-            <div className="h-[24rem] w-60 [perspective:1000px]">
+            <div className="h-[24.4rem] w-[16rem] [perspective:1000px]">
                 <div className={cardClass}>
                     {/* card front */}
                     <div className="absolute inset-0 flex flex-col overflow-hidden rounded-md bg-linen shadow-md [backface-visibility:hidden]">
@@ -57,7 +60,7 @@ const NftCard = ({ data }: IProps) => {
                             />
                             {currentData?.id ? (
                                 <a
-                                    href={`https://mumbai.polygonscan.com/token/0x2b2d8aa76e03fedfd22e9b5e333f9eae10488014?a=${currentData?.id}`}
+                                    href={`https://mumbai.polygonscan.com/token/${process.env.NEXT_PUBLIC_CONTRACT}?a=${currentData?.id}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex h-8 min-w-[2rem] items-center justify-center rounded-full bg-champagne px-1 text-xsP font-semibold"
@@ -69,7 +72,7 @@ const NftCard = ({ data }: IProps) => {
 
                         <div
                             className={clsx(
-                                'flex h-auto flex-grow flex-col p-2.5 pt-1.5 transition-opacity',
+                                'flex h-auto flex-grow flex-col bg-[#F8F8F8] p-2.5 pt-1.5 transition-opacity',
                                 isChanging && 'opacity-50'
                             )}
                         >
@@ -91,8 +94,7 @@ const NftCard = ({ data }: IProps) => {
                                     !currentData && 'bg-gradient-placeholder'
                                 )}
                                 style={{
-                                    backgroundColor:
-                                        currentData?.metadata?.background_color,
+                                    backgroundColor: `#${currentData?.metadata?.background_color}`,
                                 }}
                             >
                                 {currentData ? (
@@ -100,14 +102,16 @@ const NftCard = ({ data }: IProps) => {
                                         className="absolute inset-0 m-auto"
                                         width="90"
                                         height="50"
-                                        src={currentData?.metadata?.customImage}
+                                        src={ipfsToHttps(
+                                            currentData?.metadata?.image || ''
+                                        )}
                                         alt="cat silhouette with question sign inside"
                                     />
                                 ) : null}
                             </figure>
                             <p
                                 className={clsx(
-                                    'my-auto max-h-[4rem] overflow-hidden text-xsP',
+                                    'my-auto max-h-[3.3rem] overflow-hidden text-xsP',
                                     !currentData &&
                                         'h-full bg-gradient-placeholder'
                                 )}
