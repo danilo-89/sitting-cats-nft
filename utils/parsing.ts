@@ -10,4 +10,8 @@ const shortenHexString = (hexString: string | undefined) => {
     return `${firstPart}...${lastPart}`
 }
 
-export { shortenHexString }
+const ipfsToHttps = (ipfsString: string) => {
+    return ipfsString.replace('ipfs://', 'https://ipfs.io/ipfs/')
+}
+
+export { shortenHexString, ipfsToHttps }
