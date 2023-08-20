@@ -276,6 +276,7 @@ const SectionMint = () => {
                 {isConnected && !lowUserBalance && !isWrongNetwork ? (
                     <InfoMessageWrapper
                         isLoading={
+                            userPhaseNftBalance === undefined ||
                             isUserPhaseNftBalanceFetching ||
                             isPrepareFetching ||
                             isReceiptLoading
@@ -293,6 +294,7 @@ const SectionMint = () => {
                     >
                         <InfoMessage
                             isUserPhaseNftBalanceFetching={
+                                userPhaseNftBalance === undefined ||
                                 isUserPhaseNftBalanceFetching
                             }
                             isPrepareFetching={isPrepareFetching}
@@ -322,6 +324,7 @@ const SectionMint = () => {
                                 !isConnected ||
                                 lowUserBalance ||
                                 isWrongNetwork ||
+                                userPhaseNftBalance === undefined ||
                                 isUserPhaseNftBalanceFetching ||
                                 isPrepareFetching ||
                                 isTransactionLoading ||
@@ -331,7 +334,8 @@ const SectionMint = () => {
                         <p className="mb-9 text-sm">
                             {isConnected ? (
                                 <>
-                                    {isUserPhaseNftBalanceFetching ? (
+                                    {userPhaseNftBalance === undefined ||
+                                    isUserPhaseNftBalanceFetching ? (
                                         <>-</>
                                     ) : (
                                         <StatusMessage
