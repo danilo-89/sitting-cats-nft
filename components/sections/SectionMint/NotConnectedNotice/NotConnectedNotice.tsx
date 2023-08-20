@@ -4,7 +4,7 @@ const NotConnectedNotice = () => {
             <span className="block">
                 <span className="font-bold">Not connected!</span>
                 <br />
-                Please connect your wallet to be able to claim NFTs.
+                Please connect your wallet to be able to mint NFTs.
             </span>
         </div>
     )
