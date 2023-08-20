@@ -11,7 +11,7 @@ const SectionHero = () => {
                 <div className="mx-auto flex max-w-[820px] px-5 py-4">
                     <figure className="mr-4 h-full w-6 min-w-[130px] shrink-0 grow">
                         <Image
-                            className="absolute -top-[5.5rem]"
+                            className="absolute -top-[5.5rem] h-auto w-[130px]"
                             alt="siamese-style cat illustration"
                             width="130"
                             height="100"
