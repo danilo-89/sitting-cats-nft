@@ -1,11 +1,24 @@
-'use client'
-import { useState } from 'react'
+import { Dispatch, SetStateAction } from 'react'
+
+// Contexts
+import { useContractContext } from '@/context/ContractContext'
 
 // Components
 import Button from '@/components/common/Button'
-import { useContractContext } from '@/context/ContractContext'
 
-const InputNft = ({ value, setValue, mintableQuantity, isDisabled }: any) => {
+interface IProps {
+    value: string
+    setValue: Dispatch<SetStateAction<string>>
+    mintableQuantity: number | undefined
+    isDisabled: boolean
+}
+
+const InputNft = ({
+    value,
+    setValue,
+    mintableQuantity,
+    isDisabled,
+}: IProps) => {
     const { limitPerWallet } = useContractContext()
 
     return (
@@ -16,7 +29,7 @@ const InputNft = ({ value, setValue, mintableQuantity, isDisabled }: any) => {
                 onClick={() =>
                     setValue((curr: string) => (+curr - 1).toString())
                 }
-                disabled={!mintableQuantity || value <= 1 || isDisabled}
+                disabled={!mintableQuantity || +value <= 1 || isDisabled}
             >
                 -
             </Button>
@@ -41,7 +54,9 @@ const InputNft = ({ value, setValue, mintableQuantity, isDisabled }: any) => {
                     setValue((curr: string) => (+curr + 1).toString())
                 }
                 disabled={
-                    !mintableQuantity || value == mintableQuantity || isDisabled
+                    !mintableQuantity ||
+                    +value === mintableQuantity ||
+                    isDisabled
                 }
             >
                 +
