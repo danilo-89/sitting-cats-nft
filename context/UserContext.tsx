@@ -1,9 +1,11 @@
-// ABI
-import { contractABI } from '@/contract/contractABI'
 import { createContext, ReactNode, useContext } from 'react'
 import { formatUnits } from 'viem'
 import { useAccount, useBalance, useContractRead } from 'wagmi'
+
+// Contexts
 import { useContractContext } from './ContractContext'
+
+// Contract
 import { contractConfig } from '@/contract/config'
 
 interface IProps {
@@ -43,8 +45,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
     const {
         data: userTotalNftBalanceBigInt,
-        // isError,
-        // isLoading,
         isFetching: isUserTotalNftBalanceFetching,
         refetch: refetchUserTotalNftBalance,
         isFetchedAfterMount: isUserTotalNftBalanceChecked,
@@ -57,8 +57,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
 
     const {
         data: userPhaseNftBalanceBigInt,
-        // isError,
-        // isLoading,
         isFetching: isUserPhaseNftBalanceFetching,
         refetch: refetchUserPhaseNftBalance,
         isFetchedAfterMount: isUserPhaseNftBalanceChecked,
@@ -67,25 +65,8 @@ export function UserProvider({ children }: { children: ReactNode }) {
         enabled: !!address && activePhaseId !== undefined,
         functionName: 'getSupplyClaimedByWallet',
         //@ts-ignore
-        args: [activePhaseId ? BigInt(activePhaseId!) : undefined, address!],
+        args: [activePhaseId ? BigInt(activePhaseId) : undefined, address!],
     })
-
-    console.log({ userPhaseNftBalanceBigInt })
-
-    //   const {
-    //     data: userTotalNftBalanceBigInt,
-    //     // isError,
-    //     // isLoading,
-    //     isFetching: isUserTotalNftBalanceFetching,
-    //     refetch: refetchUserTotalNftBalance,
-    //     // isFetchedAfterMount,
-    // } = useContractRead({
-    //     enabled: !!address,
-    //     address: process.env.NEXT_PUBLIC_CONTRACT as '0x${string}',
-    //     abi: contractABI,
-    //     functionName: 'getSupplyClaimedByWallet',
-    //     args: [19,address!],
-    // })
 
     const {
         data: userBalance,
@@ -98,8 +79,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
         address,
     })
 
-    console.log({ userBalance })
-
     const userTotalNftBalance =
         typeof userTotalNftBalanceBigInt === 'bigint'
             ? +formatUnits(userTotalNftBalanceBigInt, 0)
@@ -109,12 +88,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
         typeof userPhaseNftBalanceBigInt === 'bigint'
             ? +formatUnits(userPhaseNftBalanceBigInt, 0)
             : undefined
-
-    console.log(
-        { userTotalNftBalance },
-        { userPhaseNftBalanceBigInt },
-        { userPhaseNftBalance }
-    )
 
     return (
         <UserContext.Provider
