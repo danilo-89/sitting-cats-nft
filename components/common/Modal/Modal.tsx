@@ -1,10 +1,10 @@
-import { ReactNode } from 'react'
+import { Dispatch, ReactNode, SetStateAction } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 
 interface IProps {
     children: ReactNode
     preventOverlayClose?: boolean
-    setIsOpen: any
+    setIsOpen: Dispatch<SetStateAction<boolean>> | (() => void)
 }
 
 const Modal = ({ children, preventOverlayClose, setIsOpen }: IProps) => {
