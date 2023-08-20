@@ -38,10 +38,13 @@ import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
 import NFTGalleryModal from '@/components/NFTGallery/Modal'
 import StatusMessage from './StatusMessage'
 import InfoMessage from './InfoMessage'
-import WrongNetworkNotice from './WrongNetworkNotice/WrongNetworkNotice'
-import NotConnectedNotice from './NotConnectedNotice/NotConnectedNotice'
+import WrongNetworkNotice from './WrongNetworkNotice'
+import NotConnectedNotice from './NotConnectedNotice'
 import InfoMessageWrapper from './InfoMessageWrapper'
 import ClaimedNFT from './ClaimedNFT'
+
+// Types
+import { GetNfts, IMintedMetadata } from '@/types/getNftsAPI'
 
 const SectionMint = () => {
     const { address, isConnected } = useAccount()
@@ -68,11 +71,13 @@ const SectionMint = () => {
     } = useUserContext()
     const [inputValue, setInputValue] = useState('1')
     const [quantity, setQuantity] = useState(inputValue)
-    const [hash, setHash] = useState<any>(undefined)
+    const [hash, setHash] = useState<`0x${string}` | undefined>(undefined)
     const [mintedNFTId, setMintedNFTId] = useState<number | undefined>(
         undefined
     )
-    const [mintedMetadata, setMintedMetadata] = useState<any>(null)
+    const [mintedMetadata, setMintedMetadata] = useState<
+        IMintedMetadata | null | undefined
+    >(null)
 
     const mintableQuantity =
         limitPerWallet && typeof userPhaseNftBalance === 'number'
@@ -99,7 +104,6 @@ const SectionMint = () => {
     } = usePrepareContractWrite({
         ...contractConfig,
         enabled: false,
-        // enabled: false,
         functionName: 'claim',
         args: [
             address!,
@@ -131,8 +135,6 @@ const SectionMint = () => {
         },
     })
 
-    console.log({ transactionError })
-
     const {
         data: receiptData,
         isError: isReceiptError,
@@ -143,7 +145,7 @@ const SectionMint = () => {
             setHash(undefined)
             setMintedNFTId(
                 data?.logs?.[0]?.topics?.[3]
-                    ? fromHex(data?.logs?.[0]?.topics?.[3], 'number')
+                    ? fromHex(data?.logs?.[0]?.topics?.[3]!, 'number')
                     : undefined
             )
         },
@@ -163,28 +165,16 @@ const SectionMint = () => {
         queryFn: () => getNFTMetadata(mintedNFTId),
         staleTime: Infinity,
         refetchOnWindowFocus: false,
-        // cacheTime: 5000,
     })
 
     const mintNFT = async () => {
         reset()
         setMintedMetadata(null)
         const prepareResponse = await refetchPrepare()
-        console.log({ prepareResponse })
         if (prepareResponse.isSuccess) {
             write?.()
         }
     }
-
-    console.log({ claimedMetadata })
-
-    console.log(
-        { isClaimedMetadataFetching },
-        { isPrepareFetching },
-        { isTransactionLoading },
-        { isReceiptLoading }
-    )
-
     const claimedNFTModalData = useMemo(
         () => ({
             metadata: mintedMetadata,
@@ -196,8 +186,6 @@ const SectionMint = () => {
     // fetch metadata for minted NFT
     useEffect(() => {
         if (mintedNFTId) {
-            console.log('fetched metadata')
-
             fetchClaimedMetadata()
         }
     }, [mintedNFTId, fetchClaimedMetadata])
@@ -215,8 +203,6 @@ const SectionMint = () => {
                 quantity,
             })
 
-            console.log('CHECK this', { claimedMetadata })
-
             if (+quantity > 1) {
                 queryClient.invalidateQueries({
                     queryKey: ['userNfts', address],
@@ -225,11 +211,12 @@ const SectionMint = () => {
             } else if (+quantity === 1) {
                 queryClient.setQueryData(
                     ['userNfts', address],
-                    (oldData: any) => {
+                    (oldData: null | undefined | GetNfts) => {
                         if (oldData?.data) {
                             return {
                                 ...oldData,
                                 data: {
+                                    ...oldData.data,
                                     ownedNfts: [
                                         ...oldData.data.ownedNfts,
                                         { ...claimedMetadata?.data },
@@ -257,18 +244,6 @@ const SectionMint = () => {
         setMintedNFTId(undefined)
         setMintedMetadata(null)
     }, [address])
-
-    console.log({ transactionData })
-    console.log({ receiptData })
-    console.log(
-        receiptData?.logs?.[0]?.topics?.[3]
-            ? fromHex(receiptData?.logs?.[0]?.topics?.[3], 'number')
-            : 'no data'
-    )
-
-    //read method on blockchain tokenURI
-
-    console.log({ userBalance })
 
     const lowUserBalance =
         typeof userBalance?.formatted === 'string' &&
@@ -313,7 +288,7 @@ const SectionMint = () => {
                         }
                         isActionRequired={isTransactionLoading}
                         isSuccess={
-                            mintedMetadata && !isUserPhaseNftBalanceFetching
+                            !!mintedMetadata && !isUserPhaseNftBalanceFetching
                         }
                     >
                         <InfoMessage
@@ -364,7 +339,6 @@ const SectionMint = () => {
                                                 userPhaseNftBalance
                                             }
                                             limitPerWallet={limitPerWallet}
-                                            mintableQuantity={mintableQuantity}
                                         />
                                     )}
                                 </>
