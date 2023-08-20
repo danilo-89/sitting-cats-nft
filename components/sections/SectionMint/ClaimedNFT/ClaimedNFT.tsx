@@ -1,13 +1,25 @@
+import { Dispatch, SetStateAction } from 'react'
+
 // Components
 import NftCard from '@/components/NftCard'
 import Button from '@/components/common/Button'
+
+// Types
+import { INFT } from '@/types/getNftsAPI'
+
+interface IProps {
+    setShowModal: Dispatch<SetStateAction<boolean>> | (() => void)
+    setShowNFTGalleryModal: Dispatch<SetStateAction<boolean>> | (() => void)
+    quantity: string | undefined
+    data: Partial<INFT> | null | undefined
+}
 
 const ClaimedNFT = ({
     setShowModal,
     setShowNFTGalleryModal,
     quantity,
     data,
-}: any) => {
+}: IProps) => {
     return (
         <div className="w-[22rem] max-w-[100%] bg-linen">
             <div className="flex items-center justify-between bg-linen px-3 pb-2 pt-3">
@@ -30,7 +42,7 @@ const ClaimedNFT = ({
             </div>
             <div className="flex bg-white">
                 <span className="mb-6 mt-6 max-w-[100%] px-4 text-xsP">
-                    {quantity > 1 ? (
+                    {quantity && +quantity > 1 ? (
                         <>
                             <span className="font-bold">
                                 1 of {quantity} freshly minted NFTs shown.
