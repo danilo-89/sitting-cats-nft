@@ -1,12 +1,16 @@
-const StatusMessage = ({
-    userPhaseNftBalance,
-    limitPerWallet,
-    mintableQuantity,
-}: any) => {
+interface IProps {
+    userPhaseNftBalance: number | undefined
+    limitPerWallet: number | undefined
+}
+
+const StatusMessage = ({ userPhaseNftBalance, limitPerWallet }: IProps) => {
     return (
         <>
             {userPhaseNftBalance} of {limitPerWallet} NFT
-            {userPhaseNftBalance > 1 ? 's' : ''} claimed
+            {typeof userPhaseNftBalance === 'number' && userPhaseNftBalance > 1
+                ? 's'
+                : ''}{' '}
+            claimed
         </>
     )
 }
