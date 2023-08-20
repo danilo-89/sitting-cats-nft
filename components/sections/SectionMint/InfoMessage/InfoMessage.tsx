@@ -3,6 +3,9 @@ import { BaseError } from 'viem'
 // Components
 import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
 
+// Types
+import { IMintedMetadata, INFTDataWithId } from '@/types/getNftsAPI'
+
 interface IProps {
     isUserPhaseNftBalanceFetching: boolean
     isPrepareFetching: boolean
@@ -13,8 +16,8 @@ interface IProps {
     transactionError: Error | null
     claimedMetadataError: unknown
     mintableQuantity: number | undefined
-    mintedMetadata: boolean
-    mintedQuantity: number
+    mintedMetadata: IMintedMetadata | null | undefined
+    mintedQuantity: string | undefined
 }
 
 const InfoMessage = ({
@@ -108,8 +111,8 @@ const InfoMessage = ({
     if (mintedMetadata)
         return (
             <>
-                NFT{mintedQuantity > 1 ? "'s" : ''} successfully claimed.{' '}
-                {continueMintingMessage}
+                NFT{mintedQuantity && +mintedQuantity > 1 ? "'s" : ''}{' '}
+                successfully claimed. {continueMintingMessage}
             </>
         )
 
