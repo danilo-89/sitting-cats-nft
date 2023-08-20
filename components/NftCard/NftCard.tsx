@@ -1,20 +1,29 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { fromHex } from 'viem'
+import { fromHex, isHex } from 'viem'
 import clsx from 'clsx'
 
 // Utilities
 import { ipfsToHttps } from '@/utils'
 
+// Types
+import { INFT, INFTDataWithId } from '@/types/getNftsAPI'
+
 interface IProps {
-    data: any
+    data: Partial<INFT> | null | undefined
 }
 
 const NftCard = ({ data }: IProps) => {
     const [flip, setFlip] = useState(false)
-    const [currentData, setCurrentData] = useState<any>(null)
+    const [currentData, setCurrentData] = useState<
+        Partial<INFTDataWithId> | null | undefined
+    >(null)
     const [isChanging, setIsChanging] = useState(false)
-    const id = data?.id?.tokenId ? fromHex(data?.id?.tokenId, 'number') : ''
+
+    // parse id
+    const id = isHex(data?.id?.tokenId)
+        ? fromHex(data?.id?.tokenId as '0x${string}', 'number').toString()
+        : data?.id?.tokenId
 
     const cardClass = clsx(
         'relative h-full w-full [transform-style:preserve-3d] [transition:transform_0.7s_ease_0s]',
@@ -22,7 +31,7 @@ const NftCard = ({ data }: IProps) => {
     )
 
     useEffect(() => {
-        if (typeof id === 'number' && isFinite(id)) {
+        if (id && typeof id === 'string') {
             setIsChanging(true)
             setFlip((curr) => true)
             const to = setTimeout(() => {
@@ -32,8 +41,6 @@ const NftCard = ({ data }: IProps) => {
             }, 700)
 
             return () => {
-                console.log('return uef')
-                // setFlip((curr) => false)
                 if (to) {
                     setCurrentData({ ...data, id: id })
                 }
@@ -52,7 +59,6 @@ const NftCard = ({ data }: IProps) => {
                     <div className="absolute inset-0 flex flex-col overflow-hidden rounded-md bg-linen shadow-md [backface-visibility:hidden]">
                         <div className="flex items-center justify-between bg-wenge bg-[url('/paws-pattern-brown.png')] bg-[size:180px] bg-right-top bg-repeat px-2 py-1.5">
                             <Image
-                                // className="m-auto"
                                 width="60"
                                 height="40"
                                 src="/logo.png"
@@ -116,8 +122,6 @@ const NftCard = ({ data }: IProps) => {
                                         'h-full bg-gradient-placeholder'
                                 )}
                             >
-                                {/* Lorem Ipsum is simply dummy text of the printing
-                                and typesetting industry. Lorem Ipsum has b */}
                                 {currentData?.metadata?.description}
                             </p>
                         </div>
