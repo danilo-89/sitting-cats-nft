@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react'
 import { useAccount, useDisconnect } from 'wagmi'
 
 // Hooks
@@ -8,7 +9,12 @@ import Button from '@/components/common/Button'
 import Modal from '@/components/common/Modal'
 import NFTGalery from '../NFTGallery'
 
-const NFTGalleryModal = ({ isOpen, setIsOpen }: any) => {
+interface IProps {
+    isOpen: boolean
+    setIsOpen: Dispatch<SetStateAction<boolean>> | (() => void)
+}
+
+const NFTGalleryModal = ({ isOpen, setIsOpen }: IProps) => {
     const { isConnected } = useAccount()
     const { isWrongNetwork } = useIsWrongNetwork()
     const { disconnect } = useDisconnect()
