@@ -1,31 +1,14 @@
 import Image from 'next/image'
 import clsx from 'clsx'
 
-// Components
-import Title from '@/components/common/Title'
+// Data
+import { roadmapPhasesConfig } from './data'
 
+// Assets
 import arrowExternalIcon from '@/assets/arrow-external.svg'
 
-const phasesConfig = [
-    {
-        name: 'Phase 1',
-        description: 'Launch and Growth',
-        src: '/rocket.png',
-        alt: 'rocket illustration',
-    },
-    {
-        name: 'Phase 2',
-        description: '',
-        src: '/question-mark.png',
-        alt: 'question mark illustration',
-    },
-    {
-        name: 'Phase 3',
-        description: 'PROFIT!',
-        src: '/coins.png',
-        alt: 'coins illustration',
-    },
-]
+// Components
+import Title from '@/components/common/Title'
 
 const SectionRoadmap = () => {
     return (
@@ -57,7 +40,7 @@ const SectionRoadmap = () => {
                     to gain a better understanding of this business model.
                 </div>
 
-                {phasesConfig.map((item, idx) => {
+                {roadmapPhasesConfig.map((item, idx) => {
                     const isIndexOdd = idx % 2 !== 0
 
                     return (
@@ -72,7 +55,7 @@ const SectionRoadmap = () => {
                                 )}
                             >
                                 <Image
-                                    className="h-[10rem] object-contain"
+                                    className="h-[10rem] w-auto object-contain"
                                     height={145}
                                     width={145}
                                     alt={item.alt}
