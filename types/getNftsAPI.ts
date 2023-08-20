@@ -1,13 +1,13 @@
-interface TokenMetadata {
+interface ITokenMetadata {
     tokenType: string
 }
 
-interface TokenUri {
+interface ITokenUri {
     gateway: string
     raw: string
 }
 
-interface Media {
+interface IMedia {
     gateway: string
     thumbnail?: string
     raw: string
@@ -15,7 +15,7 @@ interface Media {
     bytes: number
 }
 
-interface ContractMetadata {
+interface IContractMetadata {
     name: string
     totalSupply: string
     tokenType: string
@@ -24,42 +24,54 @@ interface ContractMetadata {
     }
 }
 
-interface NFT {
+interface IMetadata {
+    image?: string
+    external_url: string
+    background_color: string
+    name: string
+    description: string
+    customImage: string
+    attributes?: {
+        value: string
+        trait_type: string
+    }[]
+    customAnimationUrl: string
+}
+
+export interface INFT {
     contract: {
         address: string
     }
     id: {
-        tokenId: string
-        tokenMetadata: TokenMetadata
+        tokenId: string | undefined
+        tokenMetadata?: ITokenMetadata
     }
     balance: string
     title: string
     description: string
-    tokenUri: TokenUri
-    media: Media[]
-    metadata: {
-        image?: string
-        external_url: string
-        background_color: string
-        name: string
-        description: string
-        customImage: string
-        attributes?: {
-            value: string
-            trait_type: string
-        }[]
-        customAnimationUrl: string
-    }
+    tokenUri: ITokenUri
+    media: IMedia[]
+    metadata: IMetadata | null
     timeLastUpdated: string
-    contractMetadata: ContractMetadata
+    contractMetadata: IContractMetadata
 }
 
-interface NFTData {
-    ownedNfts: NFT[]
+export interface INFTData {
+    ownedNfts: INFT[]
     totalCount: number
     blockHash: string
 }
 
+export interface IMintedMetadata extends IMetadata {
+    id: string | undefined
+    quantity: string | undefined
+}
+
+export interface INFTDataWithId extends Omit<INFT, 'id'> {
+    id: string | undefined
+    quantity: string | undefined
+}
+
 export interface GetNfts {
-    data: NFTData
+    data: INFTData
 }
