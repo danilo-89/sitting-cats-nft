@@ -1,11 +1,10 @@
 'use client'
-
-import { contractConfig } from '@/contract/config'
-// ABI
-import { contractABI } from '@/contract/contractABI'
 import { createContext, ReactNode, useContext } from 'react'
 import { formatUnits } from 'viem'
 import { useContractRead } from 'wagmi'
+
+// Contract
+import { contractConfig } from '@/contract/config'
 
 interface IProps {
     totalMinted: number | undefined
@@ -13,6 +12,7 @@ interface IProps {
     refetchTotalMinted: () => void
     activePhaseId: number | undefined
     isActivePhaseIdFetching: boolean
+    refetchActivePhaseId: () => void
     limitPerWallet: number | undefined
 }
 
@@ -22,14 +22,13 @@ const ContractContext = createContext<IProps>({
     refetchTotalMinted: () => null,
     activePhaseId: undefined,
     isActivePhaseIdFetching: true,
+    refetchActivePhaseId: () => null,
     limitPerWallet: undefined,
 })
 
 export function ContractProvider({ children }: { children: ReactNode }) {
     const {
         data: totalMintedBigInt,
-        // isError,
-        // isLoading,
         isFetching: isTotalMintedFetching,
         refetch: refetchTotalMinted,
         isFetchedAfterMount: isTotalMintedChecked,
@@ -41,11 +40,9 @@ export function ContractProvider({ children }: { children: ReactNode }) {
 
     const {
         data: activePhaseIdBigInt,
-        // isError,
-        // isLoading,
         isFetching: isActivePhaseIdFetching,
         refetch: refetchActivePhaseId,
-        // isFetchedAfterMount,
+        isFetchedAfterMount: isActivePhaseIdChecked,
     } = useContractRead({
         ...contractConfig,
         enabled: true,
@@ -62,17 +59,17 @@ export function ContractProvider({ children }: { children: ReactNode }) {
             ? +formatUnits(activePhaseIdBigInt, 0)
             : undefined
 
-    console.log({ isTotalMintedChecked })
-    console.log({ activePhaseId })
-
     return (
         <ContractContext.Provider
             value={{
                 totalMinted: isTotalMintedChecked ? totalMinted : undefined,
                 isTotalMintedFetching,
                 refetchTotalMinted,
-                activePhaseId,
+                activePhaseId: isActivePhaseIdChecked
+                    ? activePhaseId
+                    : undefined,
                 isActivePhaseIdFetching,
+                refetchActivePhaseId,
                 limitPerWallet: Number(
                     process.env.NEXT_PUBLIC_LIMIT_PER_WALLET
                 ),
