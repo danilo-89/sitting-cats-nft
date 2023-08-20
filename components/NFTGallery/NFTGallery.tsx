@@ -1,19 +1,29 @@
-import { useEffect, useState } from 'react'
+import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { useAccount } from 'wagmi'
-import axios from 'axios'
 import { useQuery } from '@tanstack/react-query'
+import { useAccount } from 'wagmi'
+
+// Utilities
+import { ipfsToHttps } from '@/utils'
+
+// Requests
+import { getNFTs } from '@/requests'
 
 // Components
 import NftCard from '@/components/NftCard/NftCard'
 import Button from '@/components/common/Button'
-import { ipfsToHttps } from '@/utils'
-import LoaderSquare from '../common/LoaderSquare'
-import { getNFTs } from '@/requests'
+import LoaderSquare from '@/components/common/LoaderSquare'
 
-function NFTGalery({ setIsOpen }: any) {
+// Types
+import { INFT } from '@/types/getNftsAPI'
+
+interface IProps {
+    setIsOpen: Dispatch<SetStateAction<boolean>> | (() => void)
+}
+
+function NFTGalery({ setIsOpen }: IProps) {
     const { address } = useAccount()
-    const [nftData, setNftData] = useState<any | null>(null)
+    const [nftData, setNftData] = useState<INFT | null>(null)
 
     const { data, isLoading, isFetching } = useQuery({
         queryKey: ['userNfts', address],
@@ -21,10 +31,7 @@ function NFTGalery({ setIsOpen }: any) {
         queryFn: () => getNFTs(address),
         staleTime: Infinity,
         refetchOnWindowFocus: false,
-        // cacheTime: 5000,
     })
-
-    console.log(data)
 
     useEffect(() => {
         if (data?.data?.totalCount) {
@@ -80,7 +87,7 @@ function NFTGalery({ setIsOpen }: any) {
                     </div>
                 ) : (
                     <div className="grid h-[17.5rem] grid-cols-2 gap-4 overflow-auto">
-                        {data?.data?.ownedNfts?.map((item: any) => (
+                        {data?.data?.ownedNfts?.map((item: INFT) => (
                             <button
                                 key={item?.id?.tokenId}
                                 type="button"
