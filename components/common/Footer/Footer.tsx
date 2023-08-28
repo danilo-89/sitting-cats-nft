@@ -3,10 +3,16 @@ import Image from 'next/image'
 // Assets
 import arrowExternalIcon from '@/assets/arrow-external.svg'
 
+// Hooks
+import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+
 // Data
 import { contractInfoLabelsData } from './data'
 
 const Footer = () => {
+    const { preferredNetwork } = useIsWrongNetwork()
+    const nativeCurrency = preferredNetwork?.nativeCurrency?.symbol
+
     return (
         <footer className="max-w-full overflow-x-hidden bg-linen">
             <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-8 md:flex-row">
@@ -53,16 +59,15 @@ const Footer = () => {
 
                         <span className="mb-1 block border-b-4 border-wenge pt-1"></span>
                         <p className="text-[0.55rem]">
-                            *Having enough MATIC balance for gas ensures you can
-                            cover the transaction fees required to claim your
-                            NFTs
+                            *Having enough {nativeCurrency} balance ensures you
+                            can claim NFTs and cover the transaction fees.
                         </p>
                     </div>
                 </div>
 
                 {/* contact */}
                 <div className="flex h-auto basis-1/2 flex-col pb-2 text-sm">
-                    <div className="mb-2 flex">
+                    <div className="mb-2 flex flex-col md:flex-row">
                         <div className="mr-2 flex flex-col pt-2">
                             <div>
                                 <h5 className="inline font-bold">Contact: </h5>
@@ -105,7 +110,7 @@ const Footer = () => {
                         </div>
 
                         <Image
-                            className="min-w-0 flex-shrink-0 flex-grow basis-auto self-baseline"
+                            className="mx-auto min-w-0 flex-shrink-0 flex-grow basis-auto self-baseline"
                             src="/qr-code.png"
                             width="125"
                             height="125"
