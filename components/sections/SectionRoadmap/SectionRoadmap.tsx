@@ -12,7 +12,7 @@ import Title from '@/components/common/Title'
 
 const SectionRoadmap = () => {
     return (
-        <section className="bg-antiFlashWhite pb-10 pt-[10rem]">
+        <section className="bg-antiFlashWhite pb-10 pt-[7rem] md:pt-[10rem]">
             <Title title="Roadmap">
                 Milestones and strategies to navigate the exciting world of
                 non-fungible tokens
@@ -55,7 +55,7 @@ const SectionRoadmap = () => {
                                 )}
                             >
                                 <Image
-                                    className="h-[10rem] w-auto object-contain"
+                                    className="h-[10rem] w-auto max-w-[80%] object-contain"
                                     height={145}
                                     width={145}
                                     alt={item.alt}
