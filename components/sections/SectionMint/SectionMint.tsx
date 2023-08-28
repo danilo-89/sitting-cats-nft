@@ -45,7 +45,7 @@ import ClaimedNFT from './ClaimedNFT'
 // Types
 import { GetNfts, IMintedMetadata } from '@/types/getNftsAPI'
 
-const pricePerNFT = process.env.NEXT_PUBLIC_NFT_PRICE as string
+const pricePerNFT = +process.env.NEXT_PUBLIC_NFT_PRICE! as unknown as number
 
 const SectionMint = () => {
     const { address, isConnected } = useAccount()
@@ -82,7 +82,7 @@ const SectionMint = () => {
         typeof userBalance?.formatted === 'string' &&
         +userBalance.formatted < 0.001
 
-    const totalPrice = quantity ? +pricePerNFT * +quantity : undefined
+    const totalPrice = quantity ? pricePerNFT * +quantity : undefined
     const isEnoughBalanceToMint =
         typeof userBalance?.formatted === 'string' && totalPrice
             ? +userBalance.formatted >= totalPrice
@@ -109,16 +109,19 @@ const SectionMint = () => {
             address!,
             parseUnits(quantity, 0),
             '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-            parseEther('0'),
+            parseEther(pricePerNFT.toString()),
             {
                 proof: [],
-                quantityLimitPerWallet: parseUnits('3', 0),
-                pricePerToken: parseUnits('0', 0),
+                quantityLimitPerWallet: parseUnits(
+                    process.env.NEXT_PUBLIC_LIMIT_PER_WALLET!,
+                    0
+                ),
+                pricePerToken: parseEther(pricePerNFT.toString()),
                 currency: '0x0000000000000000000000000000000000000000',
             },
             '0x',
         ],
-        value: parseEther('0'),
+        value: parseEther((pricePerNFT * +quantity).toString()),
     })
 
     const {
@@ -143,9 +146,12 @@ const SectionMint = () => {
         hash,
         onSettled(data) {
             setHash(undefined)
+
+            const logsWithId = data?.logs?.find((item) => item.data === '0x')
+
             setMintedNFTId(
-                data?.logs?.[0]?.topics?.[3]
-                    ? fromHex(data?.logs?.[0]?.topics?.[3]!, 'number')
+                logsWithId?.topics?.[3]
+                    ? fromHex(logsWithId?.topics?.[3]!, 'number')
                     : undefined
             )
         },
@@ -159,6 +165,7 @@ const SectionMint = () => {
         refetch: fetchClaimedMetadata,
         error: claimedMetadataError,
         isSuccess: isClaimedMetadataSuccess,
+        remove,
     } = useQuery({
         enabled: false,
         queryKey: ['nftURILink', mintedNFTId],
@@ -168,13 +175,18 @@ const SectionMint = () => {
     })
 
     const mintNFT = async () => {
+        remove()
         reset()
         setMintedMetadata(null)
         const prepareResponse = await refetchPrepare()
+
         if (prepareResponse.isSuccess) {
-            write?.()
+            setTimeout(() => {
+                write?.()
+            }, 0)
         }
     }
+
     const claimedNFTModalData = useMemo(
         () => ({
             metadata: mintedMetadata,
@@ -195,7 +207,10 @@ const SectionMint = () => {
     }, [mintedNFTId, fetchClaimedMetadata])
 
     useEffect(() => {
-        if (claimedMetadataStatus === 'success') {
+        if (
+            claimedMetadataStatus === 'success' ||
+            claimedMetadataStatus === 'error'
+        ) {
             setMintedNFTId(undefined)
             refetchTotalMinted()
             refetchUserTotalNftBalance()
