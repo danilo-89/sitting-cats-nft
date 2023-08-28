@@ -6,6 +6,9 @@ import arrowExternalIcon from '@/assets/arrow-external.svg'
 // Contexts
 import { useUserContext } from '@/context/UserContext'
 
+// Hooks
+import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+
 // Components
 import Button from '@/components/common/Button/Button'
 import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
@@ -16,27 +19,32 @@ const Faucet = () => {
     const { userBalance, isUserBalanceFetching, refetchUserBalance } =
         useUserContext()
 
+    const { preferredNetwork } = useIsWrongNetwork()
+    const nativeCurrency = preferredNetwork?.nativeCurrency?.symbol
+
     return (
         <div className="mx-auto mb-5 flex max-w-[640px] flex-col bg-silver p-5">
             <span className="mb-4 block">
-                <span className="font-bold">You&apos;re low on gas!</span>
+                <span className="font-bold">
+                    You&apos;re low on {nativeCurrency}!
+                </span>
                 <br />
                 Your current balance is {userBalance?.formatted}{' '}
-                {userBalance?.symbol}. Having enough balance for gas ensures you
-                can cover the transaction fees required to claim your NFTs.
+                {nativeCurrency}. Having enough balance ensures you can claim
+                NFTs and cover the transaction fees.
             </span>
             <span className="mb-5 block border-b border-dashed border-wenge/40"></span>
             <span className="mb-4 block">
-                1. Go get some {userBalance?.symbol} for free:
+                1. Go get some {nativeCurrency} for free:
             </span>
-            <div className="mb-8 text-center">
+            <div className="mb-8 xs:text-center">
                 {faucets?.map((href: string, idx: number) => (
                     <a
                         key={href}
                         href={href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mr-8 inline-block font-bold hover:!underline"
+                        className="mr-8 block font-bold hover:!underline xs:inline-block"
                     >
                         <span>
                             <span>faucet {idx + 1}</span>
