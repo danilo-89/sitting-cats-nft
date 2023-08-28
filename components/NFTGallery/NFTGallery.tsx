@@ -40,8 +40,8 @@ function NFTGalery({ setIsOpen }: IProps) {
     }, [data])
 
     return (
-        <div className="flex min-h-[32rem] w-[40rem]">
-            <section className="flex w-1/2 flex-col bg-linen p-5">
+        <div className="flex flex-col md:min-h-[32rem] md:w-[40rem] md:flex-row">
+            <section className="flex flex-col bg-linen p-5 md:w-1/2">
                 <div className="flex items-center justify-between">
                     <h3 className="text-lg font-bold">Your NFT Collection</h3>
                     <Button
@@ -86,16 +86,16 @@ function NFTGalery({ setIsOpen }: IProps) {
                         <LoaderSquare />
                     </div>
                 ) : (
-                    <div className="grid h-[17.5rem] grid-cols-2 gap-4 overflow-auto">
+                    <div className="grid auto-cols-[minmax(33%,_1fr)] grid-flow-col grid-cols-[repeat(3,minmax(33%,1fr))] gap-4 overflow-auto md:h-[17.5rem] md:grid-flow-row md:grid-cols-2">
                         {data?.data?.ownedNfts?.map((item: INFT) => (
                             <button
                                 key={item?.id?.tokenId}
                                 type="button"
-                                className="relative w-full pt-[100%]"
+                                className="relative pt-[100%] md:w-full"
                                 onClick={() => setNftData(item)}
                             >
                                 <figure
-                                    className="absolute inset-0 bg-antiFlashWhite p-4"
+                                    className="absolute inset-0 flex bg-antiFlashWhite p-4"
                                     style={{
                                         backgroundColor: `#${item?.metadata?.background_color}`,
                                     }}
@@ -107,7 +107,10 @@ function NFTGalery({ setIsOpen }: IProps) {
                                         src={ipfsToHttps(
                                             item?.metadata?.image || ''
                                         )}
-                                        alt="logo"
+                                        alt={
+                                            item?.metadata?.name ||
+                                            'cat silhouette'
+                                        }
                                     />
                                 </figure>
                             </button>
@@ -115,7 +118,7 @@ function NFTGalery({ setIsOpen }: IProps) {
                     </div>
                 )}
             </section>
-            <section className="flex w-1/2 flex-col items-center justify-center bg-antiFlashWhite p-8">
+            <section className="flex flex-col items-center justify-center bg-antiFlashWhite p-8 md:w-1/2">
                 <NftCard data={nftData} />
             </section>
         </div>
