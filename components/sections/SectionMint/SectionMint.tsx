@@ -7,7 +7,6 @@ import {
     useWaitForTransaction,
 } from 'wagmi'
 import { fromHex, parseEther, parseUnits } from 'viem'
-import debounce from 'lodash.debounce'
 import clsx from 'clsx'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 
@@ -46,15 +45,11 @@ import ClaimedNFT from './ClaimedNFT'
 // Types
 import { GetNfts, IMintedMetadata } from '@/types/getNftsAPI'
 
+const pricePerNFT = process.env.NEXT_PUBLIC_NFT_PRICE as string
+
 const SectionMint = () => {
     const { address, isConnected } = useAccount()
     const queryClient = useQueryClient()
-    const { userBalance, isUserBalanceFetching, refetchUserBalance } =
-        useUserContext()
-
-    const [showClaimedNFTModal, setShowClaimedNFTModal] = useState(false)
-    const [showNFTGalleryModal, setShowNFTGalleryModal] = useState(false)
-
     const { isWrongNetwork } = useIsWrongNetwork()
 
     const {
@@ -64,11 +59,15 @@ const SectionMint = () => {
         refetchTotalMinted,
     } = useContractContext()
     const {
+        userBalance,
         userPhaseNftBalance,
         isUserPhaseNftBalanceFetching,
         refetchUserTotalNftBalance,
         refetchUserPhaseNftBalance,
     } = useUserContext()
+
+    const [showClaimedNFTModal, setShowClaimedNFTModal] = useState(false)
+    const [showNFTGalleryModal, setShowNFTGalleryModal] = useState(false)
     const [inputValue, setInputValue] = useState('1')
     const [quantity, setQuantity] = useState(inputValue)
     const [hash, setHash] = useState<`0x${string}` | undefined>(undefined)
@@ -79,19 +78,20 @@ const SectionMint = () => {
         IMintedMetadata | null | undefined
     >(null)
 
+    const lowUserBalance =
+        typeof userBalance?.formatted === 'string' &&
+        +userBalance.formatted < 0.001
+
+    const totalPrice = quantity ? +pricePerNFT * +quantity : undefined
+    const isEnoughBalanceToMint =
+        typeof userBalance?.formatted === 'string' && totalPrice
+            ? +userBalance.formatted >= totalPrice
+            : false
+
     const mintableQuantity =
         limitPerWallet && typeof userPhaseNftBalance === 'number'
             ? limitPerWallet - userPhaseNftBalance
             : undefined
-
-    // prevent excessive request sending
-    const handleSearchDebounced = useRef(
-        debounce((searchText: string) => setQuantity(searchText), 800)
-    ).current
-
-    useEffect(() => {
-        handleSearchDebounced(inputValue)
-    }, [inputValue, handleSearchDebounced])
 
     const {
         config,
@@ -183,6 +183,10 @@ const SectionMint = () => {
         [mintedMetadata]
     )
 
+    useEffect(() => {
+        setQuantity(inputValue)
+    }, [inputValue])
+
     // fetch metadata for minted NFT
     useEffect(() => {
         if (mintedNFTId) {
@@ -245,16 +249,15 @@ const SectionMint = () => {
         setMintedMetadata(null)
     }, [address])
 
-    const lowUserBalance =
-        typeof userBalance?.formatted === 'string' &&
-        +userBalance.formatted < 0.001
-
     return (
-        <section className="pt-[10rem]">
+        <section className="pt-[7rem] md:pt-[10rem]">
             <Title title="Mint now">
                 Claiming an NFT is like putting a digital trophy on your virtual
-                shelf. Total claimed NFTs:{' '}
-                {isTotalMintedFetching ? <LoaderDots /> : totalMinted}
+                shelf.{' '}
+                <span className="">
+                    Total claimed NFTs:{' '}
+                    {isTotalMintedFetching ? <LoaderDots /> : totalMinted}
+                </span>
             </Title>
 
             {/* Notices */}
@@ -285,7 +288,8 @@ const SectionMint = () => {
                         isError={
                             isPrepareError ||
                             isTransactionError ||
-                            isClaimedMetadataError
+                            isClaimedMetadataError ||
+                            !isEnoughBalanceToMint
                         }
                         isActionRequired={isTransactionLoading}
                         isSuccess={
@@ -311,11 +315,12 @@ const SectionMint = () => {
                             mintedQuantity={
                                 claimedNFTModalData?.metadata?.quantity
                             }
+                            isEnoughBalanceToMint={isEnoughBalanceToMint}
                         />
                     </InfoMessageWrapper>
                 ) : null}
-                <div className="mb-[10rem] flex bg-linen">
-                    <div className="flex-column flex basis-2/3 flex-col items-center justify-center p-10 text-center">
+                <div className="mb-[10rem] flex flex-col bg-linen md:flex-row">
+                    <div className="flex-column order-last flex basis-2/3 flex-col items-center justify-center p-10 text-center md:order-first">
                         <InputNft
                             value={inputValue}
                             setValue={setInputValue}
@@ -343,6 +348,10 @@ const SectionMint = () => {
                                                 userPhaseNftBalance
                                             }
                                             limitPerWallet={limitPerWallet}
+                                            totalPrice={totalPrice}
+                                            isEnoughBalanceToMint={
+                                                isEnoughBalanceToMint
+                                            }
                                         />
                                     )}
                                 </>
@@ -359,7 +368,8 @@ const SectionMint = () => {
                                 isClaimedMetadataFetching ||
                                 isPrepareFetching ||
                                 isTransactionLoading ||
-                                isReceiptLoading
+                                isReceiptLoading ||
+                                !isEnoughBalanceToMint
                             }
                             onClick={() => {
                                 mintNFT()
@@ -370,12 +380,12 @@ const SectionMint = () => {
                     </div>
 
                     {/* cat avatar image */}
-                    <div className="relative grow p-10 text-center">
+                    <div className="relative grow pt-10 text-center md:p-10 ">
                         <div className="triangle absolute left-1/2 top-0 -translate-x-1/2 transform border-t-antiFlashWhite"></div>
                         <button
                             type="button"
                             className={clsx(
-                                'relative',
+                                'relative h-[10rem] md:h-[13.5rem]',
                                 !mintedMetadata && 'cursor-default'
                             )}
                             disabled={!mintedMetadata}
@@ -389,7 +399,7 @@ const SectionMint = () => {
                                 </span>
                             ) : null} */}
                             <Image
-                                className="relative z-[1]"
+                                className="relative z-[1] h-full w-full"
                                 width="100"
                                 height="50"
                                 src={
@@ -409,7 +419,7 @@ const SectionMint = () => {
                 </div>
             </div>
             <AngledContentStripe color="blue">
-                <div className="mx-auto flex max-w-[820px] px-5 py-4">
+                <div className="mx-auto flex max-w-[820px] flex-col px-5 py-4 xs:flex-row">
                     <p className="text-md max-w-auto basis shrink grow pt-2">
                         NFTs are like digital collector&apos;s items, and by
                         claiming them, you embrace the fusion of history and
@@ -427,9 +437,9 @@ const SectionMint = () => {
                             artistic adventure.
                         </span>
                     </p>
-                    <figure className="ml-4 h-full w-6 min-w-[120px] shrink-0 grow">
+                    <figure className="sx:mr-[unset] mx-auto mt-4 w-6 min-w-[120px] shrink-0 grow xs:ml-4 xs:h-full md:mt-0">
                         <Image
-                            className="relative top-[-1.5rem]"
+                            className="relative xs:top-[-1.5rem]"
                             alt="paw"
                             width="120"
                             height="100"
