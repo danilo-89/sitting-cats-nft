@@ -4,14 +4,19 @@ import Image from 'next/image'
 import arrowExternalIcon from '@/assets/arrow-external.svg'
 
 // Hooks
+import useIsMounted from '@/hooks/useIsMounted'
 import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
 
 // Data
 import { contractInfoLabelsData } from './data'
 
 const Footer = () => {
+    const isMounted = useIsMounted()
     const { preferredNetwork } = useIsWrongNetwork()
-    const nativeCurrency = preferredNetwork?.nativeCurrency?.symbol
+
+    const nativeCurrency = isMounted
+        ? preferredNetwork?.nativeCurrency?.symbol
+        : ''
 
     return (
         <footer className="max-w-full overflow-x-hidden bg-linen">
@@ -59,8 +64,8 @@ const Footer = () => {
 
                         <span className="mb-1 block border-b-4 border-wenge pt-1"></span>
                         <p className="text-[0.55rem]">
-                            *Having enough {nativeCurrency} balance ensures you
-                            can claim NFTs and cover the transaction fees.
+                            *Having enough {nativeCurrency}
+                            you can claim NFTs and cover the transaction fees.
                         </p>
                     </div>
                 </div>
