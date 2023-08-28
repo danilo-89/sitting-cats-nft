@@ -18,6 +18,7 @@ interface IProps {
     mintableQuantity: number | undefined
     mintedMetadata: IMintedMetadata | null | undefined
     mintedQuantity: string | undefined
+    isEnoughBalanceToMint: boolean
 }
 
 const InfoMessage = ({
@@ -32,6 +33,7 @@ const InfoMessage = ({
     mintableQuantity,
     mintedMetadata,
     mintedQuantity,
+    isEnoughBalanceToMint,
 }: IProps) => {
     const { shortMessage: shortPrepareErrorMessage } =
         (prepareError as BaseError) || {}
@@ -58,6 +60,10 @@ const InfoMessage = ({
                 <LoaderDots />
             </>
         )
+
+    if (!isEnoughBalanceToMint) {
+        return <>Error: Not enough balance.</>
+    }
 
     if (prepareError) {
         return <>Error: {shortPrepareErrorMessage}. Try again?</>
