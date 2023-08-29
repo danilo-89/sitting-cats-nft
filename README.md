@@ -32,6 +32,14 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Scripts
+
+-   `npm run lint` | `yarn lint` | `pnpm lint` - run the linter to catch code style issues.
+
+-   `npm run tsc` | `yarn tsc` | `pnpm tsc` - checks TypeScript files for type errors without producing output files.
+
+-   `npm run vitest` | `yarn vitest` | `pnpm vitest` - run tests.
+
 ## Contact
 
 Whether you have inquiries or employment opportunities to discuss, feel free to get in touch.
