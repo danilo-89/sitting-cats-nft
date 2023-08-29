@@ -30,6 +30,7 @@ const InputNft = ({
                     setValue((curr: string) => (+curr - 1).toString())
                 }
                 disabled={!mintableQuantity || +value <= 1 || isDisabled}
+                data-cy="btn-minus"
             >
                 -
             </Button>
@@ -46,6 +47,7 @@ const InputNft = ({
                 }}
                 disabled={!mintableQuantity || isDisabled}
                 placeholder="quantity"
+                data-cy="input-quantity"
             />
             <Button
                 variation="secondary"
@@ -58,6 +60,7 @@ const InputNft = ({
                     +value === mintableQuantity ||
                     isDisabled
                 }
+                data-cy="btn-plus"
             >
                 +
             </Button>

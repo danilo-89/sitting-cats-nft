@@ -389,6 +389,7 @@ const SectionMint = () => {
                             onClick={() => {
                                 mintNFT()
                             }}
+                            data-cy="btn-mint"
                         >
                             MINT
                         </Button>
@@ -405,6 +406,7 @@ const SectionMint = () => {
                             )}
                             disabled={!mintedMetadata}
                             onClick={() => setShowClaimedNFTModal(true)}
+                            data-cy="btn-claimed-nft"
                         >
                             {/* {!mintedMetadata ? (
                                 <span className="absolute right-[3rem] top-3/4 z-[0] flex -translate-x-[-100%] -translate-y-1/2 flex-col bg-silver text-xs text-wenge">

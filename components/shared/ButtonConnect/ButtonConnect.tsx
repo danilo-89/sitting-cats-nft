@@ -18,7 +18,12 @@ const ButtonConnect = () => {
                 target="_blank"
                 rel="noopener noreferrer"
             >
-                <Button type="button">Connect Wallet</Button>
+                <Button
+                    type="button"
+                    data-cy="btn-connect"
+                >
+                    Connect Wallet
+                </Button>
             </a>
         )
 

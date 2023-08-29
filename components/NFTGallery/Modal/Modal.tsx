@@ -32,6 +32,7 @@ const NFTGalleryModal = ({ isOpen, setIsOpen }: IProps) => {
                         size="sm"
                         type="button"
                         variation="transparent"
+                        data-cy="btn-disconnect"
                     >
                         Disconnect
                     </Button>

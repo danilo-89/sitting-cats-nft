@@ -7,6 +7,7 @@ const LoaderSquare = (props: SVGProps<SVGSVGElement>) => (
         height="auto"
         viewBox="0 0 100 100"
         {...props}
+        data-cy="loader-square"
     >
         <path
             fill="none"

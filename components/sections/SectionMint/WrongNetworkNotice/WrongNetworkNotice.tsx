@@ -8,7 +8,10 @@ const WrongNetworkNotice = () => {
     const { preferredNetwork } = useIsWrongNetwork()
 
     return (
-        <div className="mx-auto mb-5 flex max-w-[640px] flex-col bg-silver p-5">
+        <div
+            className="mx-auto mb-5 flex max-w-[640px] flex-col bg-silver p-5"
+            data-cy="notice-not-wrong-network"
+        >
             <span className="mb-4 block">
                 <span className="font-bold">Wrong network!</span>
                 <br />

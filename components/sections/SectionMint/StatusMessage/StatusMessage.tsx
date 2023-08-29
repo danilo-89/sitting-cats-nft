@@ -28,12 +28,13 @@ const StatusMessage = ({
                             : 'bg-[#ffc5c5]',
                         'mb-2 block  px-3 py-1.5 font-bold'
                     )}
+                    data-cy="price-total"
                 >
                     Price: {totalPrice}{' '}
                     {preferredNetwork?.nativeCurrency?.symbol}
                 </span>
             ) : null}
-            <span>
+            <span data-cy="nft-balance-per-phase">
                 {userPhaseNftBalance} of {limitPerWallet} NFT
                 {typeof userPhaseNftBalance === 'number' &&
                 userPhaseNftBalance > 1

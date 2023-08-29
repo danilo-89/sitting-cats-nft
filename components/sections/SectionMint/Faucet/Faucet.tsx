@@ -23,7 +23,10 @@ const Faucet = () => {
     const nativeCurrency = preferredNetwork?.nativeCurrency?.symbol
 
     return (
-        <div className="mx-auto mb-5 flex max-w-[640px] flex-col bg-silver p-5">
+        <div
+            className="mx-auto mb-5 flex max-w-[640px] flex-col bg-silver p-5"
+            data-cy="notice-faucet"
+        >
             <span className="mb-4 block">
                 <span className="font-bold">
                     You&apos;re low on {nativeCurrency}!
@@ -66,6 +69,7 @@ const Faucet = () => {
                     disabled={isUserBalanceFetching}
                     type="button"
                     onClick={refetchUserBalance}
+                    data-cy="btn-recheck-balance"
                 >
                     recheck {isUserBalanceFetching ? <LoaderDots /> : null}
                 </Button>{' '}

@@ -21,7 +21,10 @@ const ClaimedNFT = ({
     data,
 }: IProps) => {
     return (
-        <div className="w-[22rem] max-w-[100%] bg-linen">
+        <div
+            className="w-[22rem] max-w-[100%] bg-linen"
+            data-cy="container-modal-claimed"
+        >
             <div className="flex items-center justify-between bg-linen px-3 pb-2 pt-3">
                 <h3 className="text-lg font-bold">Claimed NFT </h3>
                 <Button
@@ -29,6 +32,7 @@ const ClaimedNFT = ({
                     size="sm"
                     variation="transparent"
                     onClick={() => setShowModal(false)}
+                    data-cy="btn-modal-close"
                 >
                     x
                 </Button>
@@ -61,6 +65,7 @@ const ClaimedNFT = ({
                     }}
                     insideClassName="py-3 px-4"
                     size="sm"
+                    data-cy="btn-gallery-open"
                 >
                     NFT Gallery
                 </Button>

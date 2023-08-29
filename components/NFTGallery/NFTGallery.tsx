@@ -40,7 +40,10 @@ function NFTGalery({ setIsOpen }: IProps) {
     }, [data])
 
     return (
-        <div className="flex flex-col md:min-h-[32rem] md:w-[40rem] md:flex-row">
+        <div
+            className="flex flex-col md:min-h-[32rem] md:w-[40rem] md:flex-row"
+            data-cy="container-nft-gallery"
+        >
             <section className="flex flex-col bg-linen p-5 md:w-1/2">
                 <div className="flex items-center justify-between">
                     <h3 className="text-lg font-bold">Your NFT Collection</h3>
@@ -49,6 +52,7 @@ function NFTGalery({ setIsOpen }: IProps) {
                         size="sm"
                         variation="transparent"
                         onClick={() => setIsOpen(false)}
+                        data-cy="btn-modal-close"
                     >
                         x
                     </Button>
@@ -93,6 +97,7 @@ function NFTGalery({ setIsOpen }: IProps) {
                                 type="button"
                                 className="relative pt-[100%] md:w-full"
                                 onClick={() => setNftData(item)}
+                                data-cy={`btn-nft-item-${item?.id?.tokenId}`}
                             >
                                 <figure
                                     className="absolute inset-0 flex bg-antiFlashWhite p-4"

@@ -34,6 +34,7 @@ const InfoMessageWrapper = ({
     return (
         <div
             className={`flex justify-center bg-antiFlashWhite p-4 text-center transition-colors ${colorStyle}`}
+            data-cy="container-info-message"
         >
             {children}
         </div>

@@ -40,6 +40,7 @@ const ButtonAccount = ({ handleClick }: IProps) => {
                     handleClick(true)
                 }
             }}
+            data-cy="btn-account"
         >
             {isWrongNetwork ? <span className="text-[#f30544]">!</span> : null}
             <span className="mr-2">{shortenHexString(address)}</span>

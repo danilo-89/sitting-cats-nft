@@ -53,7 +53,10 @@ const NftCard = ({ data }: IProps) => {
 
     return (
         <>
-            <div className="h-[24.4rem] w-[16rem] [perspective:1000px]">
+            <div
+                className="h-[24.4rem] w-[16rem] [perspective:1000px]"
+                data-cy="nft-card"
+            >
                 <div className={cardClass}>
                     {/* card front */}
                     <div className="absolute inset-0 flex flex-col overflow-hidden rounded-md bg-linen shadow-md [backface-visibility:hidden]">
@@ -70,6 +73,7 @@ const NftCard = ({ data }: IProps) => {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex h-8 min-w-[2rem] items-center justify-center rounded-full bg-champagne px-1 text-xsP font-semibold"
+                                    data-cy="href-nft"
                                 >
                                     {currentData?.id}
                                 </a>
