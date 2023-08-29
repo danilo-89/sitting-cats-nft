@@ -6,7 +6,7 @@ import arrowExternalIcon from '@/assets/arrow-external.svg'
 const SectionHero = () => {
     return (
         <div className="z-1 relative m-auto">
-            <div className="flex min-h-[calc(100vh-13rem)] justify-center bg-robinEggBlue bg-[url('/paws-pattern.png')] bg-[size:35%] bg-repeat"></div>
+            <div className="flex h-[calc(100vh-13rem)] min-h-[30rem] justify-center bg-robinEggBlue bg-[url('/paws-pattern.png')] bg-[size:35%] bg-repeat"></div>
             <AngledContentStripe color="yellow">
                 <div className="mx-auto flex max-w-[820px] flex-col px-5 py-4 xs:flex-row">
                     <figure className="mx-auto h-[11rem] w-6 min-w-[130px] shrink-0 grow xs:ml-[unset] xs:mr-4 xs:h-full">
