@@ -2,6 +2,8 @@
 
 The **Sitting Cats<sup>NFT</sup>** represents a small personal project aimed at showcasing the process of NFT minting on the Polygon Mumbai test network.
 
+![project preview](./readme/web-preview.png)
+
 The Sitting Cats<sup>NFT</sup> collection is directly inspired by Julie de Graag's cat drawings, specifically her work ["Zittende kat" (Sitting Cat)](https://commons.wikimedia.org/wiki/File:Zittende_kat,_RP-P-1935-892.jpg).
 
 ## Running Locally
