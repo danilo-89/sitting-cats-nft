@@ -95,7 +95,7 @@ function NFTGalery({ setIsOpen }: IProps) {
                             <button
                                 key={item?.id?.tokenId}
                                 type="button"
-                                className="relative pt-[100%] md:w-full"
+                                className="relative max-h-0.5 pt-[100%] md:w-full"
                                 onClick={() => setNftData(item)}
                                 data-cy={`btn-nft-item-${item?.id?.tokenId}`}
                             >
