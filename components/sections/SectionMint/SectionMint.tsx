@@ -86,7 +86,7 @@ const SectionMint = () => {
     const isEnoughBalanceToMint =
         typeof userBalance?.formatted === 'string' && totalPrice
             ? +userBalance.formatted >= totalPrice
-            : false
+            : true
 
     const mintableQuantity =
         limitPerWallet && typeof userPhaseNftBalance === 'number'
