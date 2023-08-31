@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
 
 // Utilities
-import { ipfsToHttps } from '@/utils'
+import { getIdFromHash, ipfsToHttps } from '@/utils'
 
 // Requests
 import { getNFTs } from '@/requests'
@@ -97,7 +97,9 @@ function NFTGalery({ setIsOpen }: IProps) {
                                 type="button"
                                 className="relative max-h-0.5 pt-[100%] md:w-full"
                                 onClick={() => setNftData(item)}
-                                data-cy={`btn-nft-item-${item?.id?.tokenId}`}
+                                data-cy={`btn-nft-item-${getIdFromHash(
+                                    item?.id?.tokenId
+                                )}`}
                             >
                                 <figure
                                     className="absolute inset-0 flex bg-antiFlashWhite p-4"

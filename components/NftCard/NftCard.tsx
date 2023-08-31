@@ -4,7 +4,7 @@ import { fromHex, isHex } from 'viem'
 import clsx from 'clsx'
 
 // Utilities
-import { ipfsToHttps } from '@/utils'
+import { getIdFromHash, ipfsToHttps } from '@/utils'
 
 // Types
 import { INFT, INFTDataWithId } from '@/types/getNftsAPI'
@@ -21,9 +21,7 @@ const NftCard = ({ data }: IProps) => {
     const [isChanging, setIsChanging] = useState(false)
 
     // parse id
-    const id = isHex(data?.id?.tokenId)
-        ? fromHex(data?.id?.tokenId as '0x${string}', 'number').toString()
-        : data?.id?.tokenId
+    const id = getIdFromHash(data?.id?.tokenId)
 
     const cardClass = clsx(
         'relative h-full w-full [transform-style:preserve-3d] [transition:transform_0.7s_ease_0s]',
@@ -56,6 +54,7 @@ const NftCard = ({ data }: IProps) => {
             <div
                 className="h-[24.4rem] w-[16rem] [perspective:1000px]"
                 data-cy="nft-card"
+                data-nft-id={id}
             >
                 <div className={cardClass}>
                     {/* card front */}
