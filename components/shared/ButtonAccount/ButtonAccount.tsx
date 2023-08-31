@@ -50,7 +50,10 @@ const ButtonAccount = ({ handleClick }: IProps) => {
                     alt="cat icon"
                     height={24}
                 />
-                <span className="absolute inset-0 top-1 block text-xs font-semibold">
+                <span
+                    className="absolute inset-0 top-1 block text-xs font-semibold"
+                    data-cy="nft-user-count"
+                >
                     {isUserTotalNftBalanceFetching ? (
                         <LoaderDots />
                     ) : (
