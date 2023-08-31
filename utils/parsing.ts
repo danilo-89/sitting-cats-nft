@@ -29,7 +29,13 @@ const ipfsToHttps = (ipfsString: string): string => {
     return ipfsString.replace('ipfs://', 'https://ipfs.io/ipfs/')
 }
 
-const getIdFromHash = (hashId: undefined | string) => {
+/**
+ * Retrieves an ID from a given hash value.
+ *
+ * @param {string | undefined} hashId - The hash value to extract the ID from.
+ * @returns {string | undefined} The extracted ID, or the original hash value if it's not in the expected format.
+ */
+const getIdFromHash = (hashId: undefined | string): string | undefined => {
     return isHex(hashId)
         ? fromHex(hashId as '0x${string}', 'number').toString()
         : hashId
