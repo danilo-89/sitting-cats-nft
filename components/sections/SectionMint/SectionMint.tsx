@@ -64,6 +64,7 @@ const SectionMint = () => {
         isUserPhaseNftBalanceFetching,
         refetchUserTotalNftBalance,
         refetchUserPhaseNftBalance,
+        refetchUserBalance,
     } = useUserContext()
 
     const [showClaimedNFTModal, setShowClaimedNFTModal] = useState(false)
@@ -215,6 +216,7 @@ const SectionMint = () => {
             refetchTotalMinted()
             refetchUserTotalNftBalance()
             refetchUserPhaseNftBalance()
+            refetchUserBalance()
             setInputValue('1')
             setMintedMetadata({
                 ...claimedMetadata?.data?.metadata,
