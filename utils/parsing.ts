@@ -1,3 +1,5 @@
+import { fromHex, isHex } from 'viem'
+
 /**
  * Shortens a hexadecimal string by replacing the middle part with ellipsis.
  *
@@ -27,4 +29,10 @@ const ipfsToHttps = (ipfsString: string): string => {
     return ipfsString.replace('ipfs://', 'https://ipfs.io/ipfs/')
 }
 
-export { shortenHexString, ipfsToHttps }
+const getIdFromHash = (hashId: undefined | string) => {
+    return isHex(hashId)
+        ? fromHex(hashId as '0x${string}', 'number').toString()
+        : hashId
+}
+
+export { shortenHexString, ipfsToHttps, getIdFromHash }
