@@ -38,6 +38,7 @@ const ButtonConnect = () => {
                     onClick={() => {
                         connect({ connector })
                     }}
+                    data-cy="btn-connect"
                 >
                     Connect Wallet
                     {isLoading &&
