@@ -62,6 +62,7 @@ const SectionMint = () => {
         userBalance,
         userPhaseNftBalance,
         isUserPhaseNftBalanceFetching,
+        isUserBalanceFetching,
         refetchUserTotalNftBalance,
         refetchUserPhaseNftBalance,
         refetchUserBalance,
@@ -252,12 +253,13 @@ const SectionMint = () => {
     }, [
         claimedMetadataStatus,
         claimedMetadata,
-        refetchTotalMinted,
-        refetchUserTotalNftBalance,
-        refetchUserPhaseNftBalance,
         quantity,
         queryClient,
         address,
+        refetchTotalMinted,
+        refetchUserTotalNftBalance,
+        refetchUserPhaseNftBalance,
+        refetchUserBalance,
     ])
 
     useEffect(() => {
@@ -336,7 +338,10 @@ const SectionMint = () => {
                         />
                     </InfoMessageWrapper>
                 ) : null}
-                <div className="mb-[10rem] flex flex-col bg-linen md:flex-row">
+                <div
+                    className="mb-[10rem] flex flex-col bg-linen md:flex-row"
+                    data-cy="container-minting"
+                >
                     <div className="flex-column order-last flex basis-2/3 flex-col items-center justify-center p-10 text-center md:order-first">
                         <InputNft
                             value={inputValue}
@@ -383,6 +388,7 @@ const SectionMint = () => {
                                 !mintableQuantity ||
                                 lowUserBalance ||
                                 isClaimedMetadataFetching ||
+                                isUserBalanceFetching ||
                                 isPrepareFetching ||
                                 isTransactionLoading ||
                                 isReceiptLoading ||
