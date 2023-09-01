@@ -24,9 +24,9 @@ const Footer = () => {
                 {/* smart contract info */}
                 <div className="basis-1/2">
                     <div className="border bg-white p-2">
-                        <h5 className="mb-1 text-2xl font-bold">
+                        <h4 className="mb-1 text-2xl font-bold">
                             Smart Contract Info
-                        </h5>
+                        </h4>
                         <span className="mb-[0.8rem] block border-b border-wenge/5"></span>
                         <p className="flex justify-between py-[0.1rem] text-xs font-bold">
                             <span className="inline-block pr-4">
