@@ -463,12 +463,12 @@ const SectionMint = () => {
                             artistic adventure.
                         </span>
                     </p>
-                    <figure className="sx:mr-[unset] mx-auto mt-4 w-6 min-w-[120px] shrink-0 grow xs:ml-4 xs:h-full md:mt-0">
+                    <figure className="sx:mr-[unset] mx-auto mt-4 h-auto w-6 min-w-[120px] shrink-0 grow xs:ml-4 xs:h-full md:mt-0">
                         <Image
                             className="relative xs:top-[-1.5rem]"
                             alt="paw"
                             width="120"
-                            height="100"
+                            height="133"
                             src="/paw-light-blue.png"
                         />
                     </figure>
