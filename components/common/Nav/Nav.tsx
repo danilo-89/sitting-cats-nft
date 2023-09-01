@@ -19,7 +19,7 @@ const Nav = () => {
     const { isConnected } = useAccount()
 
     const [isModalOpened, setIsModalOpened] = useState(false)
-    const { isOverHeight } = useScrollIndicator(
+    const { isOverHeight, isHeightChecked } = useScrollIndicator(
         navRef?.current?.clientHeight
             ? navRef?.current?.clientHeight * 2
             : undefined
@@ -31,23 +31,24 @@ const Nav = () => {
             'bg-moonstone bg-[url("/paws-pattern-alternative.png")] bg-[size:20%] bg-repeat'
     )
     const h1Classes = clsx(
-        'absolute rotate-[-3.7deg] text-champagne transition duration-1000',
+        'absolute rotate-[-3.7deg] text-champagne transition duration-1000 sm:whitespace-nowrap',
+        !isHeightChecked && 'opacity-0',
         isOverHeight
             ? 'left-3 text-[2.3rem] top-[-5%] -translate-x-0 -translate-y-0'
-            : 'left-1/2 top-[calc(100vh/2-9rem)] -translate-x-1/2 -translate-y-1/2 text-[8rem]'
+            : 'left-1/2 top-[15rem] sm:top-[calc(100vh/2-9rem)] -translate-x-1/2 -translate-y-1/2 text-[6.5rem] md:text-[8rem]'
     )
     const textCatsClasses = clsx(
         'transition duration-700',
         isOverHeight
             ? 'absolute -translate-y-full translate-x-full right-[90%] top-[155%]'
-            : 'relative'
+            : 'relative top-[-3rem] sm:top-[unset]'
     )
     const textNftClasses = clsx(
         'transition-transform duration-700',
         'absolute font-sans font-bold',
         isOverHeight
             ? 'text-champagne text-xs bg-wenge py-1 pr-[0.4rem] pl-3 translate-x-full translate-y-full right-[5%] top-[-15%]'
-            : '-right-6 top-10 text-wenge text-base'
+            : '-right-6 top-8 md:top-10 text-wenge text-base'
     )
     return (
         <nav
