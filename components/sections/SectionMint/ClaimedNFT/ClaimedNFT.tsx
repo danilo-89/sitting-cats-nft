@@ -33,6 +33,7 @@ const ClaimedNFT = ({
                     variation="transparent"
                     onClick={() => setShowModal(false)}
                     data-cy="btn-modal-close"
+                    aria-label="close modal"
                 >
                     x
                 </Button>
