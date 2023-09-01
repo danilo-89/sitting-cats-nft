@@ -6,7 +6,7 @@ The **Sitting Cats<sup>NFT</sup>** represents a small personal project aimed at 
 
 The Sitting Cats<sup>NFT</sup> collection is directly inspired by Julie de Graag's cat drawings, specifically her work ["Zittende kat" (Sitting Cat)](https://commons.wikimedia.org/wiki/File:Zittende_kat,_RP-P-1935-892.jpg).
 
-<video src='./readme/gallery-preview.mp4' width=390></video>
+![gallery preview](./readme/gallery-preview.gif)
 
 ## Running Locally
 
