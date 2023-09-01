@@ -53,6 +53,7 @@ function NFTGalery({ setIsOpen }: IProps) {
                         variation="transparent"
                         onClick={() => setIsOpen(false)}
                         data-cy="btn-modal-close"
+                        aria-label="close modal"
                     >
                         x
                     </Button>
