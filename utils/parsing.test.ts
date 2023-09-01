@@ -1,5 +1,10 @@
-import { expect, test } from 'vitest'
-import { shortenHexString, ipfsToHttps, getIdFromHash } from './parsing'
+import { expect, test, describe, it } from 'vitest'
+import {
+    shortenHexString,
+    ipfsToHttps,
+    getIdFromHash,
+    limitDecimals,
+} from './parsing'
 
 // shortenHexString
 test('shorten a hexadecimal string', () => {
@@ -32,4 +37,28 @@ test('convert hash to id number string', () => {
 
 test('return string if hashId is not in hex', () => {
     expect(getIdFromHash('1')).toBe('1')
+})
+
+// limitDecimals
+describe('limit decimals', () => {
+    const testCases = [
+        { a: undefined, expected: undefined },
+        { a: '0', expected: '0' },
+        { a: '1', expected: '1' },
+        { a: '9.99999', expected: '9' },
+        { a: '9.99999', b: 4, expected: '9.9999' },
+        { a: '100.99999', b: 4, expected: '100.9999' },
+        {
+            a: '100000000000.99999',
+            b: 4,
+            expected: '100000000000.9999',
+        },
+    ]
+
+    it.each(testCases)(
+        'limitDecimals($a, $b) -> $expected',
+        ({ a, b, expected }) => {
+            expect(limitDecimals(a, b)).toBe(expected)
+        }
+    )
 })
