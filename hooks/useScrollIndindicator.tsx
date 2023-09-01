@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
 const useScrollIndicator = (heightToCheck?: number) => {
+    const [isHeightChecked, setIsHeightChecked] = useState(false)
     const [isOverHeight, setIsOverHeight] = useState(false)
 
     const onScroll = useCallback(() => {
@@ -13,6 +14,7 @@ const useScrollIndicator = (heightToCheck?: number) => {
         // Check if current scroll position is over height we are checking
         if (heightToCheck) {
             setIsOverHeight(winScroll > heightToCheck)
+            setIsHeightChecked(true)
         }
     }, [heightToCheck])
 
@@ -29,7 +31,7 @@ const useScrollIndicator = (heightToCheck?: number) => {
         }
     }, [onScroll])
 
-    return { isOverHeight }
+    return { isOverHeight, isHeightChecked }
 }
 
 export default useScrollIndicator
