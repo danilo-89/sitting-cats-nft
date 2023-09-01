@@ -41,6 +41,7 @@ const ButtonAccount = ({ handleClick }: IProps) => {
                 }
             }}
             data-cy="btn-account"
+            aria-label="open gallery"
         >
             {isWrongNetwork ? <span className="text-[#f30544]">!</span> : null}
             <span className="mr-2">{shortenHexString(address)}</span>
