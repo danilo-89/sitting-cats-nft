@@ -41,4 +41,28 @@ const getIdFromHash = (hashId: undefined | string): string | undefined => {
         : hashId
 }
 
-export { shortenHexString, ipfsToHttps, getIdFromHash }
+/**
+ * Truncates the decimal places of a numeric string while preserving "0".
+ *
+ * @param {string | undefined} input - The numeric string to truncate or undefined.
+ * @param {number} fixed - The number of decimal places to preserve.
+ * @returns {string | undefined} The truncated numeric string or undefined if input is invalid.
+ */
+const limitDecimals = (
+    input: string | undefined,
+    fixed: number = 0
+): string | undefined => {
+    if (input === undefined) return undefined
+    if (input === '0') return '0'
+
+    const num = parseFloat(input)
+
+    if (!isNaN(num)) {
+        const multiplier = Math.pow(10, fixed)
+        return (Math.floor(num * multiplier) / multiplier).toString()
+    }
+
+    return undefined
+}
+
+export { shortenHexString, ipfsToHttps, getIdFromHash, limitDecimals }
