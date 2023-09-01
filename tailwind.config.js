@@ -15,6 +15,7 @@ module.exports = {
         colors: {
             xantous: '#EFBF5B',
             moonstone: '#319CAB',
+            seaSerpent: '#69C5D1',
             robinEggBlue: '#61C1CE',
             champagne: '#F1DCC1',
             wenge: '#534444',
