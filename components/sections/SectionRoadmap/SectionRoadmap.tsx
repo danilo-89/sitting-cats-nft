@@ -68,9 +68,9 @@ const SectionRoadmap = () => {
                                     isIndexOdd && 'items-center'
                                 )}
                             >
-                                <h4 className="mb-2 text-2xl font-bold">
+                                <h3 className="mb-2 text-2xl font-bold">
                                     {item.name}
-                                </h4>
+                                </h3>
                                 <p className="">{item.description}</p>
                             </div>
                         </div>
