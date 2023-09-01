@@ -8,12 +8,12 @@ interface IProps {
 }
 
 // ensure tailwind will include styles
-const includeStyles = 'fill-robinEggBlue fill-xantous'
+const includeStyles = 'bg-seaSerpent fill-seaSerpent fill-xantous'
 
 const AngledContentStripe = ({ children, color = 'yellow' }: IProps) => {
     const backgroundClass = clsx(
         color === 'yellow' && 'xantous',
-        color === 'blue' && 'robinEggBlue'
+        color === 'blue' && 'seaSerpent'
     )
 
     return (
