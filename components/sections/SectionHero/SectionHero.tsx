@@ -11,10 +11,10 @@ const SectionHero = () => {
                 <div className="mx-auto flex max-w-[820px] flex-col px-5 py-4 xs:flex-row">
                     <figure className="mx-auto h-[11rem] w-6 min-w-[130px] shrink-0 grow xs:ml-[unset] xs:mr-4 xs:h-full">
                         <Image
-                            className="absolute -top-[5.5rem] h-auto w-[130px]"
+                            className="absolute -top-[5.5rem] h-[260px] w-full max-w-[130px]"
                             alt="siamese-style cat illustration"
                             width="130"
-                            height="100"
+                            height="260"
                             src="/hero-cat.png"
                         />
                     </figure>
