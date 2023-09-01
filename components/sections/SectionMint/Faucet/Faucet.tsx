@@ -3,6 +3,9 @@ import Image from 'next/image'
 // Assets
 import arrowExternalIcon from '@/assets/arrow-external.svg'
 
+// Utilities
+import { limitDecimals } from '@/utils'
+
 // Contexts
 import { useUserContext } from '@/context/UserContext'
 
@@ -32,9 +35,11 @@ const Faucet = () => {
                     You&apos;re low on {nativeCurrency}!
                 </span>
                 <br />
-                Your current balance is {userBalance?.formatted}{' '}
-                {nativeCurrency}. Having enough balance ensures you can claim
-                NFTs and cover the transaction fees.
+                Your current balance is{' '}
+                {limitDecimals(userBalance?.formatted, 6)} {nativeCurrency}.
+                <br />
+                Having enough balance ensures you can claim NFTs and cover the
+                transaction fees.
             </span>
             <span className="mb-5 block border-b border-dashed border-wenge/40"></span>
             <span className="mb-4 block">
