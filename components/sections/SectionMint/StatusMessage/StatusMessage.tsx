@@ -30,7 +30,7 @@ const StatusMessage = ({
                     )}
                     data-cy="price-total"
                 >
-                    Total Price: {totalPrice}{' '}
+                    Total price: {totalPrice}{' '}
                     {preferredNetwork?.nativeCurrency?.symbol}
                 </span>
             ) : null}
