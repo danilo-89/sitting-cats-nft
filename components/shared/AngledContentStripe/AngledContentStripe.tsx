@@ -27,7 +27,7 @@ const AngledContentStripe = ({ children, color = 'yellow' }: IProps) => {
                 viewBox="0 0 1024 68"
                 xmlns="http://www.w3.org/2000/svg"
                 strokeWidth={0}
-                className={`absolute left-0 top-0 -translate-y-full fill-${backgroundClass}`}
+                className={`absolute left-0 top-[1px] -translate-y-full fill-${backgroundClass}`}
             >
                 <path d="M1024 68.5H0L1024 0V68.5Z" />
             </svg>
@@ -36,7 +36,7 @@ const AngledContentStripe = ({ children, color = 'yellow' }: IProps) => {
                 height="69"
                 viewBox="0 0 1024 68"
                 xmlns="http://www.w3.org/2000/svg"
-                className={`absolute bottom-0 left-0 translate-y-full fill-${backgroundClass}`}
+                className={`absolute bottom-[1px] left-0 translate-y-full fill-${backgroundClass}`}
                 strokeWidth={0}
                 preserveAspectRatio="xMinYMin"
             >
@@ -44,10 +44,10 @@ const AngledContentStripe = ({ children, color = 'yellow' }: IProps) => {
             </svg>
             {children}
             <span
-                className={`absolute bottom-0 left-0 top-0 block h-[calc(100%+68px)] w-screen -translate-x-full bg-${backgroundClass}`}
+                className={`absolute bottom-0 left-0 top-0 block h-[calc(100%+67px)] w-screen -translate-x-full bg-${backgroundClass}`}
             ></span>
             <span
-                className={`absolute bottom-0 right-[1px] block h-[calc(100%+68px)] w-[calc((100vw-1024px)/2)] translate-x-full bg-${backgroundClass}`}
+                className={`absolute bottom-0 right-[1px] block h-[calc(100%+67px)] w-[calc((100vw-1024px)/2)] translate-x-full bg-${backgroundClass}`}
             ></span>
         </div>
     )
