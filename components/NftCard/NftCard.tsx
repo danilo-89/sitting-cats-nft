@@ -61,6 +61,7 @@ const NftCard = ({ data }: IProps) => {
                     <div className="absolute inset-0 flex flex-col overflow-hidden rounded-md bg-linen shadow-md [backface-visibility:hidden]">
                         <div className="flex items-center justify-between bg-wenge bg-[url('/paws-pattern-brown.png')] bg-[size:180px] bg-right-top bg-repeat px-2 py-1.5">
                             <Image
+                                className="w-[3.75rem]"
                                 width="60"
                                 height="40"
                                 src="/logo.png"
