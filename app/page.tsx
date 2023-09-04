@@ -1,8 +1,9 @@
 'use client'
 
 import { WagmiConfig, createConfig, configureChains, mainnet } from 'wagmi'
+import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
 import { publicProvider } from 'wagmi/providers/public'
-import { polygonMumbai } from 'wagmi/chains'
+import { polygonMumbai } from 'viem/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { InjectedConnector } from 'wagmi/connectors/injected'
 
@@ -20,6 +21,11 @@ import useIsMounted from '@/hooks/useIsMounted'
 const { chains, publicClient, webSocketPublicClient } = configureChains(
     [polygonMumbai],
     [
+        jsonRpcProvider({
+            rpc: (chain) => ({
+                http: `https://polygon-mumbai-bor.publicnode.com`,
+            }),
+        }),
         publicProvider(),
         alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY || '' }),
     ]
