@@ -409,9 +409,9 @@ const SectionMint = () => {
                                 </span>
                             ) : null}
                             <Image
-                                className="relative z-[1] h-full w-full"
-                                width="100"
-                                height="50"
+                                className="relative z-[1] w-[6.755rem]"
+                                width="107"
+                                height="216"
                                 src={
                                     mintedMetadata?.image
                                         ? ipfsToHttps(mintedMetadata?.image)
