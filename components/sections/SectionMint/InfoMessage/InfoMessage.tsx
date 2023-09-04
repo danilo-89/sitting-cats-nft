@@ -8,8 +8,6 @@ import { IMintedMetadata, INFTDataWithId } from '@/types/getNftsAPI'
 
 interface IProps {
     isUserPhaseNftBalanceFetching: boolean
-    isPrepareFetching: boolean
-    prepareError: Error | null
     isWriteLoading: boolean
     isReceiptLoading: boolean
     isClaimedMetadataFetching: boolean
@@ -23,8 +21,8 @@ interface IProps {
 
 const InfoMessage = ({
     isUserPhaseNftBalanceFetching,
-    isPrepareFetching,
-    prepareError,
+    // isPrepareFetching,
+    // prepareError,
     isWriteLoading,
     isReceiptLoading,
     isClaimedMetadataFetching,
@@ -35,8 +33,6 @@ const InfoMessage = ({
     mintedQuantity,
     isEnoughBalanceToMint,
 }: IProps) => {
-    const { shortMessage: shortPrepareErrorMessage } =
-        (prepareError as BaseError) || {}
     const { shortMessage: shortTransactionErrorMessage } =
         (transactionError as BaseError) || {}
 
@@ -53,20 +49,8 @@ const InfoMessage = ({
             </>
         )
 
-    if (isPrepareFetching)
-        return (
-            <>
-                Please wait. Executing your transaction
-                <LoaderDots />
-            </>
-        )
-
     if (!isEnoughBalanceToMint) {
         return <>Error: Not enough balance.</>
-    }
-
-    if (prepareError) {
-        return <>Error: {shortPrepareErrorMessage}. Try again?</>
     }
 
     if (claimedMetadataError) {
@@ -93,8 +77,13 @@ const InfoMessage = ({
     if (isWriteLoading)
         return (
             <>
-                <span className="mr-1 font-bold">Action nedded:</span> Confirm
-                transaction in your wallet to continue.
+                <span>
+                    Executing your transaction.
+                    <br />
+                    <span className="font-bold">
+                        Once ready, confirm it in your wallet to continue.
+                    </span>
+                </span>
             </>
         )
 
