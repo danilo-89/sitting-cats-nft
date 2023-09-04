@@ -44,6 +44,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 -   `npm run vitest` | `yarn vitest` | `pnpm vitest` - run tests.
 
+## Smart Contract
+
+[thirdweb's NFT Drop contract](https://thirdweb.com/thirdweb.eth/DropERC721)
+
 ## Contact
 
 Whether you have inquiries or employment opportunities to discuss, feel free to get in touch.
