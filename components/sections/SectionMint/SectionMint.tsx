@@ -96,14 +96,12 @@ const SectionMint = () => {
             : undefined
 
     const {
-        config,
-        error: prepareError,
-        isError: isPrepareError,
-        isFetching: isPrepareFetching,
-        isLoading: isPrepareLoading,
-        isFetchedAfterMount: isPrepareFetchedAfterMount,
-        refetch: refetchPrepare,
-    } = usePrepareContractWrite({
+        isLoading: isTransactionLoading,
+        write,
+        isError: isTransactionError,
+        error: transactionError,
+        reset,
+    } = useContractWrite({
         ...contractConfig,
         enabled: false,
         functionName: 'claim',
@@ -124,17 +122,6 @@ const SectionMint = () => {
             '0x',
         ],
         value: parseEther((pricePerNFT * +quantity).toString()),
-    })
-
-    const {
-        isLoading: isTransactionLoading,
-        write,
-        isError: isTransactionError,
-        data: transactionData,
-        error: transactionError,
-        reset,
-    } = useContractWrite({
-        ...config,
         onSuccess(data) {
             setHash(data?.hash)
         },
@@ -180,13 +167,7 @@ const SectionMint = () => {
         remove()
         reset()
         setMintedMetadata(null)
-        const prepareResponse = await refetchPrepare()
-
-        if (prepareResponse.isSuccess) {
-            setTimeout(() => {
-                write?.()
-            }, 0)
-        }
+        write?.()
     }
 
     const claimedNFTModalData = useMemo(
@@ -300,12 +281,10 @@ const SectionMint = () => {
                         isLoading={
                             userPhaseNftBalance === undefined ||
                             isUserPhaseNftBalanceFetching ||
-                            isPrepareFetching ||
                             isReceiptLoading
                         }
                         isMetadataLoading={isClaimedMetadataFetching}
                         isError={
-                            isPrepareError ||
                             isTransactionError ||
                             isClaimedMetadataError ||
                             !isEnoughBalanceToMint
@@ -320,8 +299,6 @@ const SectionMint = () => {
                                 userPhaseNftBalance === undefined ||
                                 isUserPhaseNftBalanceFetching
                             }
-                            isPrepareFetching={isPrepareFetching}
-                            prepareError={prepareError}
                             claimedMetadataError={claimedMetadataError}
                             isWriteLoading={isTransactionLoading}
                             isReceiptLoading={isReceiptLoading}
@@ -353,7 +330,6 @@ const SectionMint = () => {
                                 isWrongNetwork ||
                                 userPhaseNftBalance === undefined ||
                                 isUserPhaseNftBalanceFetching ||
-                                isPrepareFetching ||
                                 isTransactionLoading ||
                                 isReceiptLoading
                             }
@@ -389,7 +365,6 @@ const SectionMint = () => {
                                 lowUserBalance ||
                                 isClaimedMetadataFetching ||
                                 isUserBalanceFetching ||
-                                isPrepareFetching ||
                                 isTransactionLoading ||
                                 isReceiptLoading ||
                                 !isEnoughBalanceToMint
