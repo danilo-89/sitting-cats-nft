@@ -79,6 +79,7 @@ const SectionMint = () => {
     const [mintedMetadata, setMintedMetadata] = useState<
         IMintedMetadata | null | undefined
     >(null)
+    const [mintedNFTClicked, setMintedNFTClicked] = useState(false)
 
     const lowUserBalance =
         typeof userBalance?.formatted === 'string' &&
@@ -166,6 +167,7 @@ const SectionMint = () => {
     const mintNFT = async () => {
         remove()
         reset()
+        setMintedNFTClicked(false)
         setMintedMetadata(null)
         write?.()
     }
@@ -388,17 +390,24 @@ const SectionMint = () => {
                                 !mintedMetadata && 'cursor-default'
                             )}
                             disabled={!mintedMetadata}
-                            onClick={() => setShowClaimedNFTModal(true)}
+                            onClick={() => {
+                                setShowClaimedNFTModal(true)
+                                setMintedNFTClicked(true)
+                            }}
                             data-cy="btn-claimed-nft"
                             data-nft-id={mintedMetadata?.id}
                         >
-                            {/* {!mintedMetadata ? (
-                                <span className="absolute right-[3rem] top-3/4 z-[0] flex -translate-x-[-100%] -translate-y-1/2 flex-col bg-silver text-xs text-wenge">
-                                    <span className="ml-4 whitespace-nowrap px-3 py-1">
-                                        click me
-                                    </span>
+                            {mintedMetadata && !mintedNFTClicked ? (
+                                <span className="absolute -bottom-2 -left-2 -right-2 -top-2 z-[0] flex flex-col text-xs text-wenge">
+                                    <Image
+                                        className="absolute bottom-0 right-0 w-[1.25rem] -rotate-[30deg] animate-pulse"
+                                        src={'/pointer.png'}
+                                        width={20}
+                                        height={26}
+                                        alt="pointer"
+                                    />
                                 </span>
-                            ) : null} */}
+                            ) : null}
                             <Image
                                 className="relative z-[1] h-full w-full"
                                 width="100"
