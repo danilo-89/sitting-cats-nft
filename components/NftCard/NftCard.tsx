@@ -115,7 +115,7 @@ const NftCard = ({ data }: IProps) => {
                                         src={ipfsToHttps(
                                             currentData?.metadata?.image || ''
                                         )}
-                                        alt="cat silhouette with question sign inside"
+                                        alt={`${currentData?.metadata?.name} NFT cat`}
                                     />
                                 ) : null}
                             </figure>
