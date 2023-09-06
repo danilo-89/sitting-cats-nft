@@ -104,7 +104,6 @@ const SectionMint = () => {
         reset,
     } = useContractWrite({
         ...contractConfig,
-        enabled: false,
         functionName: 'claim',
         args: [
             address!,
@@ -249,7 +248,9 @@ const SectionMint = () => {
         setInputValue('1')
         setMintedNFTId(undefined)
         setMintedMetadata(null)
-    }, [address])
+        remove()
+        reset()
+    }, [address, remove, reset])
 
     return (
         <section className="pt-[7rem] md:pt-[10rem]">
@@ -405,6 +406,7 @@ const SectionMint = () => {
                                         width={20}
                                         height={26}
                                         alt="pointer"
+                                        data-cy="img-pointer"
                                     />
                                 </span>
                             ) : null}
@@ -423,6 +425,7 @@ const SectionMint = () => {
                                         : undefined ||
                                           'cat silhouette with question sign inside'
                                 }
+                                data-cy="img-nft-cat"
                             />
                         </button>
                     </div>
