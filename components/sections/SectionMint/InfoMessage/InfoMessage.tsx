@@ -106,7 +106,7 @@ const InfoMessage = ({
     if (mintedMetadata)
         return (
             <>
-                NFT{mintedQuantity && +mintedQuantity > 1 ? "'s" : ''}{' '}
+                NFT{mintedQuantity && +mintedQuantity > 1 ? 's' : ''}{' '}
                 successfully claimed. {continueMintingMessage}
             </>
         )
