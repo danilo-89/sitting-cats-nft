@@ -64,8 +64,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
         ...contractConfig,
         enabled: !!address && activePhaseId !== undefined,
         functionName: 'getSupplyClaimedByWallet',
-        //@ts-ignore
-        args: [activePhaseId ? BigInt(activePhaseId) : undefined, address!],
+        args: [
+            //@ts-ignore
+            activePhaseId !== undefined ? BigInt(activePhaseId) : undefined,
+            address!,
+        ],
     })
 
     const {
