@@ -250,7 +250,8 @@ const SectionMint = () => {
         setMintedMetadata(null)
         remove()
         reset()
-    }, [address, remove, reset])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [address])
 
     return (
         <section className="pt-[7rem] md:pt-[10rem]">
