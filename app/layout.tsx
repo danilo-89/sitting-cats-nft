@@ -8,12 +8,12 @@ declare global {
     }
 }
 
-export const poppins = Poppins({
+const poppins = Poppins({
     subsets: ['latin'],
     weight: ['400', '700'],
     variable: '--font-poppins',
 })
-export const yellowtail = Yellowtail({
+const yellowtail = Yellowtail({
     subsets: ['latin'],
     weight: ['400'],
     variable: '--font-yellowtail',
