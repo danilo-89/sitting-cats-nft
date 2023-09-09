@@ -1,5 +1,7 @@
 ## Introduction
 
+Live: [sitting-cats-nft.vercel.app](https://sitting-cats-nft.vercel.app/)
+
 The **Sitting Cats<sup>NFT</sup>** represents a small personal project aimed at showcasing the process of NFT minting on the Polygon Mumbai test network.
 
 ![project preview](./readme/web-preview.png)
