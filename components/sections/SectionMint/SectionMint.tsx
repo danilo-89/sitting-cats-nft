@@ -25,6 +25,7 @@ import { useUserContext } from '@/context/UserContext'
 
 // Hooks
 import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+import useMint from '@/hooks/useMint'
 
 // Components
 import AngledContentStripe from '@/components/shared/AngledContentStripe/AngledContentStripe'
@@ -51,6 +52,7 @@ const SectionMint = () => {
     const { address, isConnected } = useAccount()
     const queryClient = useQueryClient()
     const { isWrongNetwork } = useIsWrongNetwork()
+    const { state, dispatch, mintNFT } = useMint()
 
     const {
         limitPerWallet,
@@ -97,56 +99,6 @@ const SectionMint = () => {
             : undefined
 
     const {
-        isLoading: isTransactionLoading,
-        write,
-        isError: isTransactionError,
-        error: transactionError,
-        reset,
-    } = useContractWrite({
-        ...contractConfig,
-        functionName: 'claim',
-        args: [
-            address!,
-            parseUnits(quantity, 0),
-            '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE',
-            parseEther(pricePerNFT.toString()),
-            {
-                proof: [],
-                quantityLimitPerWallet: parseUnits(
-                    process.env.NEXT_PUBLIC_LIMIT_PER_WALLET!,
-                    0
-                ),
-                pricePerToken: parseEther(pricePerNFT.toString()),
-                currency: '0x0000000000000000000000000000000000000000',
-            },
-            '0x',
-        ],
-        value: parseEther((pricePerNFT * +quantity).toString()),
-        onSuccess(data) {
-            setHash(data?.hash)
-        },
-    })
-
-    const {
-        data: receiptData,
-        isError: isReceiptError,
-        isLoading: isReceiptLoading,
-    } = useWaitForTransaction({
-        hash,
-        onSettled(data) {
-            setHash(undefined)
-
-            const logsWithId = data?.logs?.find((item) => item.data === '0x')
-
-            setMintedNFTId(
-                logsWithId?.topics?.[3]
-                    ? fromHex(logsWithId?.topics?.[3]!, 'number')
-                    : undefined
-            )
-        },
-    })
-
-    const {
         status: claimedMetadataStatus,
         isFetching: isClaimedMetadataFetching,
         isError: isClaimedMetadataError,
@@ -162,14 +114,6 @@ const SectionMint = () => {
         staleTime: Infinity,
         refetchOnWindowFocus: false,
     })
-
-    const mintNFT = async () => {
-        remove()
-        reset()
-        setMintedNFTClicked(false)
-        setMintedMetadata(null)
-        write?.()
-    }
 
     const claimedNFTModalData = useMemo(
         () => ({
@@ -245,13 +189,25 @@ const SectionMint = () => {
     ])
 
     useEffect(() => {
+        const data = state.receiptData
+        if (data?.status === 'success') {
+            const logsWithId = data?.logs?.find((item) => item.data === '0x')
+
+            setMintedNFTId(
+                logsWithId?.topics?.[3]
+                    ? fromHex(logsWithId?.topics?.[3]!, 'number')
+                    : undefined
+            )
+        }
+    }, [state.receiptData])
+
+    useEffect(() => {
         setInputValue('1')
         setMintedNFTId(undefined)
         setMintedMetadata(null)
         remove()
-        reset()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [address])
+        dispatch(undefined)
+    }, [address, dispatch, remove])
 
     return (
         <section className="pt-[7rem] md:pt-[10rem]">
@@ -285,15 +241,16 @@ const SectionMint = () => {
                         isLoading={
                             userPhaseNftBalance === undefined ||
                             isUserPhaseNftBalanceFetching ||
-                            isReceiptLoading
+                            state.isPrepareLoading ||
+                            state.isReceiptLoading
                         }
                         isMetadataLoading={isClaimedMetadataFetching}
                         isError={
-                            isTransactionError ||
+                            state.isError ||
                             isClaimedMetadataError ||
                             !isEnoughBalanceToMint
                         }
-                        isActionRequired={isTransactionLoading}
+                        isActionRequired={state.isWriteLoading}
                         isSuccess={
                             !!mintedMetadata && !isUserPhaseNftBalanceFetching
                         }
@@ -304,12 +261,15 @@ const SectionMint = () => {
                                 isUserPhaseNftBalanceFetching
                             }
                             claimedMetadataError={claimedMetadataError}
-                            isWriteLoading={isTransactionLoading}
-                            isReceiptLoading={isReceiptLoading}
+                            isPrepareLoading={state.isPrepareLoading}
+                            prepareError={state.prepareError}
+                            isWriteLoading={state.isWriteLoading}
+                            isReceiptLoading={state.isReceiptLoading}
+                            receiptError={state.receiptError}
                             isClaimedMetadataFetching={
                                 isClaimedMetadataFetching
                             }
-                            transactionError={transactionError}
+                            transactionError={state.writeError}
                             mintableQuantity={mintableQuantity}
                             mintedMetadata={mintedMetadata}
                             mintedQuantity={
@@ -334,8 +294,7 @@ const SectionMint = () => {
                                 isWrongNetwork ||
                                 userPhaseNftBalance === undefined ||
                                 isUserPhaseNftBalanceFetching ||
-                                isTransactionLoading ||
-                                isReceiptLoading
+                                state.isLoading
                             }
                         />
                         <p className="mb-9 text-sm">
@@ -369,12 +328,11 @@ const SectionMint = () => {
                                 lowUserBalance ||
                                 isClaimedMetadataFetching ||
                                 isUserBalanceFetching ||
-                                isTransactionLoading ||
-                                isReceiptLoading ||
+                                state.isLoading ||
                                 !isEnoughBalanceToMint
                             }
                             onClick={() => {
-                                mintNFT()
+                                mintNFT(quantity, address)
                             }}
                             data-cy="btn-mint"
                         >
