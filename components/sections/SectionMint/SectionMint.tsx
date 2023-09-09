@@ -1,17 +1,9 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
-import {
-    useAccount,
-    useContractWrite,
-    usePrepareContractWrite,
-    useWaitForTransaction,
-} from 'wagmi'
-import { fromHex, parseEther, parseUnits } from 'viem'
+import { useAccount } from 'wagmi'
+import { fromHex } from 'viem'
 import clsx from 'clsx'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-
-// Contract
-import { contractConfig } from '@/contract/config'
 
 // Utilities
 import { ipfsToHttps } from '@/utils'
