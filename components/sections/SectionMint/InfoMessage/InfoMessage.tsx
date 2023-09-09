@@ -1,17 +1,18 @@
-import { BaseError } from 'viem'
-
 // Components
 import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
 
 // Types
-import { IMintedMetadata, INFTDataWithId } from '@/types/getNftsAPI'
+import { IMintedMetadata } from '@/types/getNftsAPI'
 
 interface IProps {
     isUserPhaseNftBalanceFetching: boolean
+    isPrepareLoading: boolean
+    prepareError: string | null
     isWriteLoading: boolean
     isReceiptLoading: boolean
+    receiptError: string | null
     isClaimedMetadataFetching: boolean
-    transactionError: Error | null
+    transactionError: string | null
     claimedMetadataError: unknown
     mintableQuantity: number | undefined
     mintedMetadata: IMintedMetadata | null | undefined
@@ -21,10 +22,11 @@ interface IProps {
 
 const InfoMessage = ({
     isUserPhaseNftBalanceFetching,
-    // isPrepareFetching,
-    // prepareError,
+    isPrepareLoading,
+    prepareError,
     isWriteLoading,
     isReceiptLoading,
+    receiptError,
     isClaimedMetadataFetching,
     transactionError,
     claimedMetadataError,
@@ -33,9 +35,6 @@ const InfoMessage = ({
     mintedQuantity,
     isEnoughBalanceToMint,
 }: IProps) => {
-    const { shortMessage: shortTransactionErrorMessage } =
-        (transactionError as BaseError) || {}
-
     const continueMintingMessage =
         mintableQuantity === 0
             ? 'Maximum NFTs per wallet minted.'
@@ -63,26 +62,39 @@ const InfoMessage = ({
         )
     }
 
-    if (
-        transactionError &&
-        shortTransactionErrorMessage === 'User rejected the request.'
-    ) {
+    if (prepareError) {
+        return <>Error: {prepareError}. Try again?</>
+    }
+
+    if (transactionError === 'User rejected the request.') {
         return <>You&apos;ve canceled the transaction. Try again?</>
     }
 
     if (transactionError) {
-        return <>Error: {shortTransactionErrorMessage}. Try again?</>
+        return <>Error: {transactionError}. Try again?</>
+    }
+
+    if (receiptError) {
+        return <>Error: {receiptError}. Try again?</>
+    }
+
+    if (isPrepareLoading) {
+        return (
+            <>
+                <span>
+                    Executing your transaction. Please wait
+                    <LoaderDots />
+                </span>
+            </>
+        )
     }
 
     if (isWriteLoading)
         return (
             <>
                 <span>
-                    Executing your transaction.
-                    <br />
-                    <span className="font-bold">
-                        Once ready, confirm it in your wallet to continue.
-                    </span>
+                    <span className="font-bold">Action required: </span>
+                    Please confirm transaction in your wallet to continue.
                 </span>
             </>
         )
