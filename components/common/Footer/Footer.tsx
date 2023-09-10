@@ -64,8 +64,9 @@ const Footer = () => {
 
                         <span className="mb-1 block border-b-4 border-wenge pt-1"></span>
                         <p className="text-[0.55rem]">
-                            *Having enough {nativeCurrency}
-                            you can claim NFTs and cover the transaction fees.
+                            *Having enough {nativeCurrency || 'wallet ballance'}{' '}
+                            ensures you can claim NFTs and cover the transaction
+                            fees.
                         </p>
                     </div>
                 </div>
