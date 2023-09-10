@@ -275,7 +275,13 @@ const SectionMint = () => {
                     className="mb-[10rem] flex flex-col bg-linen md:flex-row"
                     data-cy="container-minting"
                 >
-                    <div className="flex-column order-last flex basis-2/3 flex-col items-center justify-center p-10 text-center md:order-first">
+                    <form
+                        className="flex-column order-last flex basis-2/3 flex-col items-center justify-center p-10 text-center md:order-first"
+                        onSubmit={(e) => {
+                            e.preventDefault()
+                            mintNFT(quantity, address)
+                        }}
+                    >
                         <InputNft
                             value={inputValue}
                             setValue={setInputValue}
@@ -312,7 +318,7 @@ const SectionMint = () => {
                         </p>
                         <Button
                             className="min-w-[8rem]"
-                            type="button"
+                            type="submit"
                             disabled={
                                 !inputValue ||
                                 isWrongNetwork ||
@@ -323,14 +329,11 @@ const SectionMint = () => {
                                 state.isLoading ||
                                 !isEnoughBalanceToMint
                             }
-                            onClick={() => {
-                                mintNFT(quantity, address)
-                            }}
                             data-cy="btn-mint"
                         >
                             MINT
                         </Button>
-                    </div>
+                    </form>
 
                     {/* cat avatar image */}
                     <div className="relative grow pt-10 text-center md:p-10 ">
