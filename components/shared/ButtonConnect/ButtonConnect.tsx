@@ -18,7 +18,7 @@ const ButtonConnect = () => {
                 data-cy="btn-connect"
                 onClick={() => {
                     window.open(
-                        `https://metamask.app.link/dapp/${window.location.host}/mint`
+                        `https://metamask.app.link/dapp/${window.location.host}`
                     )
                 }}
             >
