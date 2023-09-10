@@ -12,19 +12,18 @@ const ButtonConnect = () => {
 
     if (!metamaskAvaiable)
         return (
-            <a
+            <Button
+                type="button"
                 className="ml-auto flex min-w-[11.5rem] items-center justify-center"
-                href="https://metamask.io/download/"
-                target="_blank"
-                rel="noopener noreferrer"
+                data-cy="btn-connect"
+                onClick={() => {
+                    window.open(
+                        `https://metamask.app.link/dapp/${window.location.host}/mint`
+                    )
+                }}
             >
-                <Button
-                    type="button"
-                    data-cy="btn-connect"
-                >
-                    Connect Wallet
-                </Button>
-            </a>
+                Connect Wallet
+            </Button>
         )
 
     return (
