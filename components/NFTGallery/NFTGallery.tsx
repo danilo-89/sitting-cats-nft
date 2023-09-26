@@ -92,37 +92,39 @@ function NFTGalery({ setIsOpen }: IProps) {
                     </div>
                 ) : (
                     <div className="grid auto-cols-[minmax(33%,_1fr)] grid-flow-col grid-cols-[repeat(3,minmax(33%,1fr))] gap-4 overflow-auto md:h-[17.5rem] md:grid-flow-row md:grid-cols-2">
-                        {data?.data?.ownedNfts?.map((item: INFT) => (
-                            <button
-                                key={item?.id?.tokenId}
-                                type="button"
-                                className="relative max-h-0.5 pt-[100%] md:w-full"
-                                onClick={() => setNftData(item)}
-                                data-cy={`btn-nft-item-${getIdFromHash(
-                                    item?.id?.tokenId
-                                )}`}
-                            >
-                                <figure
-                                    className="absolute inset-0 flex bg-antiFlashWhite p-4"
-                                    style={{
-                                        backgroundColor: `#${item?.metadata?.background_color}`,
-                                    }}
+                        {data?.data?.ownedNfts
+                            ?.map((item: INFT) => (
+                                <button
+                                    key={item?.id?.tokenId}
+                                    type="button"
+                                    className="relative max-h-0.5 pt-[100%] md:w-full"
+                                    onClick={() => setNftData(item)}
+                                    data-cy={`btn-nft-item-${getIdFromHash(
+                                        item?.id?.tokenId
+                                    )}`}
                                 >
-                                    <Image
-                                        className="m-auto max-h-[100%] w-auto"
-                                        width="60"
-                                        height="40"
-                                        src={ipfsToHttps(
-                                            item?.metadata?.image || ''
-                                        )}
-                                        alt={
-                                            item?.metadata?.name ||
-                                            'cat silhouette'
-                                        }
-                                    />
-                                </figure>
-                            </button>
-                        ))}
+                                    <figure
+                                        className="absolute inset-0 flex bg-antiFlashWhite p-4"
+                                        style={{
+                                            backgroundColor: `#${item?.metadata?.background_color}`,
+                                        }}
+                                    >
+                                        <Image
+                                            className="m-auto max-h-[100%] w-auto"
+                                            width="60"
+                                            height="40"
+                                            src={ipfsToHttps(
+                                                item?.metadata?.image || ''
+                                            )}
+                                            alt={
+                                                item?.metadata?.name ||
+                                                'cat silhouette'
+                                            }
+                                        />
+                                    </figure>
+                                </button>
+                            ))
+                            .reverse()}
                     </div>
                 )}
             </section>
