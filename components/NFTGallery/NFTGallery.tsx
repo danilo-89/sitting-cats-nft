@@ -2,6 +2,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
+import clsx from 'clsx'
 
 // Utilities
 import { getIdFromHash, ipfsToHttps } from '@/utils'
@@ -34,8 +35,9 @@ function NFTGalery({ setIsOpen }: IProps) {
     })
 
     useEffect(() => {
-        if (data?.data?.totalCount) {
-            setNftData(data?.data?.ownedNfts?.[0] || null)
+        const totalCount = data?.data?.totalCount
+        if (totalCount) {
+            setNftData(data?.data?.ownedNfts?.[totalCount - 1] || null)
         }
     }, [data])
 
@@ -104,7 +106,12 @@ function NFTGalery({ setIsOpen }: IProps) {
                                     )}`}
                                 >
                                     <figure
-                                        className="absolute inset-0 flex bg-antiFlashWhite p-4"
+                                        className={clsx(
+                                            'absolute inset-0 flex bg-antiFlashWhite p-4',
+                                            item?.id &&
+                                                nftData?.id === item?.id &&
+                                                'shadow-[inset_2px_2px_#EFBF5B,inset_-2px_-2px_#EFBF5B]'
+                                        )}
                                         style={{
                                             backgroundColor: `#${item?.metadata?.background_color}`,
                                         }}
