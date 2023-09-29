@@ -125,7 +125,20 @@ const Footer = () => {
                     </div>
                     <p className="mt-auto">
                         My friend and colleague was also actively involved in
-                        testing this project. Check it out here: [insert link]
+                        testing this project. Check it out here:{' '}
+                        <a
+                            href="https://github.com/markomilenkovic546/sitting-cats-nft-test-automation"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-bold underline-offset-2 hover:underline"
+                        >
+                            sitting cats nft test automation{' '}
+                            <Image
+                                className="mr-[0.2rem] inline-block w-[0.9rem] pb-[0.3rem] text-moonstone"
+                                src={arrowExternalIcon}
+                                alt="icon of arrow in box"
+                            />
+                        </a>
                     </p>
                 </div>
             </div>
