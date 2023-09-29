@@ -50,6 +50,10 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 [thirdweb's NFT Drop contract](https://thirdweb.com/thirdweb.eth/DropERC721)
 
+## QA
+
+In addition to conducting unit tests for utility functions with Vitest, I had the privilege of collaborating with my friend and colleague, [Marko](https://linkedin.com/in/marko-milenkovic-ba9709280), a very talented QA Automation Engineer. He conducted exhaustive testing and developed comprehensive automated tests using Cypress. You can explore his work here: [sitting-cats-nft-test-automation](https://github.com/markomilenkovic546/sitting-cats-nft-test-automation).
+
 ## Contact
 
 Whether you have inquiries or employment opportunities to discuss, feel free to get in touch.
