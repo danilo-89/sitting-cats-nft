@@ -2,6 +2,7 @@
 
 import { WagmiConfig, createConfig, configureChains, mainnet } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
+import { defineChain } from 'viem'
 import { polygonMumbai } from 'viem/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import { InjectedConnector } from 'wagmi/connectors/injected'
@@ -17,8 +18,25 @@ import { ContractProvider } from '@/context/ContractContext'
 import Footer from '@/components/common/Footer/Footer'
 import useIsMounted from '@/hooks/useIsMounted'
 
+const RPC_PUBLIC = process.env.NEXT_PUBLIC_RPC_PUBLIC as string
+
+console.log(RPC_PUBLIC)
+
+const preferredChain = defineChain({
+    ...polygonMumbai,
+    rpcUrls: {
+        ...polygonMumbai.rpcUrls,
+        default: {
+            http: [RPC_PUBLIC],
+        },
+        public: {
+            http: [RPC_PUBLIC],
+        },
+    },
+})
+
 const { chains, publicClient, webSocketPublicClient } = configureChains(
-    [polygonMumbai],
+    [preferredChain],
     [
         publicProvider(),
         alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY || '' }),
