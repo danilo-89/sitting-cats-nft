@@ -28,7 +28,7 @@ const Nav = () => {
     const navClasses = clsx(
         'flex w-full z-[2] fixed transition duration-450 bg-transparent',
         isOverHeight &&
-            'bg-moonstone bg-[url("/paws-pattern-alternative.png")] bg-[size:20%] bg-repeat'
+            'bg-moonstone bg-[url("/paws-pattern-alternative.png")] bg-[size:14rem] bg-repeat'
     )
     const h1Classes = clsx(
         'absolute rotate-[-3.7deg] text-champagne transition duration-1000 sm:whitespace-nowrap',
