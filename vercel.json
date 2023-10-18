@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "destination": "/.well-known/walletconnect.txt",
-      "source": "/public/walletconnect.txt"
+      "source": "/.well-known/walletconnect.txt",
+      "destination": "/public/walletconnect.txt"
     }
   ]
 }
