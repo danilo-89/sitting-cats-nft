@@ -27,6 +27,8 @@ import SectionRoadmap from '@/components/sections/SectionRoadmap/SectionRoadmap'
 import Footer from '@/components/common/Footer/Footer'
 
 const RPC_PUBLIC = process.env.NEXT_PUBLIC_RPC_PUBLIC as string
+const WALLET_CONNECT_PROJECT_ID = process.env
+    .NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string
 
 console.log(RPC_PUBLIC)
 
@@ -56,7 +58,7 @@ const connectors = connectorsForWallets([
         groupName: 'Recommended',
         wallets: [
             metaMaskWallet({
-                projectId: '0b08b776aab2bafecd4e5f2902832e5f',
+                projectId: WALLET_CONNECT_PROJECT_ID,
                 chains,
             }),
         ],
