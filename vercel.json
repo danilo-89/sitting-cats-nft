@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/.well-known/walletconnect.txt",
-      "destination": "/public/walletconnect.txt"
+      "destination": "/.well-known/walletconnect.txt"
     }
   ]
 }
