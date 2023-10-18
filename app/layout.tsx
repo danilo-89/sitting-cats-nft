@@ -2,12 +2,6 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Poppins, Yellowtail } from 'next/font/google'
 
-declare global {
-    interface Window {
-        ethereum: any
-    }
-}
-
 const poppins = Poppins({
     subsets: ['latin'],
     weight: ['400', '700'],
