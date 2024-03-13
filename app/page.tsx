@@ -30,7 +30,7 @@ const RPC_PUBLIC = process.env.NEXT_PUBLIC_RPC_PUBLIC as string
 const WALLET_CONNECT_PROJECT_ID = process.env
     .NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string
 
-console.log(RPC_PUBLIC)
+console.log('Public RPC: ', RPC_PUBLIC)
 
 const preferredChain = defineChain({
     ...polygonMumbai,
