@@ -52,8 +52,7 @@ const limitDecimals = (
     input: string | undefined,
     fixed: number = 0
 ): string | undefined => {
-    if (input === undefined) return undefined
-    if (input === '0') return '0'
+    if (input === undefined || input === '0') return input
 
     const num = parseFloat(input)
 
