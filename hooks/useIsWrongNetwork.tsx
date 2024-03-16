@@ -1,8 +1,8 @@
-import { useAccount, useNetwork } from 'wagmi'
+import { useAccount, useConfig,  } from 'wagmi'
 
 const useIsWrongNetwork = () => {
-    const { address } = useAccount()
-    const { chain, chains } = useNetwork()
+    const { chain, address } = useAccount()
+    const { chains } = useConfig() 
 
     const isWrongNetwork =
         address && chain?.id !== Number(process.env.NEXT_PUBLIC_CHAIN_ID)

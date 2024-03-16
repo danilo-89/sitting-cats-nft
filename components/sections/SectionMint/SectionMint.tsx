@@ -98,7 +98,8 @@ const SectionMint = () => {
         refetch: fetchClaimedMetadata,
         error: claimedMetadataError,
         isSuccess: isClaimedMetadataSuccess,
-        remove,
+        // remove,
+
     } = useQuery({
         enabled: false,
         queryKey: ['nftURILink', mintedNFTId],
@@ -197,9 +198,9 @@ const SectionMint = () => {
         setInputValue('1')
         setMintedNFTId(undefined)
         setMintedMetadata(null)
-        remove()
+       queryClient.removeQueries({queryKey:['nftURILink'], exact:false})
         dispatch(undefined)
-    }, [address, dispatch, remove])
+    }, [address, dispatch])
 
     return (
         <section className="pt-[7rem] md:pt-[10rem]">

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
 import Image from 'next/image'
-import { useAccount, useSwitchNetwork } from 'wagmi'
+import { useAccount, useSwitchChain } from 'wagmi'
 
 // Assets
 import catIcon from '@/assets/cat-icon.svg'
@@ -25,7 +25,7 @@ const ButtonAccount = ({ handleClick }: IProps) => {
         useUserContext()
 
     const { address } = useAccount()
-    const { switchNetwork } = useSwitchNetwork()
+    const { switchChain } = useSwitchChain()
 
     const { isWrongNetwork } = useIsWrongNetwork()
 
@@ -35,7 +35,7 @@ const ButtonAccount = ({ handleClick }: IProps) => {
             className="ml-auto flex min-w-[12rem] items-center justify-center py-0"
             onClick={() => {
                 if (isWrongNetwork) {
-                    switchNetwork?.(Number(process.env.NEXT_PUBLIC_CHAIN_ID))
+                    switchChain?.({chainId:Number(process.env.NEXT_PUBLIC_CHAIN_ID)})
                 } else {
                     handleClick(true)
                 }
