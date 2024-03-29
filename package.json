@@ -54,6 +54,8 @@
     "vitest": "^0.34.3"
   },
   "resolutions": {
-    "webpack-dev-middleware": "^6.1.2"
+    "webpack-dev-middleware": ">=6.1.2",
+    "postcss": ">=8.4.31",
+    "express": ">=4.19.2"
   }
 }
