@@ -20,6 +20,9 @@ const preview: Preview = {
         (Story) => (
             <main
                 className={`${poppins.variable} ${yellowtail.variable} bg-champagne text-wenge`}
+                style={{
+                    fontFamily: 'Verdana, Arial, Helvetica, sans-serif',
+                }}
             >
                 <Story />
             </main>
