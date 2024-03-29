@@ -19,7 +19,7 @@ const preview: Preview = {
     decorators: [
         (Story) => (
             <main
-                className={`${poppins.variable} ${yellowtail.variable} bg-champagne text-wenge`}
+                className={`${poppins.variable} ${yellowtail.variable} text-wenge`}
                 style={{
                     fontFamily: 'Verdana, Arial, Helvetica, sans-serif',
                 }}
