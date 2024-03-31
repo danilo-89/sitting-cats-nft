@@ -20,20 +20,20 @@ import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
 import useMint from '@/hooks/useMint'
 
 // Components
-import AngledContentStripe from '@/components/shared/AngledContentStripe/AngledContentStripe'
-import Modal from '@/components/common/Modal/Modal'
 import Button from '@/components/common/Button/Button'
-import InputNft from '@/components/sections/SectionMint/InputNft'
-import Title from '@/components/common/Title/Title'
 import Faucet from '@/components/sections/SectionMint/Faucet/Faucet'
+import InputNft from '@/components/sections/SectionMint/InputNft'
 import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
+import Modal from '@/components/common/Modal/Modal'
 import NFTGalleryModal from '@/components/NFTGallery/Modal'
-import StatusMessage from './StatusMessage'
-import InfoMessage from './InfoMessage'
-import WrongNetworkNotice from './WrongNetworkNotice'
-import NotConnectedNotice from './NotConnectedNotice'
-import InfoMessageWrapper from './InfoMessageWrapper'
+import Title from '@/components/common/Title/Title'
 import ClaimedNFT from './ClaimedNFT'
+import InfoMessage from './InfoMessage'
+import InfoMessageWrapper from './InfoMessageWrapper'
+import NotConnectedNotice from './NotConnectedNotice'
+import SectionMintBottom from './SectionMintBottom/SectionMintBottom'
+import StatusMessage from './StatusMessage'
+import WrongNetworkNotice from './WrongNetworkNotice'
 
 // Types
 import { GetNfts, IMintedMetadata } from '@/types/getNftsAPI'
@@ -385,36 +385,7 @@ const SectionMint = () => {
                     </div>
                 </div>
             </div>
-            <AngledContentStripe color="blue">
-                <div className="mx-auto flex max-w-[820px] flex-col px-5 py-4 xs:flex-row">
-                    <p className="text-md max-w-auto basis shrink grow pt-2">
-                        NFTs are like digital collector&apos;s items, and by
-                        claiming them, you embrace the fusion of history and
-                        innovation, where Julie de Graag&apos;s artistic
-                        ingenuity meets the blockchain&apos;s immutability.
-                        <br />
-                        <br />
-                        <span className="text-lg">
-                            The{' '}
-                            <span className="font-bold">
-                                Sitting Cats
-                                <sup>NFT</sup>
-                            </span>{' '}
-                            welcomes you to explore, own, and be a part of this
-                            artistic adventure.
-                        </span>
-                    </p>
-                    <figure className="sx:mr-[unset] mx-auto mt-4 h-auto w-6 min-w-[120px] shrink-0 grow xs:ml-4 xs:h-full md:mt-0">
-                        <Image
-                            className="relative xs:top-[-1.5rem]"
-                            alt="paw"
-                            width="120"
-                            height="133"
-                            src="/paw-light-blue.png"
-                        />
-                    </figure>
-                </div>
-            </AngledContentStripe>
+            <SectionMintBottom />
 
             {/* Modals */}
             {showClaimedNFTModal ? (
