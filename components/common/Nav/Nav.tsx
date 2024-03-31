@@ -35,7 +35,7 @@ const Nav = () => {
         !isHeightChecked && 'opacity-0',
         isOverHeight
             ? 'left-3 text-[2.3rem] top-[-5%] -translate-x-0 -translate-y-0'
-            : 'left-1/2 top-[15rem] sm:top-[calc(100vh/2-9rem)] -translate-x-1/2 -translate-y-1/2 text-[6.5rem] md:text-[8rem]'
+            : 'left-1/2 top-[15rem] sm:top-[calc(100vh/2-9rem)] -translate-x-1/2 -translate-y-1/2 text-[6.5rem] md:text-[8rem] short:top-[calc(100vh/2-2rem)] short:top-[calc(100vh/2-0.5rem)]'
     )
     const textCatsClasses = clsx(
         'transition duration-700',
