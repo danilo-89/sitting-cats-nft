@@ -28,6 +28,10 @@ module.exports = {
         // #b7d9de
         // #e2e6e7
         extend: {
+            screens: {
+                xshort: { raw: '(max-height: 380px)' },
+                short: { raw: '(max-height: 576px)' },
+            },
             fontSize: {
                 xsP: ['0.75rem', '1.15rem'],
                 smP: ['0.875rem', 'normal'],

@@ -38,7 +38,7 @@ const Button = ({
         variation === 'secondary' &&
             'text-wenge bg-robinEggBlue shadow-silver/40 group-active:shadow-silver/40',
         variation === 'neutral' &&
-            'text-white bg-silver shadow-wenge group-active:shadow-wenge',
+            'text-wenge bg-silver shadow-wenge group-active:shadow-wenge',
         variation === 'transparent' &&
             'text-wenge bg-[transparent] shadow-wenge group-active:shadow-wenge',
         // additional

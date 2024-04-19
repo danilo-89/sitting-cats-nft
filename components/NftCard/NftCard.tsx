@@ -70,7 +70,7 @@ const NftCard = ({ data }: IProps) => {
                             />
                             {currentData?.id ? (
                                 <a
-                                    href={`https://mumbai.polygonscan.com/token/${process.env.NEXT_PUBLIC_CONTRACT}?a=${currentData?.id}`}
+                                    href={`https://amoy.polygonscan.com/token/${process.env.NEXT_PUBLIC_CONTRACT}?a=${currentData?.id}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex h-8 min-w-[2rem] items-center justify-center rounded-full bg-champagne px-1 text-xsP font-semibold"

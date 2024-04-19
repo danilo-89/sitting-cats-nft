@@ -4,7 +4,7 @@ export const contractInfoLabelsData = [
     {
         name: 'address',
         value: shortenHexString(process.env.NEXT_PUBLIC_CONTRACT),
-        href: `https://mumbai.polygonscan.com/address/${process.env.NEXT_PUBLIC_CONTRACT}`,
+        href: `https://amoy.polygonscan.com/address/${process.env.NEXT_PUBLIC_CONTRACT}`,
     },
     {
         name: 'standard',
@@ -13,7 +13,7 @@ export const contractInfoLabelsData = [
     },
     {
         name: 'network',
-        value: 'Polygon Mumbai Testnet',
+        value: 'Polygon Amoy Testnet',
     },
     {
         name: 'NFT price*',
