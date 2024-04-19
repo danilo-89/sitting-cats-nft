@@ -7,13 +7,6 @@ export const contractABI = [
     { inputs: [], name: 'BalanceQueryForZeroAddress', type: 'error' },
     { inputs: [], name: 'MintToZeroAddress', type: 'error' },
     { inputs: [], name: 'MintZeroQuantity', type: 'error' },
-    {
-        inputs: [
-            { internalType: 'address', name: 'operator', type: 'address' },
-        ],
-        name: 'OperatorNotAllowed',
-        type: 'error',
-    },
     { inputs: [], name: 'OwnerQueryForNonexistentToken', type: 'error' },
     { inputs: [], name: 'TransferCallerNotOwnerNorApproved', type: 'error' },
     { inputs: [], name: 'TransferFromIncorrectOwner', type: 'error' },
@@ -72,6 +65,25 @@ export const contractABI = [
             },
         ],
         name: 'ApprovalForAll',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: '_fromTokenId',
+                type: 'uint256',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: '_toTokenId',
+                type: 'uint256',
+            },
+        ],
+        name: 'BatchMetadataUpdate',
         type: 'event',
     },
     {
@@ -178,6 +190,25 @@ export const contractABI = [
         inputs: [
             {
                 indexed: false,
+                internalType: 'address',
+                name: 'platformFeeRecipient',
+                type: 'address',
+            },
+            {
+                indexed: false,
+                internalType: 'uint256',
+                name: 'flatFee',
+                type: 'uint256',
+            },
+        ],
+        name: 'FlatPlatformFeeUpdated',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
                 internalType: 'uint8',
                 name: 'version',
                 type: 'uint8',
@@ -199,19 +230,7 @@ export const contractABI = [
         name: 'MaxTotalSupplyUpdated',
         type: 'event',
     },
-    {
-        anonymous: false,
-        inputs: [
-            {
-                indexed: false,
-                internalType: 'bool',
-                name: 'restriction',
-                type: 'bool',
-            },
-        ],
-        name: 'OperatorRestriction',
-        type: 'event',
-    },
+    { anonymous: false, inputs: [], name: 'MetadataFrozen', type: 'event' },
     {
         anonymous: false,
         inputs: [
@@ -248,6 +267,19 @@ export const contractABI = [
             },
         ],
         name: 'PlatformFeeInfoUpdated',
+        type: 'event',
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: 'enum IPlatformFee.PlatformFeeType',
+                name: 'feeType',
+                type: 'uint8',
+            },
+        ],
+        name: 'PlatformFeeTypeUpdated',
         type: 'event',
     },
     {
@@ -484,7 +516,7 @@ export const contractABI = [
     },
     {
         inputs: [
-            { internalType: 'address', name: 'operator', type: 'address' },
+            { internalType: 'address', name: 'to', type: 'address' },
             { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
         ],
         name: 'approve',
@@ -496,6 +528,13 @@ export const contractABI = [
         inputs: [{ internalType: 'address', name: 'owner', type: 'address' }],
         name: 'balanceOf',
         outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+        name: 'batchFrozen',
+        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
         stateMutability: 'view',
         type: 'function',
     },
@@ -603,6 +642,13 @@ export const contractABI = [
         type: 'function',
     },
     {
+        inputs: [{ internalType: 'uint256', name: '_index', type: 'uint256' }],
+        name: 'freezeBatchBaseURI',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
         inputs: [],
         name: 'getActiveClaimConditionId',
         outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
@@ -699,10 +745,33 @@ export const contractABI = [
     },
     {
         inputs: [],
+        name: 'getFlatPlatformFeeInfo',
+        outputs: [
+            { internalType: 'address', name: '', type: 'address' },
+            { internalType: 'uint256', name: '', type: 'uint256' },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
         name: 'getPlatformFeeInfo',
         outputs: [
             { internalType: 'address', name: '', type: 'address' },
             { internalType: 'uint16', name: '', type: 'uint16' },
+        ],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'getPlatformFeeType',
+        outputs: [
+            {
+                internalType: 'enum IPlatformFee.PlatformFeeType',
+                name: '',
+                type: 'uint8',
+            },
         ],
         stateMutability: 'view',
         type: 'function',
@@ -923,13 +992,6 @@ export const contractABI = [
     },
     {
         inputs: [],
-        name: 'operatorRestriction',
-        outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-        stateMutability: 'view',
-        type: 'function',
-    },
-    {
-        inputs: [],
         name: 'owner',
         outputs: [{ internalType: 'address', name: '', type: 'address' }],
         stateMutability: 'view',
@@ -1010,7 +1072,7 @@ export const contractABI = [
             { internalType: 'address', name: 'from', type: 'address' },
             { internalType: 'address', name: 'to', type: 'address' },
             { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
-            { internalType: 'bytes', name: 'data', type: 'bytes' },
+            { internalType: 'bytes', name: '_data', type: 'bytes' },
         ],
         name: 'safeTransferFrom',
         outputs: [],
@@ -1111,19 +1173,26 @@ export const contractABI = [
     {
         inputs: [
             {
+                internalType: 'address',
+                name: '_platformFeeRecipient',
+                type: 'address',
+            },
+            { internalType: 'uint256', name: '_flatFee', type: 'uint256' },
+        ],
+        name: 'setFlatPlatformFeeInfo',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
                 internalType: 'uint256',
                 name: '_maxTotalSupply',
                 type: 'uint256',
             },
         ],
         name: 'setMaxTotalSupply',
-        outputs: [],
-        stateMutability: 'nonpayable',
-        type: 'function',
-    },
-    {
-        inputs: [{ internalType: 'bool', name: '_restriction', type: 'bool' }],
-        name: 'setOperatorRestriction',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',
@@ -1151,6 +1220,19 @@ export const contractABI = [
             },
         ],
         name: 'setPlatformFeeInfo',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'enum IPlatformFee.PlatformFeeType',
+                name: '_feeType',
+                type: 'uint8',
+            },
+        ],
+        name: 'setPlatformFeeType',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',
@@ -1225,6 +1307,16 @@ export const contractABI = [
             { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
         ],
         name: 'transferFrom',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function',
+    },
+    {
+        inputs: [
+            { internalType: 'uint256', name: '_index', type: 'uint256' },
+            { internalType: 'string', name: '_uri', type: 'string' },
+        ],
+        name: 'updateBatchBaseURI',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function',

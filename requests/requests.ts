@@ -2,9 +2,7 @@ import axios from 'axios'
 
 export const getNFTs = async (address: string | undefined) => {
     const res = await axios.get(
-        `https://${'polygon-mumbai'}.g.alchemy.com/nft/v2/${
-            process.env.NEXT_PUBLIC_ALCHEMY
-        }/getNFTs`,
+        `https://${'polygon-amoy'}.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY}/getNFTs`,
         {
             params: {
                 owner: address,
@@ -18,9 +16,7 @@ export const getNFTs = async (address: string | undefined) => {
 export const getNFTMetadata = async (tokenId?: number | undefined) => {
     if (tokenId) {
         const res = await axios.get(
-            `https://${'polygon-mumbai'}.g.alchemy.com/nft/v2/${
-                process.env.NEXT_PUBLIC_ALCHEMY
-            }/getNFTMetadata`,
+            `https://${'polygon-amoy'}.g.alchemy.com/nft/v2/${process.env.NEXT_PUBLIC_ALCHEMY}/getNFTMetadata`,
             {
                 params: {
                     tokenId: tokenId,

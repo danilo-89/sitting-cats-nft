@@ -4,7 +4,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiConfig, createConfig, configureChains, mainnet } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
 import { defineChain } from 'viem'
-import { polygonMumbai } from 'viem/chains'
 import { alchemyProvider } from 'wagmi/providers/alchemy'
 import {
     RainbowKitProvider,
@@ -27,15 +26,28 @@ import SectionRoadmap from '@/components/sections/SectionRoadmap/SectionRoadmap'
 import Footer from '@/components/common/Footer/Footer'
 
 const RPC_PUBLIC = process.env.NEXT_PUBLIC_RPC_PUBLIC as string
+const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID as string
 const WALLET_CONNECT_PROJECT_ID = process.env
     .NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string
 
-console.log('Public RPC: ', RPC_PUBLIC)
-
 const preferredChain = defineChain({
-    ...polygonMumbai,
+    id: Number(CHAIN_ID),
+    name: 'Polygon Amoy',
+    network: 'polygonamoy',
+    nativeCurrency: {
+        name: 'MATIC',
+        symbol: 'MATIC',
+        decimals: 18,
+    },
     rpcUrls: {
-        ...polygonMumbai.rpcUrls,
+        alchemy: {
+            http: ['https://polygon-amoy.g.alchemy.com/v2'],
+            webSocket: ['wss://polygon-amoy.g.alchemy.com/v2'],
+        },
+        infura: {
+            http: ['https://polygon-amoy.infura.io/v3'],
+            webSocket: ['wss://polygon-amoy.infura.io/ws/v3'],
+        },
         default: {
             http: [RPC_PUBLIC],
         },
@@ -43,6 +55,17 @@ const preferredChain = defineChain({
             http: [RPC_PUBLIC],
         },
     },
+    blockExplorers: {
+        etherscan: {
+            name: 'PolygonScan',
+            url: 'https://amoy.polygonscan.com',
+        },
+        default: {
+            name: 'PolygonScan',
+            url: 'https://amoy.polygonscan.com',
+        },
+    },
+    testnet: true,
 })
 
 const { chains, publicClient, webSocketPublicClient } = configureChains(
