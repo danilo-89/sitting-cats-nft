@@ -88,10 +88,12 @@ const config = getDefaultConfig({
             'https://polygon-amoy.g.alchemy.com/v2/CAOYqQI1K9AKGzoPPRuxIrY0oEVJcrnt'
         ),
     },
-    // wallets: [{
-    //     groupName: 'Recommended',
-    //     wallets: [metaMaskWallet],
-    //   }],
+    wallets: [
+        {
+            groupName: 'Recommended',
+            wallets: [metaMaskWallet],
+        },
+    ],
 })
 
 // const connectors = connectorsForWallets([
