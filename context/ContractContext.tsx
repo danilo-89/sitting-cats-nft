@@ -1,7 +1,7 @@
 'use client'
 import { createContext, ReactNode, useContext } from 'react'
 import { formatUnits } from 'viem'
-import { useContractRead } from 'wagmi'
+import { useReadContract } from 'wagmi'
 
 // Contract
 import { contractConfig } from '@/contract/config'
@@ -32,9 +32,8 @@ export function ContractProvider({ children }: { children: ReactNode }) {
         isFetching: isTotalMintedFetching,
         refetch: refetchTotalMinted,
         isFetchedAfterMount: isTotalMintedChecked,
-    } = useContractRead({
+    } = useReadContract({
         ...contractConfig,
-        enabled: true,
         functionName: 'totalMinted',
     })
 
@@ -43,9 +42,8 @@ export function ContractProvider({ children }: { children: ReactNode }) {
         isFetching: isActivePhaseIdFetching,
         refetch: refetchActivePhaseId,
         isFetchedAfterMount: isActivePhaseIdChecked,
-    } = useContractRead({
+    } = useReadContract({
         ...contractConfig,
-        enabled: true,
         functionName: 'getActiveClaimConditionId',
     })
 

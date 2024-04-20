@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider, http } from 'wagmi'
 // import { publicProvider } from 'wagmi/providers/public'
 import { defineChain } from 'viem'
-import { polygonMumbai } from 'viem/chains'
+import { polygonAmoy } from 'viem/chains'
 // import { alchemyProvider } from 'wagmi/providers/alchemy'
 import {
     RainbowKitProvider,
