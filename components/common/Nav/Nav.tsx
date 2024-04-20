@@ -3,13 +3,10 @@ import { useAccount } from 'wagmi'
 import clsx from 'clsx'
 
 // Hooks
-import useScrollIndicator from '@/hooks/useScrollIndicator'
-import useIsMounted from '@/hooks/useIsMounted'
+import { useIsMounted, useScrollIndicator } from '@/hooks'
 
 // Components
-import NFTGalleryModal from '@/components/NFTGallery/Modal'
-import ButtonAccount from '@/components/shared/ButtonAccount/ButtonAccount'
-import ButtonConnect from '@/components/shared/ButtonConnect/ButtonConnect'
+import { ButtonAccount, ButtonConnect, NFTGalleryModal } from '@/components'
 
 const includeStyles = 'bg-[url("/paws-pattern-alternative.png")]'
 
