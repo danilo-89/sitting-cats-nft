@@ -1,7 +1,10 @@
 import Image from 'next/image'
-import React from 'react'
-import AngledContentStripe from '../../shared/AngledContentStripe/AngledContentStripe'
+
+// Assets
 import arrowExternalIcon from '@/assets/arrow-external.svg'
+
+// Components
+import { AngledContentStripe } from '@/components'
 
 const SectionHero = () => {
     return (

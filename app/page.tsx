@@ -2,34 +2,25 @@
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { WagmiProvider, http } from 'wagmi'
-// import { publicProvider } from 'wagmi/providers/public'
 import { defineChain } from 'viem'
-import { polygonAmoy } from 'viem/chains'
-// import { alchemyProvider } from 'wagmi/providers/alchemy'
-import {
-    Locale,
-    RainbowKitProvider,
-    connectorsForWallets,
-    getDefaultConfig,
-    getDefaultWallets,
-} from '@rainbow-me/rainbowkit'
-
+import { RainbowKitProvider, getDefaultConfig } from '@rainbow-me/rainbowkit'
 import { metaMaskWallet, injectedWallet } from '@rainbow-me/rainbowkit/wallets'
 import '@rainbow-me/rainbowkit/styles.css'
+
 // Contexts
-import { UserProvider } from '@/context/UserContext'
-import { ContractProvider } from '@/context/ContractContext'
+import { UserProvider, ContractProvider } from '@/context'
 
 // Hooks
-import useIsMounted from '@/hooks/useIsMounted'
+import { useIsMounted } from '@/hooks'
 
 // Components
-import Nav from '@/components/common/Nav'
-import SectionHero from '@/components/sections/SectionHero'
-import SectionMint from '@/components/sections/SectionMint'
-import SectionRoadmap from '@/components/sections/SectionRoadmap/SectionRoadmap'
-import Footer from '@/components/common/Footer/Footer'
-import { useRouter } from 'next/navigation'
+import {
+    Nav,
+    SectionHero,
+    SectionMint,
+    SectionRoadmap,
+    Footer,
+} from '@/components'
 
 const RPC_PUBLIC = process.env.NEXT_PUBLIC_RPC_PUBLIC as string
 const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID as string
@@ -75,14 +66,6 @@ const preferredChain = defineChain({
     testnet: true,
 })
 
-// const { chains, publicClient, webSocketPublicClient } = configureChains(
-//     [preferredChain],
-//     [
-//         publicProvider(),
-//         alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY || '' }),
-//     ]
-// )
-
 const config = getDefaultConfig({
     appName: 'SittingCatsNFT',
     projectId: WALLET_CONNECT_PROJECT_ID,
@@ -101,26 +84,6 @@ const config = getDefaultConfig({
     ssr: true,
 })
 
-// const connectors = connectorsForWallets(
-//     [
-//         {
-//             groupName: 'Recommended',
-//             wallets: [injectedWallet, metaMaskWallet],
-//         },
-//     ],
-//     {
-//         appName: 'My RainbowKit App',
-//         projectId: 'YOUR_PROJECT_ID',
-//     }
-// )
-
-// const config = createConfig({
-//     autoConnect: true,
-//     publicClient,
-//     webSocketPublicClient,
-//     connectors,
-// })
-
 const queryClient = new QueryClient()
 
 export default function Home() {
@@ -129,10 +92,7 @@ export default function Home() {
     return (
         <WagmiProvider config={config}>
             <QueryClientProvider client={queryClient}>
-                <RainbowKitProvider
-                    modalSize="compact"
-                    // chains={chains}
-                >
+                <RainbowKitProvider modalSize="compact">
                     <ContractProvider>
                         <UserProvider>
                             <main className="max-w-full overflow-x-hidden">

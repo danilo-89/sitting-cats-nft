@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 
 // Hooks
-import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+import { useIsWrongNetwork } from '@/hooks'
 
 interface IProps {
     userPhaseNftBalance: number | undefined

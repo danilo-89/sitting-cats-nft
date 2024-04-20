@@ -1,5 +1,6 @@
 import { useReducer } from 'react'
-import { BaseError, TransactionReceipt, parseEther, parseUnits } from 'viem'
+import { BaseError, parseEther, parseUnits } from 'viem'
+import { useConfig } from 'wagmi'
 import {
     simulateContract,
     writeContract,
@@ -7,14 +8,13 @@ import {
 } from '@wagmi/core'
 
 // Contract
-import { contractConfig } from '@/contract/config'
+import { contractConfig } from '@/contract'
 
 // Reducers
 import { useMintReducer } from '@/reducers'
 
 // Utilities
 import { toErrorWithMessage } from '@/utils'
-import { useConfig } from 'wagmi'
 
 const pricePerNFT = +process.env.NEXT_PUBLIC_NFT_PRICE! as unknown as number
 
@@ -80,7 +80,7 @@ const useMint = () => {
                 isWriteLoading: true,
             })
 
-            const writeResult = await writeContract(config,result.request)
+            const writeResult = await writeContract(config, result.request)
 
             writeLoading = false
             receiptLoading = true
@@ -90,7 +90,9 @@ const useMint = () => {
                 isReceiptLoading: true,
             })
 
-            const data = await waitForTransactionReceipt(config, {hash:writeResult})
+            const data = await waitForTransactionReceipt(config, {
+                hash: writeResult,
+            })
 
             receiptLoading = false
 

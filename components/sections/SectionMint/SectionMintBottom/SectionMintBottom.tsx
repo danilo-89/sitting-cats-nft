@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 // Components
-import AngledContentStripe from '@/components/shared/AngledContentStripe'
+import { AngledContentStripe } from '@/components'
 
 const SectionMintBottom = () => {
     return (

@@ -3,7 +3,7 @@ import { useAccount } from 'wagmi'
 import clsx from 'clsx'
 
 // Hooks
-import useScrollIndicator from '@/hooks/useScrollIndindicator'
+import useScrollIndicator from '@/hooks/useScrollIndicator'
 import useIsMounted from '@/hooks/useIsMounted'
 
 // Components

@@ -1,4 +1,4 @@
-import { Dispatch, ReactNode, SetStateAction } from 'react'
+import { type Dispatch, type ReactNode, type SetStateAction } from 'react'
 import * as Dialog from '@radix-ui/react-dialog'
 
 interface IProps {

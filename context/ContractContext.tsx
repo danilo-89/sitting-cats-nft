@@ -1,10 +1,10 @@
 'use client'
-import { createContext, ReactNode, useContext } from 'react'
+import { createContext, type ReactNode, useContext } from 'react'
 import { formatUnits } from 'viem'
 import { useReadContract } from 'wagmi'
 
 // Contract
-import { contractConfig } from '@/contract/config'
+import { contractConfig } from '@/contract'
 
 interface IProps {
     totalMinted: number | undefined

@@ -1,11 +1,10 @@
 import { Dispatch, SetStateAction } from 'react'
 
 // Components
-import NftCard from '@/components/NftCard'
-import Button from '@/components/common/Button'
+import { Button, NftCard } from '@/components'
 
 // Types
-import { INFT } from '@/types/getNftsAPI'
+import { INFT } from '@/types'
 
 interface IProps {
     setShowModal: Dispatch<SetStateAction<boolean>> | (() => void)

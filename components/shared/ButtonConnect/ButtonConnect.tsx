@@ -1,8 +1,8 @@
 import { useConnect } from 'wagmi'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 
 // Components
-import Button from '@/components/common/Button'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { Button } from '@/components'
 
 const ButtonConnect = () => {
     const { openConnectModal } = useConnectModal()

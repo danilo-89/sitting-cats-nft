@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useQuery } from '@tanstack/react-query'
 import { useAccount } from 'wagmi'
@@ -11,12 +11,10 @@ import { getIdFromHash, ipfsToHttps } from '@/utils'
 import { getNFTs } from '@/requests'
 
 // Components
-import NftCard from '@/components/NftCard/NftCard'
-import Button from '@/components/common/Button'
-import LoaderSquare from '@/components/common/LoaderSquare'
+import { Button, LoaderSquare, NftCard } from '@/components'
 
 // Types
-import { INFT } from '@/types/getNftsAPI'
+import { INFT } from '@/types'
 
 interface IProps {
     setIsOpen: Dispatch<SetStateAction<boolean>> | (() => void)

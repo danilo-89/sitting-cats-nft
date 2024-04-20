@@ -2,13 +2,13 @@ import Image from 'next/image'
 import clsx from 'clsx'
 
 // Data
-import { roadmapPhasesConfig } from './data'
+import { roadmapPhasesConfig } from '@/components'
 
 // Assets
 import arrowExternalIcon from '@/assets/arrow-external.svg'
 
 // Components
-import Title from '@/components/common/Title'
+import { Title } from '@/components'
 
 const SectionRoadmap = () => {
     return (

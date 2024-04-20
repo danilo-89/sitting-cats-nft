@@ -1,10 +1,13 @@
-import Button from '@/components/common/Button'
-import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
 import { useSwitchChain } from 'wagmi'
 
+// Components
+import { Button } from '@/components'
+
+// Hooks
+import { useIsWrongNetwork } from '@/hooks'
+
 const WrongNetworkNotice = () => {
-    const { switchChain } =
-    useSwitchChain()
+    const { switchChain } = useSwitchChain()
     const { preferredNetwork } = useIsWrongNetwork()
 
     return (
@@ -22,9 +25,9 @@ const WrongNetworkNotice = () => {
                 <Button
                     type="button"
                     onClick={() =>
-                        switchChain?.(
-                            {chainId:Number(process.env.NEXT_PUBLIC_CHAIN_ID)}
-                        )
+                        switchChain?.({
+                            chainId: Number(process.env.NEXT_PUBLIC_CHAIN_ID),
+                        })
                     }
                 >
                     Switch Network
