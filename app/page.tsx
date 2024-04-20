@@ -7,12 +7,14 @@ import { defineChain } from 'viem'
 import { polygonAmoy } from 'viem/chains'
 // import { alchemyProvider } from 'wagmi/providers/alchemy'
 import {
+    Locale,
     RainbowKitProvider,
     connectorsForWallets,
     getDefaultConfig,
+    getDefaultWallets,
 } from '@rainbow-me/rainbowkit'
 
-import { metaMaskWallet } from '@rainbow-me/rainbowkit/wallets'
+import { metaMaskWallet, injectedWallet } from '@rainbow-me/rainbowkit/wallets'
 import '@rainbow-me/rainbowkit/styles.css'
 // Contexts
 import { UserProvider } from '@/context/UserContext'
@@ -27,11 +29,13 @@ import SectionHero from '@/components/sections/SectionHero'
 import SectionMint from '@/components/sections/SectionMint'
 import SectionRoadmap from '@/components/sections/SectionRoadmap/SectionRoadmap'
 import Footer from '@/components/common/Footer/Footer'
+import { useRouter } from 'next/navigation'
 
 const RPC_PUBLIC = process.env.NEXT_PUBLIC_RPC_PUBLIC as string
 const CHAIN_ID = process.env.NEXT_PUBLIC_CHAIN_ID as string
 const WALLET_CONNECT_PROJECT_ID = process.env
     .NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID as string
+const ALCHEMY_ID = process.env.NEXT_PUBLIC_ALCHEMY as string
 
 const preferredChain = defineChain({
     id: Number(CHAIN_ID),
@@ -85,28 +89,30 @@ const config = getDefaultConfig({
     chains: [preferredChain],
     transports: {
         [preferredChain.id]: http(
-            'https://polygon-amoy.g.alchemy.com/v2/CAOYqQI1K9AKGzoPPRuxIrY0oEVJcrnt'
+            `https://polygon-amoy.g.alchemy.com/v2/${ALCHEMY_ID}`
         ),
     },
     wallets: [
         {
-            groupName: 'Recommended',
-            wallets: [metaMaskWallet],
+            groupName: 'Suggested',
+            wallets: [injectedWallet, metaMaskWallet],
         },
     ],
+    ssr: true,
 })
 
-// const connectors = connectorsForWallets([
+// const connectors = connectorsForWallets(
+//     [
+//         {
+//             groupName: 'Recommended',
+//             wallets: [injectedWallet, metaMaskWallet],
+//         },
+//     ],
 //     {
-//         groupName: 'Recommended',
-//         wallets: [
-//             metaMaskWallet({
-//                 projectId: WALLET_CONNECT_PROJECT_ID,
-//                 chains,
-//             }),
-//         ],
-//     },
-// ])
+//         appName: 'My RainbowKit App',
+//         projectId: 'YOUR_PROJECT_ID',
+//     }
+// )
 
 // const config = createConfig({
 //     autoConnect: true,
