@@ -31,7 +31,7 @@ const Footer = () => {
                             <span className="inline-block pr-4">
                                 SittingCats <sup>NFT</sup>
                             </span>
-                            <span>2023</span>
+                            <span>2024</span>
                         </p>
                         <span className="mb-[0.1rem] block border-b-4 border-wenge pt-[0.2rem]" />
                         <ul className="text-xs">
