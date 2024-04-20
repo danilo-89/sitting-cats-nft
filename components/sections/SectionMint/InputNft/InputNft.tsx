@@ -1,10 +1,7 @@
-import { Dispatch, SetStateAction } from 'react'
-
-// Contexts
-import { useContractContext } from '@/context/ContractContext'
+import type { Dispatch, SetStateAction } from 'react'
 
 // Components
-import Button from '@/components/common/Button'
+import { Button } from '@/components'
 
 interface IProps {
     value: string
@@ -19,8 +16,6 @@ const InputNft = ({
     mintableQuantity,
     isDisabled,
 }: IProps) => {
-    const { limitPerWallet } = useContractContext()
-
     return (
         <div className="mx-auto mb-4 flex max-w-[16rem] border-2 border-x-wenge bg-white p-2">
             <Button

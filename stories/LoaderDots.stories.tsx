@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 // Components
-import LoaderDots from '../components/common/LoaderDots'
+import { LoaderDots } from '@/components'
 
 const meta = {
     title: 'Loaders/LoaderDots',

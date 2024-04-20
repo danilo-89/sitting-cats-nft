@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { fromHex, isHex } from 'viem'
 import clsx from 'clsx'
 
 // Utilities
 import { getIdFromHash, ipfsToHttps } from '@/utils'
 
 // Types
-import { INFT, INFTDataWithId } from '@/types/getNftsAPI'
+import { INFT, INFTDataWithId } from '@/types'
 
 interface IProps {
     data: Partial<INFT> | null | undefined
@@ -61,7 +60,7 @@ const NftCard = ({ data }: IProps) => {
                     <div className="absolute inset-0 flex flex-col overflow-hidden rounded-md bg-linen shadow-md [backface-visibility:hidden]">
                         <div className="flex items-center justify-between bg-wenge bg-[url('/paws-pattern-brown.png')] bg-[size:180px] bg-right-top bg-repeat px-2 py-1.5">
                             <Image
-                                className="w-[3.75rem] h-auto"
+                                className="h-auto w-[3.75rem]"
                                 width={60}
                                 height={40}
                                 src="/logo.png"
@@ -117,7 +116,10 @@ const NftCard = ({ data }: IProps) => {
                                             currentData?.metadata?.image || ''
                                         )}
                                         alt={`${currentData?.metadata?.name} NFT cat`}
-                                        style={{ width: '5.9rem', height: 'auto' }}
+                                        style={{
+                                            width: '5.9rem',
+                                            height: 'auto',
+                                        }}
                                     />
                                 ) : null}
                             </figure>

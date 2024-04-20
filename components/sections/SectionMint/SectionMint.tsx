@@ -12,31 +12,31 @@ import { ipfsToHttps } from '@/utils'
 import { getNFTMetadata } from '@/requests'
 
 // Contexts
-import { useContractContext } from '@/context/ContractContext'
-import { useUserContext } from '@/context/UserContext'
+import { useContractContext, useUserContext } from '@/context'
 
 // Hooks
-import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
-import useMint from '@/hooks/useMint'
+import { useIsWrongNetwork, useMint } from '@/hooks'
 
 // Components
-import Button from '@/components/common/Button/Button'
-import Faucet from '@/components/sections/SectionMint/Faucet/Faucet'
-import InputNft from '@/components/sections/SectionMint/InputNft'
-import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
-import Modal from '@/components/common/Modal/Modal'
-import NFTGalleryModal from '@/components/NFTGallery/Modal'
-import Title from '@/components/common/Title/Title'
-import ClaimedNFT from './ClaimedNFT'
-import InfoMessage from './InfoMessage'
-import InfoMessageWrapper from './InfoMessageWrapper'
-import NotConnectedNotice from './NotConnectedNotice'
-import SectionMintBottom from './SectionMintBottom/SectionMintBottom'
-import StatusMessage from './StatusMessage'
-import WrongNetworkNotice from './WrongNetworkNotice'
+import {
+    Button,
+    ClaimedNFT,
+    Faucet,
+    InfoMessage,
+    InfoMessageWrapper,
+    InputNft,
+    LoaderDots,
+    Modal,
+    NFTGalleryModal,
+    NotConnectedNotice,
+    SectionMintBottom,
+    StatusMessage,
+    Title,
+    WrongNetworkNotice,
+} from '@/components'
 
 // Types
-import { GetNfts, IMintedMetadata } from '@/types/getNftsAPI'
+import { GetNfts, IMintedMetadata } from '@/types'
 
 const pricePerNFT = +process.env.NEXT_PUBLIC_NFT_PRICE! as unknown as number
 
@@ -66,7 +66,6 @@ const SectionMint = () => {
     const [showNFTGalleryModal, setShowNFTGalleryModal] = useState(false)
     const [inputValue, setInputValue] = useState('1')
     const [quantity, setQuantity] = useState(inputValue)
-    const [hash, setHash] = useState<`0x${string}` | undefined>(undefined)
     const [mintedNFTId, setMintedNFTId] = useState<number | undefined>(
         undefined
     )
@@ -99,7 +98,6 @@ const SectionMint = () => {
         error: claimedMetadataError,
         isSuccess: isClaimedMetadataSuccess,
         // remove,
-
     } = useQuery({
         enabled: false,
         queryKey: ['nftURILink', mintedNFTId],
@@ -198,7 +196,7 @@ const SectionMint = () => {
         setInputValue('1')
         setMintedNFTId(undefined)
         setMintedMetadata(null)
-       queryClient.removeQueries({queryKey:['nftURILink'], exact:false})
+        queryClient.removeQueries({ queryKey: ['nftURILink'], exact: false })
         dispatch(undefined)
     }, [address, dispatch])
 

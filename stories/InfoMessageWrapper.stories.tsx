@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 // Components
-import InfoMessageWrapper from '@/components/sections/SectionMint/InfoMessageWrapper'
+import { InfoMessageWrapper } from '@/components'
 
 const meta = {
     title: 'InfoMessageWrapper',

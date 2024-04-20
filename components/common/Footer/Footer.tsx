@@ -4,11 +4,10 @@ import Image from 'next/image'
 import arrowExternalIcon from '@/assets/arrow-external.svg'
 
 // Hooks
-import useIsMounted from '@/hooks/useIsMounted'
-import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+import { useIsMounted, useIsWrongNetwork } from '@/hooks'
 
 // Data
-import { contractInfoLabelsData } from './data'
+import { contractInfoLabelsData } from '@/components'
 
 const Footer = () => {
     const isMounted = useIsMounted()

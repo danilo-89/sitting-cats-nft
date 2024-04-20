@@ -1,12 +1,12 @@
-import { createContext, ReactNode, useContext } from 'react'
+import { createContext, type ReactNode, useContext } from 'react'
 import { formatUnits } from 'viem'
 import { useAccount, useBalance, useReadContract } from 'wagmi'
 
 // Contexts
-import { useContractContext } from './ContractContext'
+import { useContractContext } from '@/context'
 
 // Contract
-import { contractConfig } from '@/contract/config'
+import { contractConfig } from '@/contract'
 
 interface IProps {
     userTotalNftBalance: undefined | number

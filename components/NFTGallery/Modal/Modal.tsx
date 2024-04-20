@@ -1,13 +1,11 @@
-import { Dispatch, SetStateAction } from 'react'
+import type { Dispatch, SetStateAction } from 'react'
 import { useAccount, useDisconnect } from 'wagmi'
 
 // Hooks
-import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+import { useIsWrongNetwork } from '@/hooks'
 
 // Components
-import Button from '@/components/common/Button'
-import Modal from '@/components/common/Modal'
-import NFTGalery from '../NFTGallery'
+import { Button, Modal, NFTGallery } from '@/components'
 
 interface IProps {
     isOpen: boolean
@@ -22,7 +20,7 @@ const NFTGalleryModal = ({ isOpen, setIsOpen }: IProps) => {
     if (isOpen && isConnected && !isWrongNetwork) {
         return (
             <Modal setIsOpen={setIsOpen}>
-                <NFTGalery setIsOpen={setIsOpen} />
+                <NFTGallery setIsOpen={setIsOpen} />
                 <div className="flex justify-end bg-white p-6">
                     <Button
                         onClick={() => {

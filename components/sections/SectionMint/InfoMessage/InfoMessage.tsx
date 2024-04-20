@@ -1,8 +1,8 @@
 // Components
-import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
+import { LoaderDots } from '@/components'
 
 // Types
-import { IMintedMetadata } from '@/types/getNftsAPI'
+import { IMintedMetadata } from '@/types'
 
 interface IProps {
     isUserPhaseNftBalanceFetching: boolean
