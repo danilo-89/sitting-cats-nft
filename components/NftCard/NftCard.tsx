@@ -65,7 +65,7 @@ const NftCard = ({ data }: IProps) => {
                                 height={40}
                                 src="/logo.png"
                                 alt="logo"
-                                style={{ width: 'auto', height: 'auto' }}
+                                style={{ height: 'auto' }}
                             />
                             {currentData?.id ? (
                                 <a
