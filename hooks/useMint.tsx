@@ -1,9 +1,9 @@
 import { useReducer } from 'react'
 import { BaseError, TransactionReceipt, parseEther, parseUnits } from 'viem'
 import {
-    prepareWriteContract,
+    simulateContract,
     writeContract,
-    waitForTransaction,
+    waitForTransactionReceipt,
 } from '@wagmi/core'
 
 // Contract
@@ -14,10 +14,12 @@ import { useMintReducer } from '@/reducers'
 
 // Utilities
 import { toErrorWithMessage } from '@/utils'
+import { useConfig } from 'wagmi'
 
 const pricePerNFT = +process.env.NEXT_PUBLIC_NFT_PRICE! as unknown as number
 
 const useMint = () => {
+    const config = useConfig()
     const [state, dispatch] = useReducer(useMintReducer, {
         isLoading: false,
         isError: false,
@@ -48,7 +50,7 @@ const useMint = () => {
             prepareLoading = true
             dispatch({ isPrepareLoading: true })
 
-            const config = await prepareWriteContract({
+            const result = await simulateContract(config, {
                 ...contractConfig,
                 functionName: 'claim',
                 args: [
@@ -78,7 +80,7 @@ const useMint = () => {
                 isWriteLoading: true,
             })
 
-            const { hash } = await writeContract(config)
+            const writeResult = await writeContract(config,result.request)
 
             writeLoading = false
             receiptLoading = true
@@ -88,9 +90,7 @@ const useMint = () => {
                 isReceiptLoading: true,
             })
 
-            const data = await waitForTransaction({
-                hash,
-            })
+            const data = await waitForTransactionReceipt(config, {hash:writeResult})
 
             receiptLoading = false
 

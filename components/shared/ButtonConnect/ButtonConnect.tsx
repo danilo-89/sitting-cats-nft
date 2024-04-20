@@ -6,9 +6,7 @@ import { useConnectModal } from '@rainbow-me/rainbowkit'
 
 const ButtonConnect = () => {
     const { openConnectModal } = useConnectModal()
-    const { isLoading } = useConnect({
-        chainId: Number(process.env.NEXT_PUBLIC_CHAIN_ID),
-    })
+    const { isPending } = useConnect()
 
     return (
         <>
@@ -25,7 +23,7 @@ const ButtonConnect = () => {
                     data-cy="btn-connect"
                 >
                     Connect Wallet
-                    {isLoading && ' ...'}
+                    {isPending && ' ...'}
                 </Button>
             ) : null}
         </>
