@@ -20,7 +20,7 @@ interface IProps {
     setIsOpen: Dispatch<SetStateAction<boolean>> | (() => void)
 }
 
-function NFTGalery({ setIsOpen }: IProps) {
+function NFTGallery({ setIsOpen }: IProps) {
     const { address } = useAccount()
     const [nftData, setNftData] = useState<INFT | null>(null)
 
@@ -60,11 +60,10 @@ function NFTGalery({ setIsOpen }: IProps) {
                 </div>
                 <span className="mb-7 block border-b border-dashed border-wenge/40 pt-3" />
                 <p className="mb-6 text-xsP">
-                    <span className="mb-1 inline-block">
+                    <span className="mb-2 block font-semibold">
                         Welcome to your SittingCats <sup>NFT</sup> collection
                         showcase.
                     </span>
-
                     {isLoading || isFetching ? (
                         <span>
                             Hang on for a quick moment as we track down your
@@ -140,4 +139,4 @@ function NFTGalery({ setIsOpen }: IProps) {
     )
 }
 
-export default NFTGalery
+export default NFTGallery
