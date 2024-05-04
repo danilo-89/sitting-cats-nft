@@ -7,14 +7,13 @@ import arrowExternalIcon from '@/assets/arrow-external.svg'
 import { limitDecimals } from '@/utils'
 
 // Contexts
-import { useUserContext } from '@/context/UserContext'
+import { useUserContext } from '@/context'
 
 // Hooks
-import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+import { useIsWrongNetwork } from '@/hooks'
 
 // Components
-import Button from '@/components/common/Button/Button'
-import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
+import { Button, LoaderDots } from '@/components'
 
 const faucets = process.env.NEXT_PUBLIC_FAUCET?.split(',')
 

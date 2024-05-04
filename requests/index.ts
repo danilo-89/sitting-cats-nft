@@ -1,1 +1,1 @@
-export * from './requests'
+export { getNFTs, getNFTMetadata } from '@/requests/requests'

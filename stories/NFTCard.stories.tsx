@@ -2,8 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { useArgs } from '@storybook/preview-api'
 
 // Components
-import NftCard from '@/components/NftCard'
-import Button from '@/components/common/Button'
+import { Button, NftCard } from '@/components'
 
 // Sample data
 import { nftCardData } from './sampleData'

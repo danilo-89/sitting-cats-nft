@@ -1,14 +1,12 @@
 import { useConnect } from 'wagmi'
+import { useConnectModal } from '@rainbow-me/rainbowkit'
 
 // Components
-import Button from '@/components/common/Button'
-import { useConnectModal } from '@rainbow-me/rainbowkit'
+import { Button } from '@/components'
 
 const ButtonConnect = () => {
     const { openConnectModal } = useConnectModal()
-    const { isLoading } = useConnect({
-        chainId: Number(process.env.NEXT_PUBLIC_CHAIN_ID),
-    })
+    const { isPending } = useConnect()
 
     return (
         <>
@@ -25,7 +23,7 @@ const ButtonConnect = () => {
                     data-cy="btn-connect"
                 >
                     Connect Wallet
-                    {isLoading && ' ...'}
+                    {isPending && ' ...'}
                 </Button>
             ) : null}
         </>

@@ -4,11 +4,10 @@ import Image from 'next/image'
 import arrowExternalIcon from '@/assets/arrow-external.svg'
 
 // Hooks
-import useIsMounted from '@/hooks/useIsMounted'
-import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
+import { useIsMounted, useIsWrongNetwork } from '@/hooks'
 
 // Data
-import { contractInfoLabelsData } from './data'
+import { contractInfoLabelsData } from '@/components'
 
 const Footer = () => {
     const isMounted = useIsMounted()
@@ -32,7 +31,7 @@ const Footer = () => {
                             <span className="inline-block pr-4">
                                 SittingCats <sup>NFT</sup>
                             </span>
-                            <span>2023</span>
+                            <span>2024</span>
                         </p>
                         <span className="mb-[0.1rem] block border-b-4 border-wenge pt-[0.2rem]" />
                         <ul className="text-xs">

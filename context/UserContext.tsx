@@ -1,12 +1,12 @@
-import { createContext, ReactNode, useContext } from 'react'
+import { createContext, type ReactNode, useContext } from 'react'
 import { formatUnits } from 'viem'
-import { useAccount, useBalance, useContractRead } from 'wagmi'
+import { useAccount, useBalance, useReadContract } from 'wagmi'
 
 // Contexts
-import { useContractContext } from './ContractContext'
+import { useContractContext } from '@/context'
 
 // Contract
-import { contractConfig } from '@/contract/config'
+import { contractConfig } from '@/contract'
 
 interface IProps {
     userTotalNftBalance: undefined | number
@@ -48,9 +48,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
         isFetching: isUserTotalNftBalanceFetching,
         refetch: refetchUserTotalNftBalance,
         isFetchedAfterMount: isUserTotalNftBalanceChecked,
-    } = useContractRead({
+    } = useReadContract({
         ...contractConfig,
-        enabled: !!address,
+        query: {
+            enabled: !!address,
+        },
         functionName: 'balanceOf',
         args: [address!],
     })
@@ -60,9 +62,11 @@ export function UserProvider({ children }: { children: ReactNode }) {
         isFetching: isUserPhaseNftBalanceFetching,
         refetch: refetchUserPhaseNftBalance,
         isFetchedAfterMount: isUserPhaseNftBalanceChecked,
-    } = useContractRead({
+    } = useReadContract({
         ...contractConfig,
-        enabled: !!address && activePhaseId !== undefined,
+        query: {
+            enabled: !!address && activePhaseId !== undefined,
+        },
         functionName: 'getSupplyClaimedByWallet',
         args: [
             //@ts-ignore

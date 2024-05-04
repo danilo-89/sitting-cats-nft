@@ -2,13 +2,13 @@ import Image from 'next/image'
 import clsx from 'clsx'
 
 // Data
-import { roadmapPhasesConfig } from './data'
+import { roadmapPhasesConfig } from '@/components'
 
 // Assets
 import arrowExternalIcon from '@/assets/arrow-external.svg'
 
 // Components
-import Title from '@/components/common/Title'
+import { Title } from '@/components'
 
 const SectionRoadmap = () => {
     return (
@@ -19,16 +19,16 @@ const SectionRoadmap = () => {
             </Title>
             <div className="mx-auto mb-4 flex max-w-[640px] flex-col">
                 <div className="mb-10 bg-silver p-8">
-                    <span className="font-bold">Note:</span> If you haven&apos;t
-                    fully understood the detailed roadmap below, please watch
-                    the{' '}
+                    <span className="font-bold">Note:</span> If you, by some
+                    case, haven&apos;t fully grasped the detailed roadmap below,
+                    please watch{' '}
                     <a
                         className="underline-offset-2 hover:underline"
                         href="https://www.youtube.com/watch?v=a5ih_TQWqCA"
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        explanatory video
+                        the explanatory video
                         <sup className="ml-[0.1rem]">
                             <Image
                                 className="inline-block w-[0.65rem] p-[0.05rem] text-moonstone"

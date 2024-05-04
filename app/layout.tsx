@@ -15,7 +15,7 @@ const yellowtail = Yellowtail({
 
 export const metadata: Metadata = {
     title: 'Sitting Cats NFT',
-    description: 'Demonstrating NFT minting on the Polygon Mumbai test network',
+    description: 'Demonstrating NFT minting on the Polygon Amoy test network',
 }
 
 export default function RootLayout({
@@ -30,7 +30,7 @@ export default function RootLayout({
                 <title>Sitting Cats NFT</title>
                 <meta
                     name="description"
-                    content="Demonstrating NFT minting on the Polygon Mumbai test network"
+                    content="Demonstrating NFT minting on the Polygon Amoy test network"
                 />
 
                 {/* <!-- Facebook Meta Tags --> */}
@@ -48,7 +48,7 @@ export default function RootLayout({
                 />
                 <meta
                     property="og:description"
-                    content="Demonstrating NFT minting on the Polygon Mumbai test network"
+                    content="Demonstrating NFT minting on the Polygon Amoy test network"
                 />
                 <meta
                     property="og:image"
@@ -74,7 +74,7 @@ export default function RootLayout({
                 />
                 <meta
                     name="twitter:description"
-                    content="Demonstrating NFT minting on the Polygon Mumbai test network"
+                    content="Demonstrating NFT minting on the Polygon Amoy test network"
                 />
                 <meta
                     name="twitter:image"

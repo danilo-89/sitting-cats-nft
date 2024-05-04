@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from 'react'
 import Image from 'next/image'
-import { useAccount, useSwitchNetwork } from 'wagmi'
+import { useAccount, useSwitchChain } from 'wagmi'
 
 // Assets
 import catIcon from '@/assets/cat-icon.svg'
@@ -9,12 +9,13 @@ import catIcon from '@/assets/cat-icon.svg'
 import { shortenHexString } from '@/utils'
 
 // Context
-import { useUserContext } from '@/context/UserContext'
+import { useUserContext } from '@/context'
+
+// Hooks
+import { useIsWrongNetwork } from '@/hooks'
 
 // Components
-import LoaderDots from '@/components/common/LoaderDots/LoaderDots'
-import useIsWrongNetwork from '@/hooks/useIsWrongNetwork'
-import Button from '@/components/common/Button/Button'
+import { Button, LoaderDots } from '@/components'
 
 interface IProps {
     handleClick: Dispatch<SetStateAction<boolean>>
@@ -25,7 +26,7 @@ const ButtonAccount = ({ handleClick }: IProps) => {
         useUserContext()
 
     const { address } = useAccount()
-    const { switchNetwork } = useSwitchNetwork()
+    const { switchChain } = useSwitchChain()
 
     const { isWrongNetwork } = useIsWrongNetwork()
 
@@ -35,7 +36,9 @@ const ButtonAccount = ({ handleClick }: IProps) => {
             className="ml-auto flex min-w-[12rem] items-center justify-center py-0"
             onClick={() => {
                 if (isWrongNetwork) {
-                    switchNetwork?.(Number(process.env.NEXT_PUBLIC_CHAIN_ID))
+                    switchChain?.({
+                        chainId: Number(process.env.NEXT_PUBLIC_CHAIN_ID),
+                    })
                 } else {
                     handleClick(true)
                 }
