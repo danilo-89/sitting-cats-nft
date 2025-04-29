@@ -52,7 +52,7 @@
     "prettier": "^3.0.0",
     "prettier-plugin-tailwindcss": "^0.4.1",
     "storybook": "^8.4.7",
-    "vitest": "^2.1.8"
+    "vitest": "^2.1.9"
   },
   "resolutions": {
     "webpack-dev-middleware": ">=6.1.2",
