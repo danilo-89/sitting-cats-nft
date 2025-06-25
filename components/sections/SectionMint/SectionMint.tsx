@@ -38,6 +38,7 @@ import {
 // Types
 import { GetNfts, IMintedMetadata } from '@/types'
 
+const MINIMUM_ACCOUNT_BALANCE = 0.1
 const pricePerNFT = +process.env.NEXT_PUBLIC_NFT_PRICE! as unknown as number
 
 const SectionMint = () => {
@@ -76,7 +77,7 @@ const SectionMint = () => {
 
     const lowUserBalance =
         typeof userBalance?.formatted === 'string' &&
-        +userBalance.formatted < 0.001
+        +userBalance.formatted < MINIMUM_ACCOUNT_BALANCE
 
     const totalPrice = quantity ? pricePerNFT * +quantity : undefined
     const isEnoughBalanceToMint =
