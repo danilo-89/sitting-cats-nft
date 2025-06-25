@@ -5,9 +5,162 @@ export const contractABI = [
     { inputs: [], name: 'ApprovalToCurrentOwner', type: 'error' },
     { inputs: [], name: 'ApproveToCaller', type: 'error' },
     { inputs: [], name: 'BalanceQueryForZeroAddress', type: 'error' },
+    {
+        inputs: [{ internalType: 'uint256', name: 'index', type: 'uint256' }],
+        name: 'BatchMintInvalidBatchId',
+        type: 'error',
+    },
+    {
+        inputs: [{ internalType: 'uint256', name: 'tokenId', type: 'uint256' }],
+        name: 'BatchMintInvalidTokenId',
+        type: 'error',
+    },
+    {
+        inputs: [{ internalType: 'uint256', name: 'batchId', type: 'uint256' }],
+        name: 'BatchMintMetadataFrozen',
+        type: 'error',
+    },
+    { inputs: [], name: 'ContractMetadataUnauthorized', type: 'error' },
+    {
+        inputs: [
+            { internalType: 'address', name: 'recipient', type: 'address' },
+            { internalType: 'uint256', name: 'value', type: 'uint256' },
+        ],
+        name: 'CurrencyTransferLibFailedNativeTransfer',
+        type: 'error',
+    },
+    {
+        inputs: [
+            { internalType: 'bytes32', name: 'expected', type: 'bytes32' },
+            { internalType: 'bytes32', name: 'actual', type: 'bytes32' },
+        ],
+        name: 'DelayedRevealIncorrectResultHash',
+        type: 'error',
+    },
+    { inputs: [], name: 'DelayedRevealNothingToReveal', type: 'error' },
+    {
+        inputs: [
+            { internalType: 'uint256', name: 'expected', type: 'uint256' },
+            { internalType: 'uint256', name: 'actual', type: 'uint256' },
+        ],
+        name: 'DropClaimExceedLimit',
+        type: 'error',
+    },
+    {
+        inputs: [
+            { internalType: 'uint256', name: 'expected', type: 'uint256' },
+            { internalType: 'uint256', name: 'actual', type: 'uint256' },
+        ],
+        name: 'DropClaimExceedMaxSupply',
+        type: 'error',
+    },
+    {
+        inputs: [
+            {
+                internalType: 'address',
+                name: 'expectedCurrency',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'expectedPricePerToken',
+                type: 'uint256',
+            },
+            {
+                internalType: 'address',
+                name: 'actualCurrency',
+                type: 'address',
+            },
+            {
+                internalType: 'uint256',
+                name: 'actualExpectedPricePerToken',
+                type: 'uint256',
+            },
+        ],
+        name: 'DropClaimInvalidTokenPrice',
+        type: 'error',
+    },
+    {
+        inputs: [
+            { internalType: 'uint256', name: 'expected', type: 'uint256' },
+            { internalType: 'uint256', name: 'actual', type: 'uint256' },
+        ],
+        name: 'DropClaimNotStarted',
+        type: 'error',
+    },
+    { inputs: [], name: 'DropExceedMaxSupply', type: 'error' },
+    { inputs: [], name: 'DropNoActiveCondition', type: 'error' },
+    { inputs: [], name: 'DropUnauthorized', type: 'error' },
+    { inputs: [], name: 'LazyMintInvalidAmount', type: 'error' },
+    { inputs: [], name: 'LazyMintUnauthorized', type: 'error' },
     { inputs: [], name: 'MintToZeroAddress', type: 'error' },
     { inputs: [], name: 'MintZeroQuantity', type: 'error' },
+    { inputs: [], name: 'OwnableUnauthorized', type: 'error' },
     { inputs: [], name: 'OwnerQueryForNonexistentToken', type: 'error' },
+    {
+        inputs: [
+            { internalType: 'address', name: 'account', type: 'address' },
+            { internalType: 'bytes32', name: 'role', type: 'bytes32' },
+        ],
+        name: 'PermissionsAlreadyGranted',
+        type: 'error',
+    },
+    {
+        inputs: [
+            { internalType: 'address', name: 'expected', type: 'address' },
+            { internalType: 'address', name: 'actual', type: 'address' },
+        ],
+        name: 'PermissionsInvalidPermission',
+        type: 'error',
+    },
+    {
+        inputs: [
+            { internalType: 'address', name: 'account', type: 'address' },
+            { internalType: 'bytes32', name: 'neededRole', type: 'bytes32' },
+        ],
+        name: 'PermissionsUnauthorizedAccount',
+        type: 'error',
+    },
+    {
+        inputs: [
+            { internalType: 'uint256', name: 'max', type: 'uint256' },
+            { internalType: 'uint256', name: 'actual', type: 'uint256' },
+        ],
+        name: 'PlatformFeeExceededMaxFeeBps',
+        type: 'error',
+    },
+    {
+        inputs: [
+            { internalType: 'address', name: 'recipient', type: 'address' },
+        ],
+        name: 'PlatformFeeInvalidRecipient',
+        type: 'error',
+    },
+    { inputs: [], name: 'PlatformFeeUnauthorized', type: 'error' },
+    {
+        inputs: [
+            { internalType: 'address', name: 'recipient', type: 'address' },
+        ],
+        name: 'PrimarySaleInvalidRecipient',
+        type: 'error',
+    },
+    { inputs: [], name: 'PrimarySaleUnauthorized', type: 'error' },
+    {
+        inputs: [
+            { internalType: 'uint256', name: 'max', type: 'uint256' },
+            { internalType: 'uint256', name: 'actual', type: 'uint256' },
+        ],
+        name: 'RoyaltyExceededMaxFeeBps',
+        type: 'error',
+    },
+    {
+        inputs: [
+            { internalType: 'address', name: 'recipient', type: 'address' },
+        ],
+        name: 'RoyaltyInvalidRecipient',
+        type: 'error',
+    },
+    { inputs: [], name: 'RoyaltyUnauthorized', type: 'error' },
     { inputs: [], name: 'TransferCallerNotOwnerNorApproved', type: 'error' },
     { inputs: [], name: 'TransferFromIncorrectOwner', type: 'error' },
     {
@@ -511,6 +664,13 @@ export const contractABI = [
         inputs: [],
         name: 'DEFAULT_ADMIN_ROLE',
         outputs: [{ internalType: 'bytes32', name: '', type: 'bytes32' }],
+        stateMutability: 'view',
+        type: 'function',
+    },
+    {
+        inputs: [],
+        name: 'DEFAULT_FEE_RECIPIENT',
+        outputs: [{ internalType: 'address', name: '', type: 'address' }],
         stateMutability: 'view',
         type: 'function',
     },
